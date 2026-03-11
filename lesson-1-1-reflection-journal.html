@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflection Journal — Module 1 · Lesson 1.1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:       #1a6b7c;
+  --teal-dark:  #0d4a57;
+  --teal-light: #2a8fa3;
+  --teal-pale:  #e6f2f5;
+  --teal-pale2: #cce5eb;
+  --orange:     #e8920a;
+  --orange-pale:#fdf3e0;
+  --gold:       #c97d0c;
+  --off-white:  #f7f5f2;
+  --text:       #1c2a2f;
+  --text-muted: #5a737a;
+  --border:     #c5dce1;
+  --shadow:     0 4px 24px rgba(13,74,87,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+/* HEADER */
+.page-header{background:var(--teal-dark);color:white;padding:36px 44px 30px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-70px;right:-70px;width:260px;height:260px;border-radius:50%;background:rgba(232,146,10,.14)}
+.page-header::after{content:'';position:absolute;bottom:-50px;left:38%;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.05)}
+.header-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:white;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(22px,4vw,36px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.page-header .tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,.72)}
+.header-meta{margin-top:16px;font-size:12.5px;color:rgba(255,255,255,.48);letter-spacing:.4px}
+
+/* PROGRESS BAR */
+.progress-wrap{background:white;padding:14px 44px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.progress-label{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);white-space:nowrap}
+.progress-track{flex:1;height:7px;background:var(--teal-pale2);border-radius:10px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--orange));border-radius:10px;transition:width .4s ease}
+.progress-pct{font-size:12px;font-weight:700;color:var(--orange);min-width:34px;text-align:right}
+
+/* MAIN */
+.main{max-width:780px;margin:0 auto;padding:32px 20px 64px}
+
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* INTRO CARD */
+.intro-card{background:white;border-left:5px solid var(--orange);border-radius:10px;padding:20px 26px;margin-bottom:28px;box-shadow:var(--shadow)}
+.intro-card p{color:var(--text-muted);font-size:14.5px;line-height:1.7}
+.intro-card strong{color:var(--teal-dark)}
+
+/* PROMPT GROUPS */
+.prompt-group{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
+.group-header{padding:16px 24px;display:flex;align-items:center;gap:12px;cursor:pointer;user-select:none;transition:background .2s}
+.group-header:hover{background:var(--teal-pale)}
+.group-icon{font-size:22px;flex-shrink:0}
+.group-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--teal-dark);flex:1}
+.group-badge{background:var(--teal-pale2);color:var(--teal);font-size:11px;font-weight:700;padding:3px 10px;border-radius:12px;letter-spacing:.5px}
+.group-chevron{color:var(--text-muted);font-size:14px;transition:transform .3s}
+.group-header.open .group-chevron{transform:rotate(180deg)}
+
+.group-body{display:none;border-top:1px solid var(--border)}
+.group-body.open{display:block}
+
+/* PROMPTS */
+.prompt-item{padding:20px 24px;border-bottom:1px dashed var(--border)}
+.prompt-item:last-child{border-bottom:none}
+.prompt-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.prompt-num{min-width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:2px}
+.prompt-q{font-size:15px;font-weight:600;color:var(--teal-dark);line-height:1.45}
+.prompt-hint{font-size:13px;color:var(--text-muted);font-style:italic;margin-bottom:10px;padding-left:40px}
+textarea.prompt-ans{width:100%;min-height:100px;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6;transition:border-color .2s,background .2s}
+textarea.prompt-ans:focus{outline:none;border-color:var(--teal);background:white}
+textarea.prompt-ans::placeholder{color:#a8bec5;font-style:italic}
+.char-count{text-align:right;font-size:11.5px;color:var(--text-muted);margin-top:4px}
+
+/* DEEPENING */
+.deepening-section{background:var(--teal-pale);border-radius:12px;padding:20px 24px;margin:0 24px 20px}
+.deepening-title{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.deepening-q{font-size:14px;color:var(--teal-dark);margin-bottom:10px;padding-left:16px;border-left:3px solid var(--orange);line-height:1.5}
+
+/* YLOS */
+.ylos-box{background:linear-gradient(130deg,var(--teal-dark) 0%,var(--teal-light) 100%);color:white;border-radius:14px;padding:26px 32px;display:flex;gap:18px;align-items:flex-start;margin-bottom:28px;box-shadow:0 6px 30px rgba(13,74,87,.25)}
+.ylos-icon{font-size:38px;line-height:1;flex-shrink:0}
+.ylos-content h4{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:6px}
+.ylos-content p{font-size:14px;color:rgba(255,255,255,.8);line-height:1.65}
+.ylos-content strong{color:#f5a832}
+
+/* SAVE BAR */
+.save-footer{background:white;border-radius:12px;border-top:4px solid var(--orange);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow)}
+.save-footer-text{font-size:14px;color:var(--text-muted)}
+.save-footer-text strong{color:var(--teal-dark)}
+.save-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+.btn-outline{background:white;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-outline:hover{background:var(--teal-pale)}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:24px;background:var(--teal-dark);color:white;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(70px);opacity:0;transition:all .38s cubic-bezier(.34,1.56,.64,1);z-index:9999}
+#toast.show{transform:translateY(0);opacity:1}
+
+/* PRINT */
+@media print{
+  .progress-wrap,.save-footer,#toast,.group-chevron{display:none!important}
+  .group-body{display:block!important}
+  .page-header,.ylos-box,.group-header{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:white}
+  .main{padding:16px 12px}
+  textarea.prompt-ans{min-height:70px;background:#fafafa;border:1px solid #ccc}
+  @page{margin:.6in}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 1 · Lesson 1.1</div>
+  <h1>Reflection Journal</h1>
+  <p class="tagline">Your story is the foundation of your leadership.</p>
+  <p class="header-meta">Journaling · 10–15 minutes &nbsp;|&nbsp; Leadership Begins With You &nbsp;|&nbsp; Section 1: Your Leadership Story</p>
+</header>
+
+<div class="progress-wrap">
+  <span class="progress-label">Your Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<div class="main">
+
+  <div class="intro-card">
+    <p>Take a few minutes to write — <strong>don't overthink it.</strong> These prompts are designed to help you begin connecting your story to your leadership. There are no right or wrong answers. Write what's honest and true for you. You can respond in any language(s) you think in.</p>
+  </div>
+
+  <!-- GROUP 1 -->
+  <div class="prompt-group">
+    <div class="group-header open" onclick="toggleGroup(this)">
+      <span class="group-icon">🌱</span>
+      <span class="group-title">Your Story & Leadership</span>
+      <span class="group-badge">Core Prompts</span>
+      <span class="group-chevron">▼</span>
+    </div>
+    <div class="group-body open">
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">1</div>
+          <div class="prompt-q">What parts of your life story have shaped how you show up for others?</div>
+        </div>
+        <p class="prompt-hint">Think about experiences — difficult, joyful, or both — that changed how you see yourself or the world.</p>
+        <textarea class="prompt-ans" id="p1" placeholder="Write freely — this is your space…" oninput="updateProgress();updateCount(this,'c1')"></textarea>
+        <div class="char-count" id="c1">0 words</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">2</div>
+          <div class="prompt-q">What strengths have you developed from your family, culture, or community?</div>
+        </div>
+        <p class="prompt-hint">Consider skills, values, wisdom, or ways of being that you learned from the people and places that raised you.</p>
+        <textarea class="prompt-ans" id="p2" placeholder="Write freely — this is your space…" oninput="updateProgress();updateCount(this,'c2')"></textarea>
+        <div class="char-count" id="c2">0 words</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">3</div>
+          <div class="prompt-q">What challenges have shaped your resilience or courage?</div>
+        </div>
+        <p class="prompt-hint">You don't have to share everything — just what feels true and useful to name right now.</p>
+        <textarea class="prompt-ans" id="p3" placeholder="Write freely — this is your space…" oninput="updateProgress();updateCount(this,'c3')"></textarea>
+        <div class="char-count" id="c3">0 words</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">4</div>
+          <div class="prompt-q">What leadership identity are you ready to claim?</div>
+        </div>
+        <p class="prompt-hint">Even if it feels new or uncertain — what kind of leader do you see yourself becoming?</p>
+        <textarea class="prompt-ans" id="p4" placeholder="Write freely — this is your space…" oninput="updateProgress();updateCount(this,'c4')"></textarea>
+        <div class="char-count" id="c4">0 words</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP 2 -->
+  <div class="prompt-group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-icon">💎</span>
+      <span class="group-title">Your Cultural Wealth</span>
+      <span class="group-badge">Core Prompts</span>
+      <span class="group-chevron">▼</span>
+    </div>
+    <div class="group-body">
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">5</div>
+          <div class="prompt-q">Which of the six forms of cultural wealth do you most strongly possess right now?</div>
+        </div>
+        <p class="prompt-hint">Aspirational · Linguistic · Familial · Social · Navigational · Resistant — refer to your Cultural Wealth Reference Card if needed.</p>
+        <textarea class="prompt-ans" id="p5" placeholder="Write freely — this is your space…" oninput="updateProgress();updateCount(this,'c5')"></textarea>
+        <div class="char-count" id="c5">0 words</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">6</div>
+          <div class="prompt-q">What would it mean to you to call yourself a leader — honestly?</div>
+        </div>
+        <p class="prompt-hint">Not the polished version. The real one. What comes up when you sit with that word?</p>
+        <textarea class="prompt-ans" id="p6" placeholder="Write freely — this is your space…" oninput="updateProgress();updateCount(this,'c6')"></textarea>
+        <div class="char-count" id="c6">0 words</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUP 3: DEEPENING -->
+  <div class="prompt-group">
+    <div class="group-header" onclick="toggleGroup(this)">
+      <span class="group-icon">🔍</span>
+      <span class="group-title">Go Deeper</span>
+      <span class="group-badge">Optional</span>
+      <span class="group-chevron">▼</span>
+    </div>
+    <div class="group-body">
+      <div class="deepening-section">
+        <div class="deepening-title">✦ Deepening Questions — go here when you're ready</div>
+        <div class="deepening-q">What have you survived that others don't know about?</div>
+        <div class="deepening-q">What do you want to honor about your journey?</div>
+        <div class="deepening-q">What do you want to release?</div>
+      </div>
+      <div class="prompt-item">
+        <div class="prompt-top">
+          <div class="prompt-num">7</div>
+          <div class="prompt-q">Choose one deepening question above and write freely.</div>
+        </div>
+        <textarea class="prompt-ans" id="p7" style="min-height:130px" placeholder="Take your time with this one…" oninput="updateProgress();updateCount(this,'c7')"></textarea>
+        <div class="char-count" id="c7">0 words</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- YLOS -->
+  <div class="ylos-box">
+    <div class="ylos-icon">📋</div>
+    <div class="ylos-content">
+      <h4>Add to Your YLOS — Section 1</h4>
+      <p>When you finish, add your key reflections to Section 1 of your <strong>Your Leadership Operating System (YLOS)</strong>. Specifically: which form(s) of cultural wealth feel strongest for you, and one sentence describing what leadership means to you right now. It's okay if this changes — write what's true today.</p>
+    </div>
+  </div>
+
+  <div class="save-footer">
+    <div class="save-footer-text"><strong>When you're done:</strong> save your responses or print this journal.</div>
+    <div class="save-actions">
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn btn-teal" onclick="saveWork()">💾 Save My Responses</button>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ACCORDION
+function toggleGroup(header) {
+  const body = header.nextElementSibling;
+  header.classList.toggle('open');
+  body.classList.toggle('open');
+}
+
+// WORD COUNT
+function updateCount(ta, countId) {
+  const words = ta.value.trim() === '' ? 0 : ta.value.trim().split(/\s+/).length;
+  document.getElementById(countId).textContent = words + (words === 1 ? ' word' : ' words');
+}
+
+// PROGRESS
+function updateProgress() {
+  const ids = ['p1','p2','p3','p4','p5','p6','p7'];
+  const filled = ids.filter(id => document.getElementById(id).value.trim().length > 0).length;
+  const pct = Math.round((filled / (ids.length - 1)) * 100); // p7 optional
+  document.getElementById('progressFill').style.width = Math.min(pct, 100) + '%';
+  document.getElementById('progressPct').textContent = Math.min(pct, 100) + '%';
+}
+
+// SAVE / LOAD
+function saveWork() {
+  try {
+    const d = {};
+    ['p1','p2','p3','p4','p5','p6','p7'].forEach(id => d[id] = document.getElementById(id).value);
+    d.ts = new Date().toLocaleString();
+    localStorage.setItem('rj_11', JSON.stringify(d));
+    toast('✓ Your responses have been saved!');
+  } catch(e) { toast('⚠ Could not save — check browser settings.'); }
+}
+function loadSaved() {
+  try {
+    const d = JSON.parse(localStorage.getItem('rj_11') || 'null');
+    if (!d) return;
+    ['p1','p2','p3','p4','p5','p6','p7'].forEach(id => {
+      if (d[id]) {
+        document.getElementById(id).value = d[id];
+        const cid = id.replace('p','c');
+        if (document.getElementById(cid)) updateCount(document.getElementById(id), cid);
+      }
+    });
+    updateProgress();
+    if (d.ts) toast('Welcome back! Last saved ' + d.ts);
+  } catch(e) {}
+}
+function toast(msg) {
+  const el = document.getElementById('toast'); el.textContent = msg;
+  el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3400);
+}
+window.addEventListener('DOMContentLoaded', loadSaved);
+</script>
+</body>
+</html>
