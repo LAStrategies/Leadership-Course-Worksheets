@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identity Constellation Mapping — Module 1 · Lesson 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --teal:        #1a6b7c;
+  --teal-dark:   #0d4a57;
+  --teal-light:  #2a8fa3;
+  --teal-pale:   #e6f2f5;
+  --teal-pale2:  #cce5eb;
+  --orange:      #e8920a;
+  --orange-light:#f5a832;
+  --orange-pale: #fdf3e0;
+  --gold:        #c97d0c;
+  --white:       #ffffff;
+  --off-white:   #f7f5f2;
+  --text:        #1c2a2f;
+  --text-muted:  #5a737a;
+  --border:      #c5dce1;
+  --shadow:      0 4px 24px rgba(13,74,87,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+/* HEADER */
+.page-header{background:var(--teal-dark);color:white;padding:36px 44px 30px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-70px;right:-70px;width:260px;height:260px;border-radius:50%;background:rgba(232,146,10,.14)}
+.page-header::after{content:'';position:absolute;bottom:-50px;left:38%;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.05)}
+.header-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:white;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,40px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.page-header .tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,.72)}
+.header-meta{margin-top:16px;font-size:12.5px;color:rgba(255,255,255,.48);letter-spacing:.4px}
+
+/* LAYOUT */
+.main{max-width:1040px;margin:0 auto;padding:32px 20px 64px}
+
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* INSTRUCTION CARD */
+.instruction-card{background:white;border-left:5px solid var(--orange);border-radius:10px;padding:20px 26px;margin-bottom:24px;box-shadow:var(--shadow)}
+.instruction-card p{color:var(--text-muted);font-size:14.5px;line-height:1.7}
+.instruction-card strong{color:var(--teal-dark)}
+
+/* PROMPTS */
+.prompts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-bottom:28px}
+.prompt-chip{background:var(--teal-pale);border:1px solid var(--teal-pale2);border-radius:10px;padding:14px 16px 14px 38px;font-size:13.5px;color:var(--teal-dark);line-height:1.5;position:relative}
+.prompt-chip::before{content:'✦';position:absolute;left:14px;top:15px;color:var(--orange);font-size:11px}
+
+/* NAME BAND */
+.name-band{background:white;border-radius:12px;padding:18px 28px;margin-bottom:24px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);flex-wrap:wrap}
+.name-band label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);white-space:nowrap}
+.name-input-wrap{flex:1;min-width:200px;display:flex;align-items:center;border-bottom:2px solid var(--teal);padding-bottom:4px}
+#studentName{flex:1;border:none;outline:none;font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--teal-dark);background:transparent}
+#studentName::placeholder{color:#b0c8ce}
+.name-star{color:var(--orange);font-size:14px}
+
+/* CONSTELLATION CARD */
+.constellation-card{background:white;border-radius:16px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:32px}
+.constellation-toolbar{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:var(--teal-dark);flex-wrap:wrap;gap:10px}
+.toolbar-left{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.7)}
+.toolbar-right{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-orange{background:var(--orange);color:white}
+.btn-orange:hover{background:var(--gold);transform:translateY(-1px)}
+.btn-ghost{background:rgba(255,255,255,.12);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.2)}
+.btn-ghost:hover{background:rgba(255,255,255,.22)}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+.btn-outline{background:white;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-outline:hover{background:var(--teal-pale)}
+
+/* ADD PANEL */
+.add-panel{display:none;padding:16px 22px;background:var(--orange-pale);border-top:2px solid var(--orange);align-items:center;gap:12px;flex-wrap:wrap}
+.add-panel.visible{display:flex}
+.add-panel label{font-size:13px;font-weight:700;color:var(--gold);white-space:nowrap}
+.add-panel input[type=text]{flex:1;min-width:160px;border:1.5px solid var(--orange);border-radius:8px;padding:8px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);outline:none;background:white}
+.add-panel input[type=text]:focus{border-color:var(--gold)}
+.cat-select{border:1.5px solid var(--orange);border-radius:8px;padding:7px 12px;font-size:13px;color:var(--text);background:white;outline:none;cursor:pointer}
+.swatch-row{display:flex;gap:7px;align-items:center}
+.swatch{width:22px;height:22px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s,border-color .15s}
+.swatch:hover{transform:scale(1.25)}
+.swatch.picked{border-color:rgba(0,0,0,.4);transform:scale(1.2)}
+
+/* CANVAS */
+#canvasZone{width:100%;height:520px;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#eef7fa 0%,#e2f0f4 50%,#d5eaef 100%);cursor:default}
+#canvasZone::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(26,107,124,.18) 1px,transparent 1px),radial-gradient(circle,rgba(232,146,10,.13) 1px,transparent 1px);background-size:44px 44px,71px 71px;background-position:0 0,22px 22px}
+svg#svgLines{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+
+/* NODES */
+.cnode{position:absolute;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px;user-select:none;box-shadow:0 4px 20px rgba(0,0,0,.15);transition:box-shadow .2s,transform .15s;z-index:10}
+.cnode:not(.cnode-center):hover{box-shadow:0 7px 28px rgba(0,0,0,.22);cursor:grab}
+.cnode:not(.cnode-center):active{cursor:grabbing}
+.cnode.is-dragging{z-index:50;box-shadow:0 12px 38px rgba(0,0,0,.28)!important}
+.cnode-center{width:100px;height:100px;background:var(--teal-dark);color:white;font-family:'Playfair Display',serif;font-style:italic;font-size:14px;font-weight:700;z-index:20;cursor:default;box-shadow:0 0 0 5px rgba(26,107,124,.25),0 0 0 10px rgba(26,107,124,.1),0 6px 28px rgba(13,74,87,.38)}
+.cnode-center span{line-height:1.2;word-break:break-word}
+.cnode-satellite{width:86px;height:86px;color:white;font-size:11.5px;font-weight:700;line-height:1.25;word-break:break-word}
+.cnode-satellite .node-cat{font-size:9px;opacity:.72;font-weight:400;margin-top:3px}
+.node-x{position:absolute;top:-6px;right:-6px;width:20px;height:20px;border-radius:50%;background:#b0291e;color:white;border:none;font-size:11px;line-height:1;cursor:pointer;display:none;align-items:center;justify-content:center;z-index:30;padding-bottom:1px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.cnode:hover .node-x{display:flex}
+
+/* LEGEND */
+.legend{padding:10px 22px 14px;display:flex;gap:14px;flex-wrap:wrap;align-items:center;border-top:1px solid var(--border);background:white}
+.legend-title{font-size:11.5px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--text-muted)}
+.l-dash{width:26px;height:0;border-top:2px dashed rgba(26,107,124,.4);display:inline-block;vertical-align:middle}
+.l-cross{width:26px;height:0;border-top:1.5px dashed rgba(232,146,10,.45);display:inline-block;vertical-align:middle}
+
+/* REFLECTION */
+.reflection-wrap{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:28px}
+.reflection-head{background:var(--teal-dark);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px}
+.reflection-head h3{font-family:'Playfair Display',serif;font-size:19px}
+.ri{font-size:24px}
+.rq-list{padding:24px 28px}
+.rq{margin-bottom:24px;padding-bottom:24px;border-bottom:1px dashed var(--border)}
+.rq:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.rq-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.rq-num{min-width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;margin-top:1px;flex-shrink:0}
+.rq-question{font-size:15px;font-weight:600;color:var(--teal-dark);line-height:1.4}
+.rq textarea{width:100%;min-height:90px;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6;transition:border-color .2s,background .2s}
+.rq textarea:focus{outline:none;border-color:var(--teal);background:white}
+.rq textarea::placeholder{color:#a8bec5;font-style:italic}
+
+/* YLOS */
+.ylos-box{background:linear-gradient(130deg,var(--teal-dark) 0%,var(--teal-light) 100%);color:white;border-radius:14px;padding:26px 32px;display:flex;gap:18px;align-items:flex-start;margin-bottom:28px;box-shadow:0 6px 30px rgba(13,74,87,.25)}
+.ylos-icon{font-size:38px;line-height:1;flex-shrink:0}
+.ylos-content h4{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:6px}
+.ylos-content p{font-size:14px;color:rgba(255,255,255,.8);line-height:1.65}
+.ylos-content strong{color:var(--orange-light)}
+
+/* SAVE BAR */
+.save-footer{background:white;border-radius:12px;border-top:4px solid var(--orange);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow)}
+.save-footer-text{font-size:14px;color:var(--text-muted)}
+.save-footer-text strong{color:var(--teal-dark)}
+.save-actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:24px;background:var(--teal-dark);color:white;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(70px);opacity:0;transition:all .38s cubic-bezier(.34,1.56,.64,1);z-index:9999}
+#toast.show{transform:translateY(0);opacity:1}
+
+/* PRINT */
+@media print{
+  body{background:white;font-size:12px}
+  .constellation-toolbar,.add-panel,.save-footer,#toast,.node-x{display:none!important}
+  .page-header,.ylos-box,.reflection-head,.cnode{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #canvasZone{height:480px}
+  .main{padding:16px 12px}
+  .rq textarea{min-height:60px;background:#fafafa;border:1px solid #ccc}
+  @page{margin:.6in}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 1 · Lesson 1 · Activity</div>
+  <h1>Identity Constellation Mapping</h1>
+  <p class="tagline">Leadership didn't start in college — it started in your story.</p>
+  <p class="header-meta">Becoming the Leader Only You Can Be &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies &nbsp;|&nbsp; Module 1, Lesson 1 · 15–20 min</p>
+</header>
+
+<div class="main">
+
+  <div class="instruction-card">
+    <p>Your identity is not a single thing. You are shaped by your community, your culture, your family, your experiences — and the intersections between all of them. <strong>Enter your name below</strong> — it will appear at the center of your constellation. Then click <strong>"+ Add Identity"</strong> to name and place each circle. <strong>Drag any circle to reposition it.</strong> Draw connections by moving related circles close together. Notice: where do your identities create strength? Where do they create tension?</p>
+  </div>
+
+  <div class="section-label">What to Map</div>
+  <div class="prompts-grid">
+    <div class="prompt-chip">Your identities — race, ethnicity, language, faith, gender, first-gen status, and more</div>
+    <div class="prompt-chip">The communities and places that shaped how you see the world</div>
+    <div class="prompt-chip">Roles and responsibilities — caretaker, translator, organizer, mentor</div>
+    <div class="prompt-chip">Experiences that built your resilience, courage, or empathy</div>
+  </div>
+
+  <div class="name-band">
+    <label>Your Name</label>
+    <div class="name-input-wrap">
+      <span class="name-star">✦&nbsp;</span>
+      <input type="text" id="studentName" placeholder="Type your name — it appears in the center" autocomplete="off">
+    </div>
+  </div>
+
+  <div class="constellation-card">
+    <div class="constellation-toolbar">
+      <span class="toolbar-left">✦ Your Leadership Identity Map</span>
+      <div class="toolbar-right">
+        <button class="btn btn-orange" id="toggleAddBtn">＋ Add Identity</button>
+        <button class="btn btn-ghost" onclick="resetMap()">↺ Reset Map</button>
+      </div>
+    </div>
+
+    <div class="add-panel" id="addPanel">
+      <label>Label:</label>
+      <input type="text" id="nodeLabel" placeholder="e.g. First-Gen Student, Caretaker, Cultural Heritage…" maxlength="40">
+      <label>Category:</label>
+      <select class="cat-select" id="nodeCat">
+        <option value="">— optional —</option>
+        <option>Identity</option>
+        <option>Community</option>
+        <option>Role / Responsibility</option>
+        <option>Experience</option>
+        <option>Cultural Wealth</option>
+      </select>
+      <label>Color:</label>
+      <div class="swatch-row" id="swatches">
+        <div class="swatch picked" data-c="#1a6b7c" style="background:#1a6b7c" title="Teal"></div>
+        <div class="swatch" data-c="#e8920a" style="background:#e8920a" title="Orange"></div>
+        <div class="swatch" data-c="#2a8fa3" style="background:#2a8fa3" title="Sky"></div>
+        <div class="swatch" data-c="#2e7d52" style="background:#2e7d52" title="Forest"></div>
+        <div class="swatch" data-c="#7a5c1e" style="background:#7a5c1e" title="Brown"></div>
+        <div class="swatch" data-c="#6b3fa0" style="background:#6b3fa0" title="Purple"></div>
+      </div>
+      <button class="btn btn-orange" onclick="confirmAdd()">Add ✦</button>
+      <button class="btn" style="background:#eee;color:#555" onclick="closePanel()">Cancel</button>
+    </div>
+
+    <div id="canvasZone">
+      <svg id="svgLines" xmlns="http://www.w3.org/2000/svg"></svg>
+    </div>
+
+    <div class="legend">
+      <span class="legend-title">Key:</span>
+      <span class="legend-item"><span class="l-dash"></span> Connected to center</span>
+      <span class="legend-item"><span class="l-cross"></span> Related identities (nearby)</span>
+      <span class="legend-item" style="margin-left:auto;font-size:12px;color:var(--text-muted)">Drag to reposition · Hover to remove</span>
+    </div>
+  </div>
+
+  <div class="section-label">Reflect on What You See</div>
+  <div class="reflection-wrap">
+    <div class="reflection-head">
+      <span class="ri">📓</span>
+      <h3>Your Leadership Origin Begins Here</h3>
+    </div>
+    <div class="rq-list">
+      <div class="rq">
+        <div class="rq-top">
+          <div class="rq-num">1</div>
+          <div class="rq-question">Which identity feels most central to who you are as a leader — and why?</div>
+        </div>
+        <textarea id="rq1" placeholder="This is the foundation of your leadership story. Write what feels honest and true…"></textarea>
+      </div>
+      <div class="rq">
+        <div class="rq-top">
+          <div class="rq-num">2</div>
+          <div class="rq-question">Which identity have others underestimated or misunderstood — and what do you want them to know?</div>
+        </div>
+        <textarea id="rq2" placeholder="Think about a moment when something about you was dismissed, overlooked, or misread…"></textarea>
+      </div>
+      <div class="rq">
+        <div class="rq-top">
+          <div class="rq-num">3</div>
+          <div class="rq-question">How do your identities influence the way you show up as a leader for your community?</div>
+        </div>
+        <textarea id="rq3" placeholder="Consider how your lived experience shapes what you notice, what you care about, and who you fight for…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-icon">📋</div>
+    <div class="ylos-content">
+      <h4>Add to Your YLOS — Section 1.2: My Identity Constellation Map</h4>
+      <p>When you finish, add your completed Identity Constellation to <strong>Section 1.2</strong> of your YLOS. You can recreate it as a visual map (circles/bubbles) or list your key identities. Consider: race, ethnicity, family roles, faith, language, first-gen status, geography, and more. This is a living document — return to it as you grow.</p>
+    </div>
+  </div>
+
+  <div class="save-footer">
+    <div class="save-footer-text"><strong>When you're done:</strong> save your work or print this worksheet and add it to Section 1.2 of your YLOS.</div>
+    <div class="save-actions">
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn btn-teal" onclick="saveWork()">💾 Save My Work</button>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── STATE ──────────────────────────────────────────
+let nodes = [], seq = 0, activeColor = '#1a6b7c';
+
+// ── INIT ──────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  buildCenter();
+  document.getElementById('studentName').addEventListener('input', e => {
+    document.getElementById('cLabel').textContent = e.target.value.trim() || 'Your Name';
+  });
+  document.getElementById('swatches').addEventListener('click', e => {
+    const sw = e.target.closest('.swatch');
+    if (!sw) return;
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('picked'));
+    sw.classList.add('picked');
+    activeColor = sw.dataset.c;
+  });
+  document.getElementById('toggleAddBtn').addEventListener('click', togglePanel);
+  document.getElementById('nodeLabel').addEventListener('keydown', e => { if (e.key === 'Enter') confirmAdd(); });
+  loadSaved();
+  redraw();
+});
+window.addEventListener('resize', () => { positionCenter(); redraw(); });
+
+// ── CENTER ─────────────────────────────────────────
+function buildCenter() {
+  const zone = document.getElementById('canvasZone');
+  const el = document.createElement('div');
+  el.className = 'cnode cnode-center';
+  el.id = 'centerNode';
+  el.innerHTML = '<span id="cLabel">Your Name</span>';
+  zone.appendChild(el);
+  positionCenter();
+}
+function positionCenter() {
+  const zone = document.getElementById('canvasZone');
+  const el   = document.getElementById('centerNode');
+  if (!el) return;
+  el.style.left = (zone.offsetWidth  / 2 - 50) + 'px';
+  el.style.top  = (zone.offsetHeight / 2 - 50) + 'px';
+}
+
+// ── ADD PANEL ──────────────────────────────────────
+function togglePanel() {
+  const p = document.getElementById('addPanel');
+  p.classList.contains('visible') ? closePanel() : (p.classList.add('visible'), document.getElementById('nodeLabel').focus());
+}
+function closePanel() {
+  document.getElementById('addPanel').classList.remove('visible');
+  document.getElementById('nodeLabel').value = '';
+  document.getElementById('nodeCat').value = '';
+}
+function confirmAdd() {
+  const lbl = document.getElementById('nodeLabel').value.trim();
+  if (!lbl) { hilight('nodeLabel'); return; }
+  addNode(lbl, activeColor, document.getElementById('nodeCat').value);
+  closePanel();
+}
+function hilight(id) {
+  const el = document.getElementById(id);
+  el.style.borderColor = '#c0392b'; el.focus();
+  setTimeout(() => el.style.borderColor = '', 1400);
+}
+
+// ── NODES ──────────────────────────────────────────
+function addNode(label, color, cat, x, y) {
+  const zone = document.getElementById('canvasZone');
+  const id   = ++seq;
+  const zw = zone.offsetWidth || 700, zh = zone.offsetHeight || 520;
+  const cx = zw / 2, cy = zh / 2;
+  if (x === undefined) {
+    const i = nodes.length;
+    const a = (i * 63 + 25) * Math.PI / 180;
+    const r = 158 + (i % 4) * 36;
+    x = Math.max(5, Math.min(zw - 91, cx + r * Math.cos(a) - 43));
+    y = Math.max(5, Math.min(zh - 91, cy + r * Math.sin(a) - 43));
+  }
+  const el = document.createElement('div');
+  el.className = 'cnode cnode-satellite';
+  el.id = 'n' + id;
+  el.style.cssText = `left:${x}px;top:${y}px;background:${color}`;
+  el.innerHTML =
+    `<button class="node-x" onclick="removeNode(${id})">✕</button>` +
+    `<span>${esc(label)}</span>` +
+    (cat ? `<div class="node-cat">${esc(cat)}</div>` : '');
+  zone.appendChild(el);
+  makeDraggable(el, id);
+  nodes.push({ id, el, label, color, cat, x, y });
+  redraw();
+}
+function removeNode(id) {
+  nodes = nodes.filter(n => { if (n.id === id) { n.el.remove(); return false; } return true; });
+  redraw();
+}
+function resetMap() {
+  if (!confirm('Clear all identity circles? Reflection answers will be kept.')) return;
+  nodes.forEach(n => n.el.remove()); nodes = []; seq = 0; redraw();
+}
+
+// ── DRAG ───────────────────────────────────────────
+function makeDraggable(el, id) {
+  let sx, sy, ox, oy;
+  function start(mx, my) {
+    const r = document.getElementById('canvasZone').getBoundingClientRect();
+    ox = el.offsetLeft; oy = el.offsetTop;
+    sx = mx - r.left;   sy = my - r.top;
+    el.classList.add('is-dragging');
+    document.addEventListener('mousemove', mv);
+    document.addEventListener('mouseup',   up);
+    document.addEventListener('touchmove', tm, { passive: false });
+    document.addEventListener('touchend',  up);
+  }
+  function mv(e) { move(e.clientX, e.clientY); }
+  function tm(e) { e.preventDefault(); move(e.touches[0].clientX, e.touches[0].clientY); }
+  function move(mx, my) {
+    const zone = document.getElementById('canvasZone');
+    const r = zone.getBoundingClientRect();
+    const nx = Math.max(0, Math.min(zone.offsetWidth  - el.offsetWidth,  ox + (mx - r.left - sx)));
+    const ny = Math.max(0, Math.min(zone.offsetHeight - el.offsetHeight, oy + (my - r.top  - sy)));
+    el.style.left = nx + 'px'; el.style.top = ny + 'px';
+    const n = nodes.find(n => n.id === id);
+    if (n) { n.x = nx; n.y = ny; }
+    redraw();
+  }
+  function up() {
+    el.classList.remove('is-dragging');
+    document.removeEventListener('mousemove', mv);
+    document.removeEventListener('mouseup',   up);
+    document.removeEventListener('touchmove', tm);
+    document.removeEventListener('touchend',  up);
+  }
+  el.addEventListener('mousedown',  e => { if (e.target.tagName === 'BUTTON') return; e.preventDefault(); start(e.clientX, e.clientY); });
+  el.addEventListener('touchstart', e => { if (e.target.tagName === 'BUTTON') return; start(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+}
+
+// ── LINES ──────────────────────────────────────────
+function mid(el) { return { x: el.offsetLeft + el.offsetWidth / 2, y: el.offsetTop + el.offsetHeight / 2 }; }
+function redraw() {
+  const svg = document.getElementById('svgLines');
+  const ce  = document.getElementById('centerNode');
+  if (!ce) { svg.innerHTML = ''; return; }
+  const cp = mid(ce); let h = '';
+  nodes.forEach(({ el }) => {
+    const p = mid(el);
+    h += `<line x1="${cp.x}" y1="${cp.y}" x2="${p.x}" y2="${p.y}" stroke="rgba(26,107,124,.30)" stroke-width="1.7" stroke-dasharray="6,5" stroke-linecap="round"/>`;
+  });
+  for (let i = 0; i < nodes.length; i++) for (let j = i+1; j < nodes.length; j++) {
+    const a = mid(nodes[i].el), b = mid(nodes[j].el);
+    if (Math.hypot(a.x-b.x, a.y-b.y) < 195)
+      h += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="rgba(232,146,10,.26)" stroke-width="1.2" stroke-dasharray="4,6" stroke-linecap="round"/>`;
+  }
+  svg.innerHTML = h;
+}
+
+// ── SAVE / LOAD ────────────────────────────────────
+function saveWork() {
+  try {
+    localStorage.setItem('ic_ws', JSON.stringify({
+      name: document.getElementById('studentName').value,
+      nodes: nodes.map(n => ({ label: n.label, color: n.color, cat: n.cat, x: n.x, y: n.y })),
+      rq1: document.getElementById('rq1').value,
+      rq2: document.getElementById('rq2').value,
+      rq3: document.getElementById('rq3').value,
+      ts: new Date().toLocaleString()
+    }));
+    toast('✓ Your work has been saved!');
+  } catch(e) { toast('⚠ Could not save — check browser settings.'); }
+}
+function loadSaved() {
+  try {
+    const d = JSON.parse(localStorage.getItem('ic_ws') || 'null');
+    if (!d) return;
+    if (d.name) { document.getElementById('studentName').value = d.name; document.getElementById('cLabel').textContent = d.name; }
+    ['rq1','rq2','rq3'].forEach(k => { if (d[k]) document.getElementById(k).value = d[k]; });
+    if (d.nodes) d.nodes.forEach(n => addNode(n.label, n.color, n.cat, n.x, n.y));
+    if (d.ts) toast('Welcome back! Last saved ' + d.ts);
+  } catch(e) {}
+}
+
+// ── UTILS ──────────────────────────────────────────
+function esc(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function toast(msg) {
+  const el = document.getElementById('toast'); el.textContent = msg;
+  el.classList.add('show'); setTimeout(() => el.classList.remove('show'), 3400);
+}
+</script>
+</body>
+</html>
