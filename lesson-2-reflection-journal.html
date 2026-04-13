@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflection Journal — Module 1 · Lesson 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:       #1C2E5E;
+  --navy-dark:  #111d3e;
+  --navy-light: #2c4080;
+  --navy-pale:  #eaedfa;
+  --teal:       #00A896;
+  --teal-dark:  #007f72;
+  --teal-pale:  #e0f5f3;
+  --gold:       #F5A623;
+  --gold-dark:  #c47d0d;
+  --gold-pale:  #fff8ec;
+  --cream:      #F0EDE6;
+  --white:      #ffffff;
+  --text:       #1c2030;
+  --text-muted: #5a6a8a;
+  --border:     #d4d8e8;
+  --shadow:     0 4px 24px rgba(28,46,94,.10);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--cream);
+  color: var(--text);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ── HEADER ─────────────────────────────────────────────────────── */
+.page-header {
+  background: var(--navy-dark);
+  color: white;
+  padding: 36px 44px 32px;
+  position: relative;
+  overflow: hidden;
+}
+.page-header::before {
+  content: '';
+  position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: rgba(245,166,35,.12);
+}
+.page-header::after {
+  content: '';
+  position: absolute;
+  bottom: -60px; left: 36%;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(0,168,150,.08);
+}
+.header-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.page-header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 4vw, 38px);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  position: relative;
+}
+.page-header .tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: rgba(255,255,255,.72);
+  position: relative;
+}
+.header-meta {
+  margin-top: 16px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.44);
+  letter-spacing: .4px;
+  position: relative;
+}
+.gold-bar {
+  height: 5px;
+  background: var(--gold);
+}
+
+/* ── PROGRESS ───────────────────────────────────────────────────── */
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 44px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+}
+.progress-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: .8px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.progress-track {
+  flex: 1;
+  height: 7px;
+  background: var(--navy-pale);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--gold));
+  border-radius: 99px;
+  transition: width .5s ease;
+}
+.progress-pct {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--teal-dark);
+  white-space: nowrap;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── MAIN CONTENT ───────────────────────────────────────────────── */
+.main {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+/* Intro card */
+.intro-card {
+  background: white;
+  border-radius: 12px;
+  padding: 22px 26px;
+  margin-bottom: 28px;
+  box-shadow: var(--shadow);
+  border-left: 5px solid var(--teal);
+  font-size: 14.5px;
+  color: var(--text-muted);
+  line-height: 1.7;
+}
+.intro-card strong { color: var(--navy); }
+
+/* ── ACCORDION GROUPS ───────────────────────────────────────────── */
+.group {
+  background: white;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+  overflow: hidden;
+  transition: box-shadow .2s;
+}
+.group:hover { box-shadow: 0 6px 30px rgba(28,46,94,.14); }
+
+.group-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--navy);
+  transition: background .18s;
+}
+.group-header:hover { background: var(--navy-light); }
+
+.group-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.group-title-wrap { flex: 1; }
+.group-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 2px;
+}
+.group-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: white;
+  line-height: 1.2;
+}
+.group-chevron {
+  color: rgba(255,255,255,.45);
+  font-size: 18px;
+  transition: transform .25s ease;
+  flex-shrink: 0;
+}
+.group.open .group-chevron { transform: rotate(180deg); }
+.group-complete-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  display: none;
+}
+.group.complete .group-complete-dot { display: block; }
+
+.group-body {
+  display: none;
+  padding: 0 26px 24px;
+}
+.group.open .group-body { display: block; }
+
+/* Gold accent bar under header when open */
+.group.open .group-header {
+  border-bottom: 3px solid var(--gold);
+}
+
+/* ── PROMPT ITEMS ───────────────────────────────────────────────── */
+.prompt-item {
+  margin-top: 22px;
+}
+.prompt-q {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 9px;
+}
+.prompt-num {
+  background: var(--gold);
+  color: var(--navy);
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: 13px;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.prompt-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  flex: 1;
+}
+.prompt-hint {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 10px;
+  padding-left: 38px;
+  line-height: 1.55;
+}
+.prompt-ans {
+  width: 100%;
+  min-height: 110px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  padding: 13px 15px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.65;
+  resize: vertical;
+  transition: border-color .18s, box-shadow .18s;
+  background: #fafaf8;
+}
+.prompt-ans:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(0,168,150,.10);
+  background: white;
+}
+.prompt-ans::placeholder { color: #b0b8cc; font-style: italic; }
+
+.word-count {
+  text-align: right;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  transition: color .2s;
+}
+.word-count.active { color: var(--teal-dark); font-weight: 600; }
+
+/* Divider between prompts */
+.prompt-divider {
+  border: none;
+  border-top: 1px dashed var(--border);
+  margin: 20px 0 0;
+}
+
+/* ── SPECIAL CALLOUT BOXES ──────────────────────────────────────── */
+.callout {
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-top: 22px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.callout-gold {
+  background: var(--gold-pale);
+  border-left: 4px solid var(--gold);
+}
+.callout-teal {
+  background: var(--teal-pale);
+  border-left: 4px solid var(--teal);
+}
+.callout-navy {
+  background: var(--navy-pale);
+  border-left: 4px solid var(--navy);
+}
+.callout-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.callout-gold .callout-label { color: var(--gold-dark); }
+.callout-teal .callout-label { color: var(--teal-dark); }
+.callout-navy .callout-label { color: var(--navy); }
+.callout p { color: var(--text); }
+.callout strong { color: var(--navy); }
+
+/* ── 24-HOUR CHALLENGE SECTION ──────────────────────────────────── */
+.challenge-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 24px;
+  background: var(--gold);
+  cursor: pointer;
+  user-select: none;
+}
+.challenge-header:hover { background: var(--gold-dark); }
+.challenge-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  flex: 1;
+}
+.challenge-chevron {
+  color: rgba(28,46,94,.5);
+  font-size: 18px;
+  transition: transform .25s ease;
+}
+.group.open .challenge-chevron { transform: rotate(180deg); }
+
+/* ── YLOS BOX ───────────────────────────────────────────────────── */
+.ylos-box {
+  background: var(--navy-dark);
+  border-radius: 14px;
+  padding: 22px 26px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
+}
+.ylos-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.ylos-items {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.ylos-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  font-size: 13.5px;
+  color: rgba(255,255,255,.82);
+  line-height: 1.4;
+}
+.ylos-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+/* ── SAVE FOOTER ────────────────────────────────────────────────── */
+.save-footer {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 26px;
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.save-footer-text { font-size: 14px; color: var(--text-muted); }
+.save-footer-text strong { color: var(--navy-dark); }
+.save-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: 9px;
+  border: none;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .18s;
+}
+.btn-navy {
+  background: var(--navy);
+  color: white;
+}
+.btn-navy:hover { background: var(--navy-light); transform: translateY(-1px); }
+.btn-teal {
+  background: var(--teal);
+  color: white;
+}
+.btn-teal:hover { background: var(--teal-dark); transform: translateY(-1px); }
+.btn-outline {
+  background: white;
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+.btn-outline:hover { border-color: var(--navy); background: var(--navy-pale); }
+
+/* ── TOAST ──────────────────────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 28px; right: 24px;
+  background: var(--navy-dark);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(28,46,94,.25);
+  transform: translateY(70px);
+  opacity: 0;
+  transition: all .38s cubic-bezier(.34,1.56,.64,1);
+  z-index: 9999;
+  border-left: 4px solid var(--gold);
+}
+#toast.show { transform: translateY(0); opacity: 1; }
+
+/* ── PRINT ──────────────────────────────────────────────────────── */
+@media print {
+  .progress-wrap, .save-footer, #toast, .group-chevron, .challenge-chevron { display: none !important; }
+  .group-body { display: block !important; }
+  .page-header, .ylos-box, .group-header, .challenge-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  body { background: white; }
+  .main { padding: 16px 12px; max-width: 100%; }
+  textarea.prompt-ans { min-height: 80px; background: #fafafa; border: 1px solid #ccc; }
+  @page { margin: .6in; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 1 · Lesson 2</div>
+  <h1>Reflection Journal</h1>
+  <p class="tagline">Your values are the foundation of your leadership credibility.</p>
+  <p class="header-meta">Journaling · 15–20 minutes &nbsp;|&nbsp; Your Values Have Names &nbsp;|&nbsp; Module 1: Discovering Your Leadership Identity</p>
+</header>
+<div class="gold-bar"></div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap">
+  <span class="progress-label">Your Progress</span>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+  </div>
+  <span class="progress-pct" id="progressPct">0%</span>
+</div>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="intro-card">
+    Take your time with these prompts — <strong>there are no right or wrong answers.</strong>
+    These questions are designed to help you name what you already know about yourself.
+    Write what's honest and true. Your instincts here are more accurate than you think.
+  </div>
+
+  <!-- ══ GROUP 1: YOUR CORE VALUES ══════════════════════════════ -->
+  <div class="group open" id="group-1">
+    <div class="group-header" onclick="toggleGroup('group-1')">
+      <span class="group-icon">💎</span>
+      <div class="group-title-wrap">
+        <div class="group-num">Prompt 1 of 4</div>
+        <div class="group-title">Naming Your Essential Values</div>
+      </div>
+      <div class="group-complete-dot"></div>
+      <div class="group-chevron">▾</div>
+    </div>
+    <div class="group-body">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">1</div>
+          <div class="prompt-text">Which 3–5 values feel most essential to who you are as a leader?</div>
+        </div>
+        <p class="prompt-hint">Don't list what sounds impressive — write the ones that feel undeniably true, even if they're hard to explain. These are the values you can't lead without.</p>
+        <textarea class="prompt-ans" id="q1a" placeholder="Write freely — you can always refine later..." oninput="onInput('q1a')"></textarea>
+        <div class="word-count" id="wc-q1a">0 words</div>
+      </div>
+
+      <hr class="prompt-divider">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">2</div>
+          <div class="prompt-text">What do those values actually mean to you — in your own words?</div>
+        </div>
+        <p class="prompt-hint">Not the dictionary definition. What does "loyalty" or "courage" or "community" mean in your life, your family, your community?</p>
+        <textarea class="prompt-ans" id="q1b" placeholder="Give each value your own definition..." oninput="onInput('q1b')"></textarea>
+        <div class="word-count" id="wc-q1b">0 words</div>
+      </div>
+
+      <div class="callout callout-teal" style="margin-top:20px;">
+        <div class="callout-label">✦ Reflection Tip</div>
+        <p>Authentic values show up <strong>under pressure</strong>. Think back to a hard moment — what did you protect, prioritize, or refuse to let go of? That's a clue.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ GROUP 2: VALUES IN CONTEXT ═════════════════════════════ -->
+  <div class="group" id="group-2">
+    <div class="group-header" onclick="toggleGroup('group-2')">
+      <span class="group-icon">🔍</span>
+      <div class="group-title-wrap">
+        <div class="group-num">Prompt 2 of 4</div>
+        <div class="group-title">Your Values in Context</div>
+      </div>
+      <div class="group-complete-dot"></div>
+      <div class="group-chevron">▾</div>
+    </div>
+    <div class="group-body">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">3</div>
+          <div class="prompt-text">How do these values show up — or get suppressed — in different contexts?</div>
+        </div>
+        <p class="prompt-hint">Think about school, work, family, community. When do your values flow freely? When do you feel pressure to hide or minimize them?</p>
+        <textarea class="prompt-ans" id="q2a" placeholder="Think about a specific setting — what changes?" oninput="onInput('q2a')"></textarea>
+        <div class="word-count" id="wc-q2a">0 words</div>
+      </div>
+
+      <hr class="prompt-divider">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">4</div>
+          <div class="prompt-text">Is there a setting where you feel most able to lead from your values? What makes that possible?</div>
+        </div>
+        <p class="prompt-hint">This could be a team, a community, a relationship — anywhere you feel fully yourself as a leader.</p>
+        <textarea class="prompt-ans" id="q2b" placeholder="Where do your values feel welcome?" oninput="onInput('q2b')"></textarea>
+        <div class="word-count" id="wc-q2b">0 words</div>
+      </div>
+
+      <div class="callout callout-gold">
+        <div class="callout-label">💡 Something to Notice</div>
+        <p>The gap between where your values flow freely and where they get suppressed is not a personal failure — it's information about the environment. <strong>Leadership often means closing that gap.</strong></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ GROUP 3: ORIGINS ════════════════════════════════════════ -->
+  <div class="group" id="group-3">
+    <div class="group-header" onclick="toggleGroup('group-3')">
+      <span class="group-icon">🌱</span>
+      <div class="group-title-wrap">
+        <div class="group-num">Prompt 3 of 4</div>
+        <div class="group-title">Where Your Values Come From</div>
+      </div>
+      <div class="group-complete-dot"></div>
+      <div class="group-chevron">▾</div>
+    </div>
+    <div class="group-body">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">5</div>
+          <div class="prompt-text">Who taught you each value? Family, community, an experience, or hard necessity?</div>
+        </div>
+        <p class="prompt-hint">The origin of a value often explains why it runs so deep. A value born out of hardship is not weaker — it's often the most anchored.</p>
+        <textarea class="prompt-ans" id="q3a" placeholder="Walk through each value and trace it back..." oninput="onInput('q3a')"></textarea>
+        <div class="word-count" id="wc-q3a">0 words</div>
+      </div>
+
+      <hr class="prompt-divider">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">6</div>
+          <div class="prompt-text">How does your cultural background or community shape the values you lead with?</div>
+        </div>
+        <p class="prompt-hint">Culture isn't a barrier to leadership — it's a source of it. What values does your background give you that others might not carry?</p>
+        <textarea class="prompt-ans" id="q3b" placeholder="Your background is a leadership asset — reflect on how..." oninput="onInput('q3b')"></textarea>
+        <div class="word-count" id="wc-q3b">0 words</div>
+      </div>
+
+      <div class="callout callout-teal">
+        <div class="callout-label">✦ Connect to Module 1 Lesson 1</div>
+        <p>Look back at your Cultural Wealth inventory from Lesson 1. Which forms of capital connect directly to the values you've named here? <strong>Your wealth and your values are the same story.</strong></p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ GROUP 4: ALIGNMENT & TENSION ═══════════════════════════ -->
+  <div class="group" id="group-4">
+    <div class="group-header" onclick="toggleGroup('group-4')">
+      <span class="group-icon">⚖️</span>
+      <div class="group-title-wrap">
+        <div class="group-num">Prompt 4 of 4</div>
+        <div class="group-title">Alignment, Tension &amp; Your Leadership Edge</div>
+      </div>
+      <div class="group-complete-dot"></div>
+      <div class="group-chevron">▾</div>
+    </div>
+    <div class="group-body">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">7</div>
+          <div class="prompt-text">Where do you feel the most alignment between your values and your actions?</div>
+        </div>
+        <p class="prompt-hint">When do you feel most like yourself as a leader? What's happening in those moments?</p>
+        <textarea class="prompt-ans" id="q4a" placeholder="Describe a moment of alignment — what made it feel right?" oninput="onInput('q4a')"></textarea>
+        <div class="word-count" id="wc-q4a">0 words</div>
+      </div>
+
+      <hr class="prompt-divider">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">8</div>
+          <div class="prompt-text">Where do you feel the most tension — where your actions don't match your values?</div>
+        </div>
+        <p class="prompt-hint">Tension isn't failure — it's data. What does the gap tell you about where you want to grow?</p>
+        <textarea class="prompt-ans" id="q4b" placeholder="What feels off? What would need to change?" oninput="onInput('q4b')"></textarea>
+        <div class="word-count" id="wc-q4b">0 words</div>
+      </div>
+
+      <hr class="prompt-divider">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">9</div>
+          <div class="prompt-text">Based on everything you've reflected on — what is your values-based leadership edge?</div>
+        </div>
+        <p class="prompt-hint">What do you bring to leadership that is rooted in your values, your background, and your story? Complete this sentence: <em>"Because of my values, I lead with..."</em></p>
+        <textarea class="prompt-ans" id="q4c" placeholder="Because of my values, I lead with..." oninput="onInput('q4c')"></textarea>
+        <div class="word-count" id="wc-q4c">0 words</div>
+      </div>
+
+      <div class="callout callout-navy">
+        <div class="callout-label">📌 Remember</div>
+        <p>Credibility is built when your actions consistently match your values. <strong>Naming the tension is the first step to closing it.</strong> You don't have to be perfect — you have to be honest.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ 24-HOUR CHALLENGE ═══════════════════════════════════════ -->
+  <div class="group" id="group-challenge">
+    <div class="challenge-header" onclick="toggleGroup('group-challenge')">
+      <span class="group-icon">🎯</span>
+      <div class="group-title-wrap">
+        <div class="group-num" style="color: rgba(28,46,94,.6);">Leadership Practice</div>
+        <div class="challenge-title">The 24-Hour Values Experiment</div>
+      </div>
+      <div class="challenge-chevron">▾</div>
+    </div>
+    <div class="group-body">
+
+      <div class="callout callout-gold" style="margin-top:16px;">
+        <div class="callout-label">🎯 Your Challenge</div>
+        <p>Choose <strong>one core value</strong> you want to embody more fully. For the next <strong>24 hours</strong>, consciously practice it in every interaction — every conversation, every decision, every moment of choice.</p>
+      </div>
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">→</div>
+          <div class="prompt-text">Which value will you practice — and why this one, why now?</div>
+        </div>
+        <textarea class="prompt-ans" id="q5a" placeholder="I'm choosing to practice... because..." oninput="onInput('q5a')"></textarea>
+        <div class="word-count" id="wc-q5a">0 words</div>
+      </div>
+
+      <hr class="prompt-divider">
+
+      <div class="prompt-item">
+        <div class="prompt-q">
+          <div class="prompt-num">→</div>
+          <div class="prompt-text">After your 24 hours: When was it easy? When was it hard? What happened?</div>
+        </div>
+        <p class="prompt-hint">Return to this space after your experiment and document what you noticed. Then add your insights to your YLOS.</p>
+        <textarea class="prompt-ans" id="q5b" placeholder="Come back here after your 24 hours and reflect..." oninput="onInput('q5b')"></textarea>
+        <div class="word-count" id="wc-q5b">0 words</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══ YLOS REMINDER ═══════════════════════════════════════════ -->
+  <div class="ylos-box">
+    <div class="ylos-label">📘 Add to Your YLOS</div>
+    <div class="ylos-items">
+      <div class="ylos-item">
+        <div class="ylos-dot"></div>
+        <span>Top 3–5 Core Values with full mapping</span>
+      </div>
+      <div class="ylos-item">
+        <div class="ylos-dot"></div>
+        <span>Values hierarchy &amp; ranking</span>
+      </div>
+      <div class="ylos-item">
+        <div class="ylos-dot"></div>
+        <span>Values-Based Decision Framework</span>
+      </div>
+      <div class="ylos-item">
+        <div class="ylos-dot"></div>
+        <span>Values Conflict Navigation strategies</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ SAVE FOOTER ═════════════════════════════════════════════ -->
+  <div class="save-footer">
+    <div class="save-footer-text">
+      <strong>Your responses are saved automatically</strong> in your browser. Use the buttons to save manually or print a copy for your records.
+    </div>
+    <div class="save-actions">
+      <button class="btn btn-teal" onclick="saveAll()">💾 Save Progress</button>
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print / Export</button>
+      <button class="btn btn-outline" onclick="clearAll()">↺ Clear All</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div id="toast"></div>
+
+<script>
+// ── IDs of all text areas ──────────────────────────────────────────
+const ALL_IDS = ['q1a','q1b','q2a','q2b','q3a','q3b','q4a','q4b','q4c','q5a','q5b'];
+const PREFIX = 'btloyc_m1l2_journal_';
+
+// Group → field mapping for completion tracking
+const GROUP_FIELDS = {
+  'group-1': ['q1a','q1b'],
+  'group-2': ['q2a','q2b'],
+  'group-3': ['q3a','q3b'],
+  'group-4': ['q4a','q4b','q4c'],
+  'group-challenge': ['q5a','q5b'],
+};
+
+// ── ACCORDION ─────────────────────────────────────────────────────
+function toggleGroup(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('open');
+}
+
+// ── WORD COUNT + AUTO-SAVE ────────────────────────────────────────
+function onInput(id) {
+  const ta = document.getElementById(id);
+  const wc = document.getElementById('wc-' + id);
+  if (!ta || !wc) return;
+  const words = ta.value.trim() === '' ? 0 : ta.value.trim().split(/\s+/).length;
+  wc.textContent = words + (words === 1 ? ' word' : ' words');
+  wc.classList.toggle('active', words > 0);
+  // Auto-save
+  try { localStorage.setItem(PREFIX + id, ta.value); } catch(e) {}
+  updateProgress();
+  updateGroupCompletion();
+}
+
+// ── PROGRESS BAR ──────────────────────────────────────────────────
+function updateProgress() {
+  const filled = ALL_IDS.filter(id => {
+    const el = document.getElementById(id);
+    return el && el.value.trim().length > 0;
+  }).length;
+  const pct = Math.round((filled / ALL_IDS.length) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = pct + '%';
+}
+
+// ── GROUP COMPLETION DOTS ─────────────────────────────────────────
+function updateGroupCompletion() {
+  Object.entries(GROUP_FIELDS).forEach(([groupId, fields]) => {
+    const allFilled = fields.every(id => {
+      const el = document.getElementById(id);
+      return el && el.value.trim().length > 0;
+    });
+    const group = document.getElementById(groupId);
+    if (group) group.classList.toggle('complete', allFilled);
+  });
+}
+
+// ── SAVE / LOAD ───────────────────────────────────────────────────
+function saveAll() {
+  try {
+    ALL_IDS.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) localStorage.setItem(PREFIX + id, el.value);
+    });
+    showToast('✓ Progress saved!');
+  } catch(e) {
+    showToast('Could not save — please copy your responses manually.');
+  }
+}
+
+function loadAll() {
+  try {
+    ALL_IDS.forEach(id => {
+      const saved = localStorage.getItem(PREFIX + id);
+      const el = document.getElementById(id);
+      if (saved && el) {
+        el.value = saved;
+        onInput(id);
+      }
+    });
+  } catch(e) {}
+}
+
+function clearAll() {
+  if (!confirm('Clear all your responses? This cannot be undone.')) return;
+  ALL_IDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+    try { localStorage.removeItem(PREFIX + id); } catch(e) {}
+    onInput(id);
+  });
+  showToast('Responses cleared.');
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+loadAll();
+</script>
+</body>
+</html>
