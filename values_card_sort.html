@@ -1,0 +1,1309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Values Card Sort — Module 1 Lesson 2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Nunito+Sans:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --navy:   #1C2E5E;
+    --gold:   #F5A623;
+    --teal:   #00A896;
+    --cream:  #F0EDE6;
+    --white:  #FFFFFF;
+    --dark:   #1C1C2E;
+    --muted:  #5a6a8a;
+    --border: #ddd6cc;
+    --essential-bg: #e8f5f0;
+    --essential-border: #00A896;
+    --important-bg: #fff8ec;
+    --important-border: #F5A623;
+    --not-bg: #f0f0f5;
+    --not-border: #b0b8cc;
+    --shadow: 0 2px 8px rgba(28,46,94,0.12);
+    --shadow-hover: 0 6px 20px rgba(28,46,94,0.22);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito Sans', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .page-header {
+    background: var(--navy);
+    padding: 28px 40px 22px;
+    position: relative;
+  }
+  .page-header .module-tag {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    color: var(--teal);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .page-header h1 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 30px;
+    color: var(--gold);
+    line-height: 1.15;
+  }
+  .page-header .subtitle {
+    font-size: 14px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 6px;
+    font-style: italic;
+  }
+  .gold-bar {
+    height: 6px;
+    background: var(--gold);
+  }
+
+  /* ── INSTRUCTION BANNER ── */
+  .instruction-banner {
+    background: var(--white);
+    border-left: 5px solid var(--teal);
+    margin: 24px 32px 0;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: var(--shadow);
+  }
+  .instruction-banner p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .instruction-banner strong { color: var(--navy); }
+
+  /* ── ROUND TABS ── */
+  .round-tabs {
+    display: flex;
+    gap: 0;
+    margin: 24px 32px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .round-tab {
+    flex: 1;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    transition: all 0.2s ease;
+    background: var(--white);
+    color: var(--muted);
+    border: none;
+    position: relative;
+  }
+  .round-tab .round-num {
+    display: block;
+    font-size: 20px;
+    font-weight: 900;
+    margin-bottom: 3px;
+  }
+  .round-tab.active {
+    background: var(--navy);
+    color: var(--white);
+  }
+  .round-tab.active .round-num { color: var(--gold); }
+  .round-tab.completed {
+    background: var(--teal);
+    color: var(--white);
+  }
+  .round-tab.completed .round-num { color: var(--white); }
+  .round-tab.completed::after {
+    content: '✓';
+    position: absolute;
+    top: 6px; right: 8px;
+    font-size: 12px;
+    opacity: 0.8;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .main { padding: 24px 32px 48px; }
+
+  /* ── ROUND PANELS ── */
+  .round-panel { display: none; }
+  .round-panel.active { display: block; }
+
+  .round-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+  .round-badge {
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .round-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 20px;
+    color: var(--navy);
+  }
+  .round-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: var(--white);
+    border-radius: 8px;
+    border-left: 4px solid var(--gold);
+    line-height: 1.6;
+  }
+
+  /* ── ROUND 1: CARD SORT ── */
+  .sort-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .card-pool-section { grid-column: 1 / -1; }
+  .buckets-row {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .section-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  /* Card pool */
+  .card-pool {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    min-height: 120px;
+  }
+  .cards-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Value cards */
+  .value-card {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 7px 13px;
+    border-radius: 20px;
+    cursor: grab;
+    user-select: none;
+    transition: all 0.18s ease;
+    box-shadow: 0 2px 6px rgba(28,46,94,0.2);
+    touch-action: none;
+  }
+  .value-card:hover {
+    background: var(--teal);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-hover);
+  }
+  .value-card.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+    cursor: grabbing;
+  }
+
+  /* Bucket zones */
+  .bucket {
+    border-radius: 12px;
+    padding: 14px;
+    min-height: 140px;
+    border: 2.5px dashed transparent;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .bucket.essential {
+    background: var(--essential-bg);
+    border-color: var(--essential-border);
+  }
+  .bucket.important {
+    background: var(--important-bg);
+    border-color: var(--important-border);
+  }
+  .bucket.not-important {
+    background: var(--not-bg);
+    border-color: var(--not-border);
+  }
+  .bucket.drag-over {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-hover);
+  }
+  .bucket.essential.drag-over { border-color: var(--teal); background: #d0f0ea; }
+  .bucket.important.drag-over { border-color: var(--gold); background: #fff0cc; }
+  .bucket.not-important.drag-over { background: #e4e4ec; }
+
+  .bucket-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .bucket-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .bucket-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .bucket.essential .bucket-title { color: var(--teal); }
+  .bucket.important .bucket-title { color: #c47c00; }
+  .bucket.not-important .bucket-title { color: var(--muted); }
+  .bucket-count {
+    margin-left: auto;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    opacity: 0.35;
+  }
+  .bucket.essential .bucket-count { color: var(--teal); }
+  .bucket.important .bucket-count { color: var(--gold); }
+
+  .bucket-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-height: 40px;
+  }
+  /* Cards inside buckets take on bucket color */
+  .bucket.essential .value-card { background: var(--teal); }
+  .bucket.important .value-card { background: var(--gold); color: var(--navy); }
+  .bucket.not-important .value-card { background: #8a96b0; }
+
+  .bucket-placeholder {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    padding: 8px 0;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  /* Round 1 nav */
+  .round-nav {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+  }
+  .btn-primary {
+    background: var(--navy);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 11px 26px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--teal); transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 11px 20px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--navy); color: var(--navy); }
+
+  .progress-note {
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* ── ROUND 2: TOP 5 ── */
+  .top5-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .top5-pool {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+  .top5-drop {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+    border: 2.5px dashed var(--teal);
+    min-height: 300px;
+    position: relative;
+  }
+  .top5-drop .drop-hint {
+    text-align: center;
+    color: var(--muted);
+    font-size: 13px;
+    font-style: italic;
+    padding: 20px 10px;
+    pointer-events: none;
+  }
+  .top5-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .top5-slot {
+    background: var(--essential-bg);
+    border: 2px solid var(--essential-border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 46px;
+  }
+  .slot-num {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 16px;
+    color: var(--teal);
+    width: 20px;
+    flex-shrink: 0;
+  }
+  .slot-card-name {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--navy);
+    flex: 1;
+  }
+  .slot-remove {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: all 0.15s;
+  }
+  .slot-remove:hover { color: #c0392b; background: #fdf0ee; }
+  .top5-count-bar {
+    margin-top: 10px;
+    text-align: center;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    color: var(--teal);
+  }
+
+  /* ── ROUND 3: CORE 3 ── */
+  .core3-workspace {
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .core3-pool {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: var(--shadow);
+  }
+  .core3-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .core3-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--navy);
+    transition: all 0.18s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .core3-card:hover { border-color: var(--gold); background: var(--important-bg); }
+  .core3-card.selected { border-color: var(--gold); background: #fff3d4; }
+  .core3-card .check { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; transition: all 0.15s; }
+  .core3-card.selected .check { background: var(--gold); border-color: var(--gold); }
+  .core3-card.selected .check::after { content: '✓'; display: block; text-align: center; font-size: 11px; line-height: 16px; color: var(--white); font-weight: 900; }
+
+  /* Value mapping cards */
+  .mapping-area {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .mapping-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .mapping-card:hover { box-shadow: var(--shadow-hover); }
+  .mapping-card-header {
+    background: var(--navy);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .mapping-card-num {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .mapping-card-title {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--white);
+    flex: 1;
+  }
+  .mapping-card-placeholder {
+    font-size: 12px;
+    color: rgba(255,255,255,0.5);
+    font-style: italic;
+  }
+  .mapping-fields {
+    padding: 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .mapping-field label {
+    display: block;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 5px;
+  }
+  .mapping-field textarea {
+    width: 100%;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 9px 12px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px;
+    color: var(--dark);
+    resize: none;
+    line-height: 1.5;
+    transition: border-color 0.15s;
+    background: #fafaf8;
+  }
+  .mapping-field textarea:focus {
+    outline: none;
+    border-color: var(--teal);
+    background: var(--white);
+  }
+  .mapping-field textarea::placeholder { color: #b0b8cc; font-style: italic; }
+
+  /* ── REFLECTION SECTION ── */
+  .reflection-section {
+    margin-top: 36px;
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .reflection-header {
+    background: var(--navy);
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .reflection-header .icon { font-size: 22px; }
+  .reflection-header h3 {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 17px;
+    color: var(--white);
+  }
+  .reflection-header .teal-pill {
+    margin-left: auto;
+    background: var(--teal);
+    color: var(--white);
+    font-size: 11px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+  .rq-list { padding: 20px 24px; display: flex; flex-direction: column; gap: 18px; }
+  .rq {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .rq-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 10px; }
+  .rq-num {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 14px;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .rq-question {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.5;
+    padding-top: 3px;
+  }
+  .rq textarea {
+    width: 100%;
+    min-height: 80px;
+    border: 1.5px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-family: 'Nunito Sans', sans-serif;
+    font-size: 13px;
+    color: var(--dark);
+    resize: vertical;
+    line-height: 1.6;
+    background: var(--white);
+    transition: border-color 0.15s;
+  }
+  .rq textarea:focus { outline: none; border-color: var(--teal); }
+  .rq textarea::placeholder { color: #b0b8cc; font-style: italic; }
+
+  /* ── FOOTER ACTIONS ── */
+  .footer-actions {
+    margin-top: 32px;
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .footer-actions .footer-msg {
+    flex: 1;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    font-style: italic;
+  }
+  .footer-actions .footer-msg strong { color: var(--gold); font-style: normal; }
+  .btn-print {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-print:hover { background: #e09600; transform: translateY(-1px); }
+  .btn-save {
+    background: var(--teal);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 13px;
+    padding: 10px 22px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-save:hover { background: #008a7a; transform: translateY(-1px); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--teal);
+    color: var(--white);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,168,150,0.4);
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 9999;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  /* Discussion box */
+  .discussion-box {
+    margin-top: 20px;
+    background: var(--cream);
+    border-left: 5px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+  }
+  .discussion-box .disc-label {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 900;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .discussion-box p {
+    font-size: 14px;
+    color: var(--navy);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* Warning */
+  .warn-msg {
+    color: #c0392b;
+    font-size: 12px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    display: none;
+    margin-top: 8px;
+  }
+
+  @media print {
+    .round-tabs, .btn-primary, .btn-secondary, .btn-print, .btn-save, .footer-actions, .round-nav, .instruction-banner { display: none !important; }
+    .round-panel { display: block !important; }
+    body { background: white; }
+    .page-header { background: #1C2E5E !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="page-header">
+  <div class="module-tag">Module 1 · Lesson 2</div>
+  <h1>Values Card Sort</h1>
+  <div class="subtitle">Your values have names — let's find them.</div>
+</div>
+<div class="gold-bar"></div>
+
+<!-- INSTRUCTION BANNER -->
+<div class="instruction-banner">
+  <p><strong>How it works:</strong> Work through all three rounds in order. In Round 1, drag each value card into the pile that feels right. In Round 2, click to select your Top 5. In Round 3, identify your Core 3 and complete your Values Map. Take your time — your gut instinct is often the most honest answer.</p>
+</div>
+
+<!-- ROUND TABS -->
+<div class="round-tabs">
+  <button class="round-tab active" onclick="goToRound(1)" id="tab-1">
+    <span class="round-num">1</span>Sort All 40 Values
+  </button>
+  <button class="round-tab" onclick="goToRound(2)" id="tab-2">
+    <span class="round-num">2</span>Find Your Top 5
+  </button>
+  <button class="round-tab" onclick="goToRound(3)" id="tab-3">
+    <span class="round-num">3</span>Identify Your Core 3
+  </button>
+</div>
+
+<div class="main">
+
+  <!-- ══════════════ ROUND 1 ══════════════ -->
+  <div class="round-panel active" id="round-1">
+    <div class="round-header">
+      <span class="round-badge">ROUND 1 of 3</span>
+      <span class="round-title">Sort All 40 Values</span>
+    </div>
+    <div class="round-desc">
+      Drag each value card from the pool below into one of three piles: <strong>Essential</strong> (core to who you are), <strong>Important</strong> (you value it, but it's not defining), or <strong>Not Important Right Now</strong>. Go with your gut — don't overthink it.
+    </div>
+
+    <div class="sort-workspace">
+      <!-- Card pool -->
+      <div class="card-pool-section">
+        <div class="section-label">40 Values — drag each one into a pile below</div>
+        <div class="card-pool">
+          <div class="cards-grid" id="card-pool"></div>
+        </div>
+      </div>
+
+      <!-- Buckets -->
+      <div class="buckets-row">
+        <div class="bucket essential" id="bucket-essential" ondragover="onDragOver(event)" ondrop="onDrop(event,'essential')" ondragleave="onDragLeave(event)">
+          <div class="bucket-header">
+            <div class="bucket-dot" style="background:var(--teal)"></div>
+            <span class="bucket-title">Essential</span>
+            <span class="bucket-count" id="count-essential">0</span>
+          </div>
+          <div class="bucket-cards" id="cards-essential">
+            <div class="bucket-placeholder">Drop cards here</div>
+          </div>
+        </div>
+
+        <div class="bucket important" id="bucket-important" ondragover="onDragOver(event)" ondrop="onDrop(event,'important')" ondragleave="onDragLeave(event)">
+          <div class="bucket-header">
+            <div class="bucket-dot" style="background:var(--gold)"></div>
+            <span class="bucket-title">Important</span>
+            <span class="bucket-count" id="count-important">0</span>
+          </div>
+          <div class="bucket-cards" id="cards-important">
+            <div class="bucket-placeholder">Drop cards here</div>
+          </div>
+        </div>
+
+        <div class="bucket not-important" id="bucket-not-important" ondragover="onDragOver(event)" ondrop="onDrop(event,'not-important')" ondragleave="onDragLeave(event)">
+          <div class="bucket-header">
+            <div class="bucket-dot" style="background:#8a96b0"></div>
+            <span class="bucket-title">Not Important Right Now</span>
+            <span class="bucket-count" id="count-not-important">0</span>
+          </div>
+          <div class="bucket-cards" id="cards-not-important">
+            <div class="bucket-placeholder">Drop cards here</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="round-nav">
+      <span class="progress-note" id="r1-progress">Sort all 40 cards to continue</span>
+      <button class="btn-secondary" onclick="resetRound1()">↺ Reset</button>
+      <button class="btn-primary" onclick="goToRound2()">Next: Find Your Top 5 →</button>
+    </div>
+    <div class="warn-msg" id="r1-warn">Please sort all 40 values before continuing.</div>
+  </div>
+
+  <!-- ══════════════ ROUND 2 ══════════════ -->
+  <div class="round-panel" id="round-2">
+    <div class="round-header">
+      <span class="round-badge">ROUND 2 of 3</span>
+      <span class="round-title">Find Your Top 5</span>
+    </div>
+    <div class="round-desc">
+      From your <strong>Essential</strong> pile, select exactly <strong>5 values</strong> that feel most fundamentally true to who you are. These aren't the ones that sound best — they're the ones you live by even when it's hard.
+    </div>
+
+    <div class="top5-workspace">
+      <div class="top5-pool">
+        <div class="section-label">Your Essential Values — click to select</div>
+        <div id="essential-clickable" style="display:flex;flex-wrap:wrap;gap:8px;min-height:60px;"></div>
+        <div id="r2-no-essential" style="display:none;font-size:13px;color:var(--muted);font-style:italic;padding:12px 0;">No Essential values yet — go back to Round 1 and sort your cards first.</div>
+      </div>
+      <div class="top5-drop">
+        <div class="section-label">Your Top 5</div>
+        <div id="top5-hint" class="drop-hint">Click values on the left to add them here.<br>Select exactly 5.</div>
+        <div class="top5-slots" id="top5-slots" style="display:none;"></div>
+        <div class="top5-count-bar" id="top5-count"></div>
+      </div>
+    </div>
+
+    <div class="round-nav">
+      <button class="btn-secondary" onclick="goToRound(1)">← Back</button>
+      <span class="progress-note" id="r2-progress">Select 5 values to continue</span>
+      <button class="btn-primary" onclick="goToRound3()">Next: Identify Your Core 3 →</button>
+    </div>
+    <div class="warn-msg" id="r2-warn">Please select exactly 5 values before continuing.</div>
+  </div>
+
+  <!-- ══════════════ ROUND 3 ══════════════ -->
+  <div class="round-panel" id="round-3">
+    <div class="round-header">
+      <span class="round-badge">ROUND 3 of 3</span>
+      <span class="round-title">Identify Your Core 3 + Complete Your Values Map</span>
+    </div>
+    <div class="round-desc">
+      From your Top 5, choose your <strong>Core 3</strong> — the non-negotiables. The ones you would never compromise on, even under pressure. Then complete the values map for each one.
+    </div>
+
+    <div class="core3-workspace">
+      <div class="core3-pool">
+        <div class="section-label">Your Top 5 — select 3</div>
+        <div class="core3-cards" id="core3-choices"></div>
+        <div class="warn-msg" id="r3-warn" style="display:none;">Select exactly 3 core values.</div>
+      </div>
+      <div class="mapping-area" id="mapping-area">
+        <div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;font-style:italic;">
+          Select your 3 core values on the left to reveal your Values Map.
+        </div>
+      </div>
+    </div>
+
+    <!-- Reflection -->
+    <div class="reflection-section">
+      <div class="reflection-header">
+        <span class="icon">📓</span>
+        <h3>Reflection Questions</h3>
+        <span class="teal-pill">JOURNAL</span>
+      </div>
+      <div class="rq-list">
+        <div class="rq">
+          <div class="rq-top">
+            <div class="rq-num">1</div>
+            <div class="rq-question">Which 3–5 values feel most essential to who you are as a leader?</div>
+          </div>
+          <textarea placeholder="Take your time — there's no wrong answer. Write what feels true for you."></textarea>
+        </div>
+        <div class="rq">
+          <div class="rq-top">
+            <div class="rq-num">2</div>
+            <div class="rq-question">How do these values show up — or get suppressed — in different contexts (school, work, family, community)?</div>
+          </div>
+          <textarea placeholder="Think about a specific situation where you felt fully aligned with your values — or the opposite."></textarea>
+        </div>
+        <div class="rq">
+          <div class="rq-top">
+            <div class="rq-num">3</div>
+            <div class="rq-question">Who taught you each value? Family, community, an experience, or hard necessity?</div>
+          </div>
+          <textarea placeholder="The origin of a value often tells you why it runs so deep."></textarea>
+        </div>
+        <div class="rq">
+          <div class="rq-top">
+            <div class="rq-num">4</div>
+            <div class="rq-question">Where do you feel the most alignment between your values and your actions? The most tension?</div>
+          </div>
+          <textarea placeholder="Tension isn't failure — it's data. What does the gap tell you?"></textarea>
+        </div>
+      </div>
+
+      <div style="padding: 0 24px 24px;">
+        <div class="discussion-box">
+          <div class="disc-label">💬 Discussion Prompt</div>
+          <p>Share your top 3 values and one specific story of how you've lived one of them in action. What made that moment feel like leadership — even if no one called it that?</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer actions -->
+    <div class="footer-actions">
+      <div class="footer-msg">Add your completed Values Map to your <strong>YLOS</strong> — this is the foundation of your leadership identity.</div>
+      <button class="btn-save" onclick="saveProgress()">💾 Save Progress</button>
+      <button class="btn-print" onclick="window.print()">🖨 Print / Export</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+const ALL_VALUES = [
+  "Accountability","Authenticity","Belonging","Boldness","Commitment",
+  "Community","Compassion","Courage","Creativity","Dignity",
+  "Discipline","Empathy","Equity","Excellence","Fairness",
+  "Faith","Family","Forgiveness","Freedom","Generosity",
+  "Gratitude","Growth","Honesty","Humility","Integrity",
+  "Justice","Kindness","Loyalty","Perseverance","Purpose",
+  "Relationships","Resilience","Respect","Responsibility","Service",
+  "Trust","Unity","Voice","Wisdom","Zeal"
+];
+
+// State
+const state = {
+  placements: {},   // value -> bucket ('essential'|'important'|'not-important')
+  top5: [],         // selected top 5 values
+  core3: [],        // selected core 3 values
+};
+
+// ── ROUND 1: DRAG & DROP ──────────────────────────────────────────────────────
+let draggedValue = null;
+
+function buildPool() {
+  const pool = document.getElementById('card-pool');
+  pool.innerHTML = '';
+  ALL_VALUES.forEach(v => {
+    if (state.placements[v]) return; // already placed
+    const card = makeCard(v, 'pool');
+    pool.appendChild(card);
+  });
+  updateCounts();
+}
+
+function makeCard(value, location) {
+  const el = document.createElement('div');
+  el.className = 'value-card';
+  el.textContent = value;
+  el.dataset.value = value;
+  el.draggable = true;
+  el.addEventListener('dragstart', e => {
+    draggedValue = value;
+    el.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  });
+  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+  // Double-click to return to pool
+  if (location !== 'pool') {
+    el.title = 'Double-click to return to pool';
+    el.addEventListener('dblclick', () => returnToPool(value));
+  }
+  return el;
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add('drag-over');
+  e.dataTransfer.dropEffect = 'move';
+}
+function onDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e, bucket) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag-over');
+  if (!draggedValue) return;
+  placeCard(draggedValue, bucket);
+  draggedValue = null;
+}
+
+function placeCard(value, bucket) {
+  state.placements[value] = bucket;
+  refreshBuckets();
+  buildPool();
+  updateProgress();
+}
+
+function returnToPool(value) {
+  delete state.placements[value];
+  refreshBuckets();
+  buildPool();
+  updateProgress();
+}
+
+function refreshBuckets() {
+  ['essential','important','not-important'].forEach(b => {
+    const container = document.getElementById('cards-' + b);
+    container.innerHTML = '';
+    const vals = Object.entries(state.placements).filter(([,v]) => v === b).map(([k]) => k);
+    if (vals.length === 0) {
+      container.innerHTML = '<div class="bucket-placeholder">Drop cards here</div>';
+    } else {
+      vals.forEach(v => container.appendChild(makeCard(v, b)));
+    }
+    document.getElementById('count-' + b).textContent = vals.length;
+  });
+}
+
+function updateCounts() {
+  ['essential','important','not-important'].forEach(b => {
+    const vals = Object.values(state.placements).filter(v => v === b).length;
+    document.getElementById('count-' + b).textContent = vals;
+  });
+}
+
+function updateProgress() {
+  const placed = Object.keys(state.placements).length;
+  const remaining = ALL_VALUES.length - placed;
+  const prog = document.getElementById('r1-progress');
+  if (remaining === 0) {
+    prog.textContent = '✓ All 40 values sorted!';
+    prog.style.color = 'var(--teal)';
+  } else {
+    prog.textContent = `${remaining} value${remaining !== 1 ? 's' : ''} remaining`;
+    prog.style.color = '';
+  }
+}
+
+function resetRound1() {
+  if (!confirm('Reset Round 1? All your sorted cards will return to the pool.')) return;
+  Object.keys(state.placements).forEach(k => delete state.placements[k]);
+  state.top5 = [];
+  state.core3 = [];
+  buildPool();
+  refreshBuckets();
+  updateProgress();
+  document.getElementById('tab-2').className = 'round-tab';
+  document.getElementById('tab-3').className = 'round-tab';
+}
+
+function goToRound2() {
+  const placed = Object.keys(state.placements).length;
+  const warn = document.getElementById('r1-warn');
+  if (placed < ALL_VALUES.length) {
+    warn.style.display = 'block';
+    setTimeout(() => warn.style.display = 'none', 3000);
+    return;
+  }
+  document.getElementById('tab-1').classList.add('completed');
+  document.getElementById('tab-1').classList.remove('active');
+  buildRound2();
+  goToRound(2);
+}
+
+// ── ROUND 2: TOP 5 ────────────────────────────────────────────────────────────
+function buildRound2() {
+  const essentials = Object.entries(state.placements).filter(([,v]) => v === 'essential').map(([k]) => k).sort();
+  const container = document.getElementById('essential-clickable');
+  const noEss = document.getElementById('r2-no-essential');
+  container.innerHTML = '';
+  if (essentials.length === 0) {
+    noEss.style.display = 'block';
+    return;
+  }
+  noEss.style.display = 'none';
+  essentials.forEach(v => {
+    const el = document.createElement('div');
+    el.className = 'value-card';
+    el.textContent = v;
+    el.dataset.value = v;
+    el.style.cursor = 'pointer';
+    if (state.top5.includes(v)) { el.style.background = 'var(--teal)'; el.style.boxShadow = '0 0 0 3px var(--teal)'; }
+    el.addEventListener('click', () => toggleTop5(v, el));
+    container.appendChild(el);
+  });
+  renderTop5Slots();
+}
+
+function toggleTop5(value, el) {
+  const idx = state.top5.indexOf(value);
+  if (idx > -1) {
+    state.top5.splice(idx, 1);
+  } else {
+    if (state.top5.length >= 5) { showToast('You can only select 5 values. Remove one first.'); return; }
+    state.top5.push(value);
+  }
+  buildRound2();
+}
+
+function renderTop5Slots() {
+  const slots = document.getElementById('top5-slots');
+  const hint = document.getElementById('top5-hint');
+  const countEl = document.getElementById('top5-count');
+  const prog = document.getElementById('r2-progress');
+  slots.innerHTML = '';
+  if (state.top5.length === 0) {
+    hint.style.display = 'block';
+    slots.style.display = 'none';
+  } else {
+    hint.style.display = 'none';
+    slots.style.display = 'flex';
+    state.top5.forEach((v, i) => {
+      const slot = document.createElement('div');
+      slot.className = 'top5-slot';
+      slot.innerHTML = `
+        <span class="slot-num">${i + 1}</span>
+        <span class="slot-card-name">${v}</span>
+        <button class="slot-remove" onclick="removeTop5('${v}')" title="Remove">✕</button>
+      `;
+      slots.appendChild(slot);
+    });
+  }
+  countEl.textContent = state.top5.length === 5 ? '✓ Top 5 selected!' : `${state.top5.length} / 5 selected`;
+  countEl.style.color = state.top5.length === 5 ? 'var(--teal)' : 'var(--gold)';
+  prog.textContent = state.top5.length === 5 ? '✓ Ready to continue' : `Select ${5 - state.top5.length} more value${5 - state.top5.length !== 1 ? 's' : ''}`;
+  prog.style.color = state.top5.length === 5 ? 'var(--teal)' : '';
+}
+
+function removeTop5(value) {
+  state.top5 = state.top5.filter(v => v !== value);
+  buildRound2();
+}
+
+function goToRound3() {
+  const warn = document.getElementById('r2-warn');
+  if (state.top5.length !== 5) {
+    warn.style.display = 'block';
+    setTimeout(() => warn.style.display = 'none', 3000);
+    return;
+  }
+  document.getElementById('tab-2').classList.add('completed');
+  document.getElementById('tab-2').classList.remove('active');
+  buildRound3();
+  goToRound(3);
+}
+
+// ── ROUND 3: CORE 3 ───────────────────────────────────────────────────────────
+function buildRound3() {
+  const choices = document.getElementById('core3-choices');
+  choices.innerHTML = '';
+  state.top5.forEach(v => {
+    const el = document.createElement('div');
+    el.className = 'core3-card' + (state.core3.includes(v) ? ' selected' : '');
+    el.dataset.value = v;
+    el.innerHTML = `<div class="check">${state.core3.includes(v) ? '<span style="display:block;text-align:center;font-size:11px;line-height:18px;color:#fff;font-weight:900;">✓</span>' : ''}</div><span>${v}</span>`;
+    el.addEventListener('click', () => toggleCore3(v));
+    choices.appendChild(el);
+  });
+  renderMappingCards();
+}
+
+function toggleCore3(value) {
+  const idx = state.core3.indexOf(value);
+  if (idx > -1) {
+    state.core3.splice(idx, 1);
+  } else {
+    if (state.core3.length >= 3) { showToast('You can only select 3 core values. Deselect one first.'); return; }
+    state.core3.push(value);
+  }
+  buildRound3();
+}
+
+function renderMappingCards() {
+  const area = document.getElementById('mapping-area');
+  area.innerHTML = '';
+  if (state.core3.length === 0) {
+    area.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--muted);font-size:14px;font-style:italic;">Select your 3 core values on the left to reveal your Values Map.</div>';
+    return;
+  }
+  state.core3.forEach((v, i) => {
+    const card = document.createElement('div');
+    card.className = 'mapping-card';
+    card.innerHTML = `
+      <div class="mapping-card-header">
+        <div class="mapping-card-num">${i + 1}</div>
+        <div class="mapping-card-title">${v}</div>
+      </div>
+      <div class="mapping-fields">
+        <div class="mapping-field">
+          <label>This value means...</label>
+          <textarea rows="2" placeholder="In my own words, this value means..." data-key="${v}-means">${getSaved(v+'-means')}</textarea>
+        </div>
+        <div class="mapping-field">
+          <label>I learned it from...</label>
+          <textarea rows="2" placeholder="A person, experience, or moment that taught me this..." data-key="${v}-learned">${getSaved(v+'-learned')}</textarea>
+        </div>
+        <div class="mapping-field">
+          <label>I live it by...</label>
+          <textarea rows="2" placeholder="Specific actions, habits, or choices I make because of this value..." data-key="${v}-live">${getSaved(v+'-live')}</textarea>
+        </div>
+        <div class="mapping-field">
+          <label>It guides me when...</label>
+          <textarea rows="2" placeholder="Situations where this value is my compass or anchor..." data-key="${v}-guides">${getSaved(v+'-guides')}</textarea>
+        </div>
+      </div>
+    `;
+    // Auto-save on input
+    card.querySelectorAll('textarea').forEach(ta => {
+      ta.addEventListener('input', () => {
+        localStorage.setItem('vcs_' + ta.dataset.key, ta.value);
+      });
+    });
+    area.appendChild(card);
+  });
+}
+
+function getSaved(key) {
+  return localStorage.getItem('vcs_' + key) || '';
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function goToRound(n) {
+  [1,2,3].forEach(r => {
+    document.getElementById('round-' + r).classList.remove('active');
+    document.getElementById('tab-' + r).classList.remove('active');
+  });
+  document.getElementById('round-' + n).classList.add('active');
+  const tab = document.getElementById('tab-' + n);
+  if (!tab.classList.contains('completed')) tab.classList.add('active');
+  else tab.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── SAVE & TOAST ──────────────────────────────────────────────────────────────
+function saveProgress() {
+  try {
+    localStorage.setItem('vcs_state', JSON.stringify(state));
+    // Save reflection text areas
+    document.querySelectorAll('.rq textarea').forEach((ta, i) => {
+      if (ta.value) localStorage.setItem('vcs_rq_' + i, ta.value);
+    });
+    showToast('✓ Progress saved!');
+  } catch(e) {
+    showToast('Could not save — please copy your responses manually.');
+  }
+}
+
+function loadProgress() {
+  try {
+    const saved = localStorage.getItem('vcs_state');
+    if (saved) {
+      const s = JSON.parse(saved);
+      Object.assign(state, s);
+      refreshBuckets();
+      buildPool();
+      updateProgress();
+      if (Object.keys(state.placements).length === ALL_VALUES.length) {
+        document.getElementById('tab-1').className = 'round-tab completed';
+      }
+      if (state.top5.length === 5) {
+        document.getElementById('tab-2').className = 'round-tab completed';
+      }
+    }
+    // Restore reflection
+    document.querySelectorAll('.rq textarea').forEach((ta, i) => {
+      const val = localStorage.getItem('vcs_rq_' + i);
+      if (val) ta.value = val;
+    });
+  } catch(e) {}
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+buildPool();
+loadProgress();
+</script>
+</body>
+</html>
