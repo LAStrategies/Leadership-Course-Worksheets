@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authenticity Strategies — Becoming the Leader Only You Can Be</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:      #1A2744;
+    --navy-mid:  #243354;
+    --teal:      #00BFA5;
+    --teal-dim:  rgba(0,191,165,0.12);
+    --gold:      #C9A84C;
+    --gold-dim:  rgba(201,168,76,0.12);
+    --blue:      #1B4FCC;
+    --blue-dim:  rgba(27,79,204,0.12);
+    --white:     #FFFFFF;
+    --cream:     #FAF7F2;
+    --muted:     #7B8BA8;
+    --body:      #2D3748;
+    --light:     #E8EEF9;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Noise texture overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.35;
+  }
+
+  .page { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 56px 32px 80px; }
+
+  /* ── Header ── */
+  .site-header {
+    text-align: center;
+    margin-bottom: 64px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--teal);
+    text-transform: uppercase;
+    background: var(--teal-dim);
+    border: 1px solid rgba(0,191,165,0.25);
+    padding: 6px 14px;
+    border-radius: 40px;
+    margin-bottom: 24px;
+  }
+
+  .site-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 58px);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .site-header h1 em {
+    font-style: italic;
+    color: var(--teal);
+  }
+
+  .site-header .subtitle {
+    font-size: 16px;
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .gold-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    border-radius: 2px;
+    margin: 24px auto;
+  }
+
+  /* ── The core distinction ── */
+  .distinction {
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 32px;
+    align-items: center;
+    animation: fadeUp 0.7s 0.15s ease both;
+  }
+
+  .distinction-col { text-align: center; }
+
+  .distinction-col .d-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .distinction-col.flex-col .d-label { color: var(--teal); }
+  .distinction-col.firm-col .d-label { color: var(--gold); }
+
+  .distinction-col .d-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .distinction-col.flex-col .d-title { color: var(--teal); }
+  .distinction-col.firm-col .d-title { color: var(--gold); }
+
+  .distinction-col p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .distinction-divider {
+    background: rgba(255,255,255,0.08);
+    width: 1px;
+    align-self: stretch;
+  }
+
+  /* ── Toggle tabs ── */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    background: rgba(255,255,255,0.04);
+    padding: 6px;
+    border-radius: 12px;
+    animation: fadeUp 0.7s 0.25s ease both;
+  }
+
+  .tab-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: var(--muted);
+    letter-spacing: 0.01em;
+  }
+
+  .tab-btn.active {
+    background: var(--navy-mid);
+    color: var(--white);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
+
+  .tab-btn[data-tab="adapt"].active  { border-bottom: 2px solid var(--teal); }
+  .tab-btn[data-tab="firm"].active   { border-bottom: 2px solid var(--gold); }
+  .tab-btn[data-tab="anchor"].active { border-bottom: 2px solid var(--blue); }
+  .tab-btn[data-tab="tax"].active    { border-bottom: 2px solid #E05252; }
+
+  /* ── Tab panels ── */
+  .panel { display: none; animation: fadeUp 0.4s ease both; }
+  .panel.active { display: block; }
+
+  /* ── Card grid ── */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .strategy-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 14px;
+    padding: 24px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .strategy-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    border-radius: 14px 0 0 14px;
+    transition: opacity 0.2s;
+  }
+
+  .strategy-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+  }
+
+  .strategy-card .card-icon {
+    font-size: 28px;
+    margin-bottom: 14px;
+    display: block;
+  }
+
+  .strategy-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .strategy-card p {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* Card accent colors per tab */
+  .panel-adapt .strategy-card::before   { background: var(--teal); }
+  .panel-adapt .strategy-card:hover     { border-color: rgba(0,191,165,0.3); }
+  .panel-adapt .strategy-card h3        { color: var(--teal); }
+
+  .panel-firm .strategy-card::before    { background: var(--gold); }
+  .panel-firm .strategy-card:hover      { border-color: rgba(201,168,76,0.3); }
+  .panel-firm .strategy-card h3         { color: var(--gold); }
+
+  .panel-anchor .strategy-card::before  { background: var(--blue); }
+  .panel-anchor .strategy-card:hover    { border-color: rgba(27,79,204,0.3); }
+  .panel-anchor .strategy-card h3       { color: #6B9FFF; }
+
+  .panel-tax .strategy-card::before     { background: #E05252; }
+  .panel-tax .strategy-card:hover       { border-color: rgba(224,82,82,0.3); }
+  .panel-tax .strategy-card h3          { color: #F08080; }
+
+  /* ── Panel intro ── */
+  .panel-intro {
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.75);
+    border-left: 3px solid;
+  }
+
+  .panel-adapt  .panel-intro { border-color: var(--teal); }
+  .panel-firm   .panel-intro { border-color: var(--gold); }
+  .panel-anchor .panel-intro { border-color: var(--blue); }
+  .panel-tax    .panel-intro { border-color: #E05252; }
+
+  /* ── Self-check interactive section ── */
+  .selfcheck {
+    background: var(--navy-mid);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.35s ease both;
+  }
+
+  .selfcheck h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .selfcheck .sc-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .check-item:last-child { border-bottom: none; }
+
+  .check-item:hover { opacity: 0.85; }
+
+  .check-box {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 2px solid rgba(255,255,255,0.18);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 13px;
+  }
+
+  .check-item.checked .check-box {
+    background: var(--teal);
+    border-color: var(--teal);
+  }
+
+  .check-item.checked .check-text { color: rgba(255,255,255,0.45); text-decoration: line-through; }
+
+  .check-text {
+    font-size: 14.5px;
+    line-height: 1.55;
+    transition: color 0.2s;
+  }
+
+  .check-text strong {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .check-text span {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .progress-bar-bg {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), var(--blue));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 50px;
+    text-align: right;
+  }
+
+  /* ── Scenario explorer ── */
+  .scenario-section {
+    margin-bottom: 48px;
+    animation: fadeUp 0.7s 0.45s ease both;
+  }
+
+  .scenario-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .scenario-section .sc-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 24px;
+  }
+
+  .scenario-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .scenario-cards { grid-template-columns: 1fr; }
+    .distinction { grid-template-columns: 1fr; }
+    .distinction-divider { display: none; }
+  }
+
+  .scenario-card {
+    border-radius: 14px;
+    padding: 20px 22px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.06);
+    transition: transform 0.2s ease;
+  }
+
+  .scenario-card:hover { transform: translateY(-2px); }
+
+  .scenario-card .sc-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .scenario-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    line-height: 1.3;
+  }
+
+  .scenario-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  .scenario-card .sc-tag {
+    display: inline-block;
+    margin-top: 14px;
+    font-size: 11px;
+    font-family: 'DM Mono', monospace;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.08em;
+  }
+
+  .sc-adapt   { background: var(--navy); }
+  .sc-adapt h4, .sc-adapt .sc-tag { color: var(--teal); }
+  .sc-adapt .sc-tag { background: var(--teal-dim); border: 1px solid rgba(0,191,165,0.2); }
+
+  .sc-firm    { background: var(--navy); }
+  .sc-firm h4, .sc-firm .sc-tag { color: var(--gold); }
+  .sc-firm .sc-tag { background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); }
+
+  /* ── Answer reveal ── */
+  .answer-reveal {
+    display: none;
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    border-left: 3px solid;
+    font-size: 13px;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.8);
+  }
+
+  .sc-adapt .answer-reveal { border-color: var(--teal); }
+  .sc-firm  .answer-reveal { border-color: var(--gold); }
+
+  .answer-reveal.visible { display: block; animation: fadeIn 0.3s ease; }
+
+  .reveal-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    background: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .reveal-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+
+  /* ── Quote ── */
+  .closing-quote {
+    text-align: center;
+    padding: 48px 24px;
+    animation: fadeUp 0.7s 0.55s ease both;
+  }
+
+  .closing-quote blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3.5vw, 28px);
+    font-style: italic;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.85);
+    max-width: 640px;
+    margin: 0 auto 16px;
+  }
+
+  .closing-quote cite {
+    font-size: 13px;
+    color: var(--muted);
+    font-style: normal;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  /* ── Footer ── */
+  .site-footer {
+    text-align: center;
+    padding-top: 40px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.05em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 680px) {
+    .page { padding: 36px 20px 60px; }
+    .distinction { padding: 24px 20px; gap: 24px; }
+    .selfcheck, .scenario-section { padding: 24px 20px; }
+    .tabs { flex-wrap: wrap; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <!-- ── HEADER ─────────────────────────────────────────── -->
+  <header class="site-header">
+    <div class="tag">
+      <span>📋</span> Module 2, Lesson 3 · YLOS Reference Guide
+    </div>
+    <h1>Authenticity<br><em>Strategies</em></h1>
+    <div class="gold-rule"></div>
+    <p class="subtitle">
+      When to adapt your style. When to stand firm. How to navigate any room without losing yourself.
+    </p>
+  </header>
+
+  <!-- ── CORE DISTINCTION ───────────────────────────────── -->
+  <div class="distinction">
+    <div class="distinction-col flex-col">
+      <span class="d-label">Strategic Intelligence</span>
+      <div class="d-title">Adapting Your Style</div>
+      <p>Changing <em>how</em> you say something — your tone, vocabulary, professional presentation — depending on context and audience.</p>
+    </div>
+    <div class="distinction-divider"></div>
+    <div class="distinction-col firm-col">
+      <span class="d-label">Non-Negotiable</span>
+      <div class="d-title">Standing Firm</div>
+      <p>Holding your <em>values, dignity, and integrity</em> — the things that travel with you into every room, no matter what.</p>
+    </div>
+  </div>
+
+  <!-- ── TABBED STRATEGIES ──────────────────────────────── -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" data-tab="adapt"  role="tab" aria-selected="true">🔄 Adapt Style</button>
+    <button class="tab-btn"        data-tab="firm"   role="tab">🛡 Stand Firm</button>
+    <button class="tab-btn"        data-tab="anchor" role="tab">⚓ Anchor Spaces</button>
+    <button class="tab-btn"        data-tab="tax"    role="tab">💬 Name the Tax</button>
+  </div>
+
+  <!-- Adapt Style panel -->
+  <div class="panel panel-adapt active" id="panel-adapt" role="tabpanel">
+    <div class="panel-intro">
+      Adapting your style is not a betrayal of who you are — it's contextual intelligence. Every effective leader does it. Your vocabulary can flex. Your communication approach can shift. <strong>Your values travel with you.</strong>
+    </div>
+    <div class="card-grid">
+      <div class="strategy-card">
+        <span class="card-icon">🗣️</span>
+        <h3>Adjust Your Tone</h3>
+        <p>The register you use with your closest friends is not the same one you use in a job interview or a board meeting — and that's not inauthenticity. That's reading the room.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">📝</span>
+        <h3>Shift Your Vocabulary</h3>
+        <p>You can explain the same idea using different language for different audiences. Technical jargon for experts, plain language for newcomers — same insight, different packaging.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🎯</span>
+        <h3>Choose What to Share & When</h3>
+        <p>You don't owe anyone your full story until trust is established. Sharing strategically is not hiding — it's self-protection and wisdom. Decide intentionally, not fearfully.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🤝</span>
+        <h3>Match Professional Norms</h3>
+        <p>Learning and navigating the unwritten rules of a new environment is a skill — not a compromise of identity. You can learn the rules of a room without letting it rewrite your values.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stand Firm panel -->
+  <div class="panel panel-firm" id="panel-firm" role="tabpanel">
+    <div class="panel-intro">
+      Code-switching becomes a problem when it requires you to abandon your core values — not your communication style. Know the line. These are the things you hold regardless of pressure, opportunity, or who's in the room.
+    </div>
+    <div class="card-grid">
+      <div class="strategy-card">
+        <span class="card-icon">⚖️</span>
+        <h3>Your Integrity</h3>
+        <p>You will not misrepresent yourself, your work, or others to advance. The story you tell about yourself must be true — even when a curated version would be easier.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🌍</span>
+        <h3>Your Community's Dignity</h3>
+        <p>You will not participate in spaces or conversations that demean your community — even when staying silent would be more comfortable. Your presence is not consent.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">💎</span>
+        <h3>Your Core Values</h3>
+        <p>The values you named in your YLOS are not negotiable. They travel with you into every room. When you feel pressure to act against them, that's the stand-firm moment.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🪞</span>
+        <h3>Your Self-Respect</h3>
+        <p>You will not consistently shrink, minimize, or erase yourself in order to make others comfortable. Discomfort is sometimes the cost of your presence — and that cost is theirs to pay.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Anchor Spaces panel -->
+  <div class="panel panel-anchor" id="panel-anchor" role="tabpanel">
+    <div class="panel-intro">
+      An anchor space is an environment where you can be fully yourself — where you recharge, reconnect, and return to who you are. Every leader needs at least one. If you don't have one yet, building it is now on your leadership agenda.
+    </div>
+    <div class="card-grid">
+      <div class="strategy-card">
+        <span class="card-icon">👥</span>
+        <h3>Find Your People</h3>
+        <p>A person or community who sees you clearly — who knows your whole story and reflects it back to you without judgment. Someone you can debrief with after hard rooms.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">📍</span>
+        <h3>Know Your Place</h3>
+        <p>A physical location — a campus spot, a room, a park, a space — where you consistently feel like yourself. Returning there is a leadership practice, not a luxury.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🔁</span>
+        <h3>Build a Return Practice</h3>
+        <p>A ritual that reconnects you to who you are — journaling, prayer, music, movement, or any practice that interrupts the spiral and reorients you. Use it before and after hard environments.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🌐</span>
+        <h3>Protect Access</h3>
+        <p>Your anchor space is only useful if you actually go to it. Guard time for it. Don't let demanding environments crowd out the thing that keeps you grounded.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Name the Tax panel -->
+  <div class="panel panel-tax" id="panel-tax" role="tabpanel">
+    <div class="panel-intro">
+      If code-switching, performing, or shrinking yourself in certain environments costs you energy — name that cost privately. <strong>What you can name, you can manage.</strong> Naming the tax doesn't mean avoiding the room — it means entering it with your eyes open.
+    </div>
+    <div class="card-grid">
+      <div class="strategy-card">
+        <span class="card-icon">📊</span>
+        <h3>Recognize the Cost</h3>
+        <p>Not all environments extract the same energy from you. Notice which rooms leave you drained, tense, or more self-conscious than others. The pattern is information.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">✍️</span>
+        <h3>Name It Privately</h3>
+        <p>Write it down. Say it out loud to yourself or a trusted person. "This environment requires me to manage how I appear, and that costs me energy." Naming ends the spiral.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">⚡</span>
+        <h3>Decide With Intention</h3>
+        <p>Once you know the tax, you can choose to pay it — strategically, for a purpose — rather than accidentally. Some rooms are worth the cost. Others aren't. Know the difference.</p>
+      </div>
+      <div class="strategy-card">
+        <span class="card-icon">🔋</span>
+        <h3>Recharge After</h3>
+        <p>Build recovery into your schedule after high-tax environments. Your anchor space, your debrief person, your grounding practice — these aren't luxuries. They're maintenance.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SELF-CHECK ─────────────────────────────────────── -->
+  <div class="selfcheck">
+    <h2>In-the-Moment Self-Check</h2>
+    <p class="sc-sub">When you're not sure whether to adapt or stand firm — work through these. Check each one off as you consider it.</p>
+
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>Is what's being asked of me about style or values?</strong>
+        <span>Style = how I communicate. Values = what I stand for. Only one of those is negotiable.</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>If I adapt here, will I still recognize myself on the other side?</strong>
+        <span>If the answer is no — or uncertain — that's a signal to pause before proceeding.</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>Am I adapting from a place of strategy or fear?</strong>
+        <span>Strategic adaptation is intentional and purposeful. Fear-based adaptation is reactive and depleting.</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>Does this require me to misrepresent myself, my work, or my community?</strong>
+        <span>If yes — full stop. That's not adaptation. That's a values compromise.</span>
+      </div>
+    </div>
+    <div class="check-item" onclick="toggleCheck(this)">
+      <div class="check-box"></div>
+      <div class="check-text">
+        <strong>What would my best self — grounded and values-centered — do here?</strong>
+        <span>Not the scared version. Not the version trying to fit in. Your best self, at your most grounded.</span>
+      </div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-label" id="progressLabel">0 / 5</div>
+    </div>
+  </div>
+
+  <!-- ── SCENARIO EXPLORER ──────────────────────────────── -->
+  <div class="scenario-section">
+    <h2>Scenario Explorer</h2>
+    <p class="sc-sub">Click "See the strategy" on each scenario to reveal the approach.</p>
+    <div class="scenario-cards">
+
+      <div class="scenario-card sc-adapt">
+        <span class="sc-num">SCENARIO 01</span>
+        <h4>You're presenting to a formal committee that uses corporate language you don't normally use.</h4>
+        <p>Your ideas are solid. Do you use their language or yours?</p>
+        <button class="reveal-btn" onclick="reveal(this)">▶ See the strategy</button>
+        <div class="answer-reveal">
+          <strong>Adapt style.</strong> Using their vocabulary is a communication choice, not a values compromise. Your ideas remain yours — you're translating them, not surrendering them. This is contextual intelligence.
+        </div>
+        <span class="sc-tag">ADAPT STYLE</span>
+      </div>
+
+      <div class="scenario-card sc-firm">
+        <span class="sc-num">SCENARIO 02</span>
+        <h4>Someone in a meeting makes a dismissive comment about your community. The room laughs.</h4>
+        <p>It would be easier to stay quiet. But something in you resists.</p>
+        <button class="reveal-btn" onclick="reveal(this)">▶ See the strategy</button>
+        <div class="answer-reveal">
+          <strong>Stand firm.</strong> Silence in this moment signals acceptance. You don't have to be confrontational — but you can name what happened clearly: "I want to push back on that — here's why." Your dignity and your community's dignity are non-negotiable.
+        </div>
+        <span class="sc-tag">STAND FIRM</span>
+      </div>
+
+      <div class="scenario-card sc-adapt">
+        <span class="sc-num">SCENARIO 03</span>
+        <h4>A new supervisor asks you to be "more professional" in your written communication without specifics.</h4>
+        <p>You're not sure what they mean. Do you change how you write?</p>
+        <button class="reveal-btn" onclick="reveal(this)">▶ See the strategy</button>
+        <div class="answer-reveal">
+          <strong>Adapt style — strategically.</strong> Ask for specific examples of what "more professional" looks like to them. Adjust your format or tone accordingly. If the feedback is really about your identity rather than your writing, that's a different conversation — and a stand-firm moment.
+        </div>
+        <span class="sc-tag">ADAPT STYLE</span>
+      </div>
+
+      <div class="scenario-card sc-firm">
+        <span class="sc-num">SCENARIO 04</span>
+        <h4>A teammate suggests taking credit for work you know someone else did, to make the team look better.</h4>
+        <p>The pressure is subtle. Everyone is nodding.</p>
+        <button class="reveal-btn" onclick="reveal(this)">▶ See the strategy</button>
+        <div class="answer-reveal">
+          <strong>Stand firm.</strong> Misrepresenting credit violates your integrity — and the integrity of the person whose work is being erased. You can advocate for the team without erasing someone's contribution. This is a values line, not a style preference.
+        </div>
+        <span class="sc-tag">STAND FIRM</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── CLOSING QUOTE ──────────────────────────────────── -->
+  <div class="closing-quote">
+    <blockquote>
+      "The goal is not to be fearless in every room. The goal is to know who you are so clearly that no room can take it from you."
+    </blockquote>
+    <div class="gold-rule"></div>
+    <cite>— Authenticity is Not Weakness · Module 2, Lesson 3 · Becoming the Leader Only You Can Be</cite>
+  </div>
+
+  <footer class="site-footer">
+    Life Aligned Center for Leadership &amp; Justice Studies &nbsp;·&nbsp; Becoming the Leader Only You Can Be
+  </footer>
+
+</main>
+
+<script>
+  // ── Tab switching ──────────────────────────────────────────
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.classList.remove('active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      document.getElementById('panel-' + target).classList.add('active');
+    });
+  });
+
+  // ── Self-check toggle ──────────────────────────────────────
+  function toggleCheck(item) {
+    item.classList.toggle('checked');
+    const checkBox = item.querySelector('.check-box');
+    if (item.classList.contains('checked')) {
+      checkBox.textContent = '✓';
+    } else {
+      checkBox.textContent = '';
+    }
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const total   = document.querySelectorAll('.check-item').length;
+    const checked = document.querySelectorAll('.check-item.checked').length;
+    const pct     = Math.round((checked / total) * 100);
+    document.getElementById('progressBar').style.width  = pct + '%';
+    document.getElementById('progressLabel').textContent = checked + ' / ' + total;
+  }
+
+  // ── Scenario reveal ────────────────────────────────────────
+  function reveal(btn) {
+    const card   = btn.closest('.scenario-card');
+    const answer = card.querySelector('.answer-reveal');
+    const isOpen = answer.classList.contains('visible');
+
+    if (isOpen) {
+      answer.classList.remove('visible');
+      btn.textContent = '▶ See the strategy';
+    } else {
+      answer.classList.add('visible');
+      btn.textContent = '▼ Hide';
+    }
+  }
+</script>
+</body>
+</html>
