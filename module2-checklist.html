@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module 2 Completion Checklist | BTLOYCB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --gold:        #C9A84C;
+      --gold-light:  #E8C96A;
+      --teal:        #00BFA5;
+      --teal-light:  #33CCBA;
+      --navy:        #1A2744;
+      --navy-mid:    #243354;
+      --navy-light:  #2E4070;
+      --cream:       #FAF7F0;
+      --white:       #FFFFFF;
+      --text-dark:   #1A2744;
+      --text-muted:  #7B8BA8;
+      --success:     #2E7D5E;
+      --success-bg:  #E6F4EE;
+      --radius:      12px;
+      --shadow:      0 4px 24px rgba(26,39,68,0.10);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding: 0 0 60px;
+    }
+    .header { background: var(--navy); padding: 0; position: relative; overflow: hidden; }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg,transparent,transparent 40px,rgba(201,168,76,0.04) 40px,rgba(201,168,76,0.04) 80px);
+    }
+    .header-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 48px 32px 40px; }
+    .course-label {
+      font-weight: 500; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .course-label::before { content: ''; display: inline-block; width: 28px; height: 1px; background: var(--teal); }
+    .header h1 { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(26px,5vw,40px); color: var(--white); line-height: 1.15; margin-bottom: 8px; }
+    .header h1 span { color: var(--gold-light); }
+    .header-subtitle { font-size: 14px; color: var(--teal-light); font-weight: 300; letter-spacing: 0.05em; font-style: italic; margin-bottom: 28px; }
+    .module-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 100px; padding: 6px 14px; font-size: 12px; font-weight: 600;
+      color: var(--gold-light); letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .module-tag svg { width: 13px; height: 13px; fill: var(--gold-light); }
+    .progress-section { max-width: 760px; margin: 0 auto; padding: 28px 32px 0; }
+    .progress-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+    .progress-label { font-size: 12px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .progress-count { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); }
+    .progress-count span { font-size: 13px; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-weight: 400; }
+    .progress-track { height: 8px; background: #E0D9C8; border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%); border-radius: 100px; width: 0%; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .progress-message { margin-top: 8px; font-size: 12px; color: var(--text-muted); font-style: italic; min-height: 18px; transition: all 0.3s; }
+    .card { max-width: 760px; margin: 24px auto 0; padding: 0 32px; }
+    .checklist { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid rgba(26,39,68,0.07); overflow: hidden; }
+    .checklist-header { background: linear-gradient(135deg, var(--navy-mid) 0%, var(--navy-light) 100%); padding: 18px 24px; display: flex; align-items: center; gap: 12px; }
+    .checklist-header-icon { width: 36px; height: 36px; background: rgba(201,168,76,0.2); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .checklist-header-icon svg { width: 18px; height: 18px; stroke: var(--gold-light); }
+    .checklist-header-text h2 { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 2px; }
+    .checklist-header-text p { font-size: 11.5px; color: rgba(255,255,255,0.5); font-weight: 300; }
+    .section-label {
+      padding: 10px 24px 8px; font-size: 10.5px; font-weight: 700;
+      letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-muted);
+      background: #F8F5EF; border-bottom: 1px solid #F0EDE6; border-top: 1px solid #F0EDE6;
+    }
+    .item { display: flex; align-items: flex-start; gap: 16px; padding: 16px 24px; border-bottom: 1px solid #F0EDE6; cursor: pointer; transition: background 0.2s; user-select: none; }
+    .item:last-child { border-bottom: none; }
+    .item:hover { background: #FDFBF7; }
+    .item.completed { background: var(--success-bg); }
+    .item.completed:hover { background: #ddf0e6; }
+    .cb-wrap { flex-shrink: 0; margin-top: 2px; }
+    .cb-box { width: 22px; height: 22px; border-radius: 6px; border: 2px solid #C8C0AE; background: var(--white); display: flex; align-items: center; justify-content: center; transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .cb-box svg { width: 13px; height: 13px; stroke: var(--white); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; opacity: 0; transform: scale(0.5); transition: all 0.2s; }
+    .item.completed .cb-box { background: var(--success); border-color: var(--success); }
+    .item.completed .cb-box svg { opacity: 1; transform: scale(1); }
+    .item-body { flex: 1; }
+    .item-text { font-size: 15px; font-weight: 500; color: var(--text-dark); line-height: 1.45; transition: color 0.2s; }
+    .item.completed .item-text { color: var(--success); text-decoration: line-through; text-decoration-color: rgba(46,125,94,0.4); }
+    .item-tag { margin-top: 5px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; color: var(--text-muted); }
+    .completion-banner { max-width: 760px; margin: 24px auto 0; padding: 0 32px; display: none; }
+    .completion-banner.show { display: block; }
+    .banner-inner { background: linear-gradient(135deg,#1B4332 0%,#2D6A4F 100%); border-radius: var(--radius); padding: 24px 28px; display: flex; align-items: center; gap: 20px; box-shadow: 0 4px 20px rgba(46,125,94,0.25); }
+    .banner-icon { font-size: 36px; flex-shrink: 0; }
+    .banner-text h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .banner-text p { font-size: 13.5px; color: rgba(255,255,255,0.8); line-height: 1.55; }
+    .reset-wrap { max-width: 760px; margin: 20px auto 0; padding: 0 32px; text-align: right; }
+    .reset-btn { background: none; border: 1px solid #D4C9B0; border-radius: 8px; padding: 8px 16px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+    .reset-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .footer { max-width: 760px; margin: 36px auto 0; padding: 20px 32px 0; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E8E1D4; }
+    .footer-brand { font-size: 12px; color: var(--text-muted); }
+    .footer-nav { display: flex; gap: 20px; }
+    .footer-nav a { font-size: 12px; font-weight: 500; color: var(--text-muted); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+    .footer-nav a:hover { color: var(--gold); }
+    @media (max-width: 540px) {
+      .header-inner, .progress-section, .card, .completion-banner, .reset-wrap, .footer { padding-left: 20px; padding-right: 20px; }
+      .item { padding: 14px 18px; }
+      .banner-inner { flex-direction: column; text-align: center; }
+      .footer { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be</div>
+      <h1>Module 2<br><span>Model the Way</span></h1>
+      <p class="header-subtitle">"Lead from who you are, not who you think you should be."</p>
+      <div class="module-tag">
+        <svg viewBox="0 0 16 16"><path d="M8 1l1.9 3.8 4.1.6-3 2.9.7 4.2L8 10.5l-3.7 1.9.7-4.2-3-2.9 4.2-.6z"/></svg>
+        Module 2 of 7
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-section">
+    <div class="progress-header">
+      <span class="progress-label">Your Progress</span>
+      <span class="progress-count" id="count-display">0 <span>/ 14 complete</span></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="progress-message" id="progress-msg">Check off each item as you complete it.</div>
+  </div>
+
+  <div class="card">
+    <div class="checklist">
+
+      <div class="checklist-header">
+        <div class="checklist-header-icon">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M9 11l3 3L22 4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="checklist-header-text">
+          <h2>Module 2 Completion Checklist</h2>
+          <p>Complete all 14 items to finish this module</p>
+        </div>
+      </div>
+
+      <!-- WATCHED -->
+      <div class="section-label">&#127909; Watched</div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">All Lesson Lecture Videos</div><div class="item-tag">&#127909; Video</div></div>
+      </div>
+
+      <!-- COMPLETED -->
+      <div class="section-label">&#10003; Completed</div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Leadership Voice Discovery</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Leading By Example Audit</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Values Stress Test</div><div class="item-tag">&#128196; Worksheet</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Personal Leadership Credo</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Credibility Inventory</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Personal Leadership Standards Document</div><div class="item-tag">&#128196; Worksheet</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Weekly Integrity Audit</div><div class="item-tag">&#128196; Worksheet</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Imposter Moments Inventory</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Workplace &amp; Campus Grounding Template</div><div class="item-tag">&#128196; Worksheet</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Belonging Action Plan</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">Authenticity Strategies</div><div class="item-tag">&#9997;&#65039; Activity</div></div>
+      </div>
+
+      <!-- ADDED -->
+      <div class="section-label">&#128216; Added</div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">All items to YLOS &mdash; Module 2: Model the Way</div><div class="item-tag">&#128216; YLOS</div></div>
+      </div>
+
+      <!-- PARTICIPATED -->
+      <div class="section-label">&#128172; Participated</div>
+
+      <div class="item" onclick="toggle(this)">
+        <div class="cb-wrap"><div class="cb-box"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,7 6,11 12,3"/></svg></div></div>
+        <div class="item-body"><div class="item-text">In at least 1 discussion thread</div><div class="item-tag">&#128172; Community</div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="completion-banner" id="completion-banner">
+    <div class="banner-inner">
+      <div class="banner-icon">&#127885;</div>
+      <div class="banner-text">
+        <h3>Module 2 Complete!</h3>
+        <p>You've moved from knowing your values to living them &mdash; your voice, credo, and credibility are now anchored in your YLOS. Head to Module 3: Inspire a Shared Vision &rarr;</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="reset-wrap">
+    <button class="reset-btn" onclick="resetAll()">&#8635; Reset Checklist</button>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand"><strong>BTLOYCB</strong> &middot; Leadership Development System</div>
+    <nav class="footer-nav">
+      <a href="#">&larr; Module 1</a>
+      <a href="#">Module 3 &rarr;</a>
+    </nav>
+  </footer>
+
+  <script>
+    const TOTAL = 14;
+    const STORAGE_KEY = 'btloycb_m2_checklist';
+    const messages = [
+      "Check off each item as you complete it.",
+      "Great start — keep going!",
+      "You're building momentum.",
+      "You're finding your voice.",
+      "Almost halfway there — keep showing up.",
+      "Halfway done — your leadership is taking shape.",
+      "More than halfway — you're modeling the way.",
+      "Strong progress — your credo is coming to life.",
+      "Nearly there — stay grounded in who you are.",
+      "Almost done — one more stretch!",
+      "So close — just a few more items.",
+      "Final push — you've got this!",
+      "Nearly complete — one last step.",
+      "Almost there — finish strong!",
+      "🎉 Module 2 complete! You're ready for Module 3."
+    ];
+    function getItems() { return document.querySelectorAll('.item'); }
+    function countCompleted() { return document.querySelectorAll('.item.completed').length; }
+    function updateProgress() {
+      const done = countCompleted();
+      const pct = (done / TOTAL) * 100;
+      document.getElementById('progress-fill').style.width = pct + '%';
+      document.getElementById('count-display').innerHTML = done + ' <span>/ ' + TOTAL + ' complete</span>';
+      document.getElementById('progress-msg').textContent = messages[done];
+      document.getElementById('completion-banner').classList.toggle('show', done === TOTAL);
+    }
+    function saveState() {
+      const states = [];
+      getItems().forEach(item => states.push(item.classList.contains('completed')));
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(states)); } catch(e) {}
+    }
+    function loadState() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        const states = JSON.parse(saved);
+        getItems().forEach((item, i) => { if (states[i]) item.classList.add('completed'); });
+      } catch(e) {}
+      updateProgress();
+    }
+    function toggle(item) { item.classList.toggle('completed'); updateProgress(); saveState(); }
+    function resetAll() {
+      if (!confirm('Reset all checkboxes? This cannot be undone.')) return;
+      getItems().forEach(item => item.classList.remove('completed'));
+      updateProgress(); saveState();
+    }
+    loadState();
+  </script>
+</body>
+</html>
