@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vision-Values Connection Map | Module 3, Lesson 1 | BTLOYCB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:        #1A2744;
+      --navy-mid:    #243354;
+      --navy-light:  #2E4070;
+      --teal:        #00BFA5;
+      --teal-light:  #33CCBA;
+      --teal-pale:   #E0F7F4;
+      --gold:        #C9A84C;
+      --gold-light:  #E8C96A;
+      --gold-pale:   #FDF8EE;
+      --lav:         #C386DE;
+      --lav-pale:    #F5EBF9;
+      --cream:       #FAF7F0;
+      --white:       #FFFFFF;
+      --text-dark:   #1A2744;
+      --text-mid:    #3D4F6E;
+      --text-muted:  #7B8BA8;
+      --border:      rgba(26,39,68,0.12);
+      --radius:      12px;
+      --shadow:      0 4px 24px rgba(26,39,68,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-dark);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 40px, rgba(201,168,76,0.04) 40px, rgba(201,168,76,0.04) 80px);
+    }
+    .header-inner {
+      position: relative; z-index: 1;
+      max-width: 820px; margin: 0 auto;
+      padding: 48px 32px 40px;
+    }
+    .course-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .course-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--teal); }
+    .header h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900; font-size: clamp(24px, 4vw, 36px);
+      color: var(--white); line-height: 1.2; margin-bottom: 8px;
+    }
+    .header h1 span { color: var(--gold-light); }
+    .header-sub {
+      font-size: 14px; color: var(--teal-light); font-style: italic;
+      font-weight: 300; margin-bottom: 24px;
+    }
+    .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .badge-gold { background: rgba(201,168,76,0.15); border: 1px solid rgba(201,168,76,0.35); color: var(--gold-light); }
+    .badge-teal { background: rgba(0,191,165,0.15); border: 1px solid rgba(0,191,165,0.35); color: var(--teal-light); }
+
+    /* ── PROGRESS ── */
+    .progress-wrap {
+      max-width: 820px; margin: 0 auto;
+      padding: 24px 32px 0;
+    }
+    .progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .progress-label { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+    .progress-pct { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--navy); }
+    .progress-track { height: 7px; background: #E0D9C8; border-radius: 100px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%); border-radius: 100px; transition: width 0.5s ease; }
+
+    /* ── MAIN ── */
+    .main { max-width: 820px; margin: 0 auto; padding: 28px 32px 0; }
+
+    /* ── INTRO BOX ── */
+    .intro-box {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--teal);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow);
+    }
+    .intro-box strong { color: var(--teal); }
+    .intro-box p { font-size: 14px; color: var(--text-mid); line-height: 1.6; }
+
+    /* ── VISION STATEMENT DISPLAY ── */
+    .vision-display {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 28px 28px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .vision-display::before {
+      content: '';
+      position: absolute;
+      top: -30px; right: -30px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: rgba(0,191,165,0.12);
+    }
+    .vision-display-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 12px;
+    }
+    .vision-display textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 8px;
+      padding: 14px 16px;
+      color: var(--white);
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; line-height: 1.6;
+      resize: vertical; min-height: 90px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .vision-display textarea::placeholder { color: rgba(255,255,255,0.35); font-style: italic; }
+    .vision-display textarea:focus { border-color: var(--gold); }
+    .vision-display-hint { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 8px; font-style: italic; }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--text-muted);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: ''; flex: 1; max-width: 24px; height: 1px; background: var(--border); }
+
+    /* ── VALUES GRID ── */
+    .values-section { margin-bottom: 36px; }
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 14px;
+    }
+    .value-card {
+      background: var(--white);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      box-shadow: 0 2px 10px rgba(26,39,68,0.06);
+    }
+    .value-card:hover { border-color: var(--teal); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .value-card.selected { border-color: var(--teal); background: var(--teal-pale); }
+    .value-card.selected .value-check { opacity: 1; }
+    .value-card.custom-card { border-style: dashed; border-color: #C8C0AE; background: var(--cream); }
+    .value-card.custom-card:hover { border-color: var(--gold); }
+    .value-check {
+      position: absolute; top: 10px; right: 10px;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: var(--teal); display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.2s;
+    }
+    .value-check svg { width: 11px; height: 11px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+    .value-name { font-weight: 600; font-size: 14px; color: var(--navy); margin-bottom: 4px; }
+    .value-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .custom-input {
+      width: 100%; border: none; background: transparent;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      color: var(--navy); outline: none;
+    }
+    .custom-input::placeholder { color: #B0A894; font-weight: 400; }
+
+    /* ── CONNECTION ROWS ── */
+    .connections-section { margin-bottom: 36px; }
+    .connection-hint {
+      background: var(--gold-pale);
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 8px; padding: 12px 16px;
+      font-size: 13px; color: var(--text-mid);
+      margin-bottom: 20px; line-height: 1.5;
+    }
+    .connection-hint strong { color: var(--gold); }
+    .conn-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(26,39,68,0.07);
+      transition: box-shadow 0.2s;
+    }
+    .conn-card:focus-within { box-shadow: 0 0 0 2px var(--teal); }
+    .conn-header { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .conn-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+    .conn-title { font-size: 14px; font-weight: 600; color: var(--navy); }
+    .conn-grid { display: grid; grid-template-columns: 1fr 48px 1fr; gap: 12px; align-items: center; }
+    .conn-arrow { font-size: 22px; text-align: center; color: var(--text-muted); user-select: none; }
+    .conn-field {
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .conn-field-label { font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+    .conn-select, .conn-textarea {
+      width: 100%;
+      border: 1.5px solid #D8D2C6;
+      border-radius: 8px; padding: 10px 12px;
+      font-family: 'DM Sans', sans-serif; font-size: 13px;
+      color: var(--text-dark); background: var(--cream);
+      outline: none; transition: border-color 0.2s;
+    }
+    .conn-select:focus, .conn-textarea:focus { border-color: var(--teal); background: white; }
+    .conn-textarea { resize: vertical; min-height: 72px; line-height: 1.5; }
+    .add-conn-btn {
+      display: flex; align-items: center; gap: 8px;
+      background: none; border: 2px dashed #C8C0AE;
+      border-radius: var(--radius); padding: 14px 20px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px;
+      color: var(--text-muted); cursor: pointer;
+      width: 100%; transition: all 0.2s; margin-top: 4px;
+    }
+    .add-conn-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ── MAP VISUAL ── */
+    .map-section { margin-bottom: 36px; }
+    .map-canvas {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: var(--shadow);
+      min-height: 300px;
+    }
+    .map-center {
+      background: var(--navy);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .map-center-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px; }
+    .map-center-text { font-family: 'Playfair Display', serif; font-size: 15px; color: white; font-style: italic; line-height: 1.5; }
+    .map-spokes { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .map-spoke {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--teal-pale);
+      border: 1.5px solid var(--teal);
+      border-radius: 100px; padding: 8px 16px;
+      font-size: 13px; font-weight: 600; color: var(--navy);
+    }
+    .spoke-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+    .map-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; font-style: italic; }
+
+    /* ── SYNTHESIS ── */
+    .synthesis-section { margin-bottom: 36px; }
+    .synth-card {
+      background: var(--navy);
+      border-radius: var(--radius); padding: 28px;
+      box-shadow: var(--shadow);
+    }
+    .synth-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; }
+    .synth-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--white); margin-bottom: 20px; }
+    .synth-row { margin-bottom: 18px; }
+    .synth-q { font-size: 13px; font-weight: 600; color: var(--gold-light); margin-bottom: 8px; }
+    .synth-textarea {
+      width: 100%; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
+      padding: 12px 14px; color: white;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; line-height: 1.5;
+      resize: vertical; min-height: 72px; outline: none; transition: border-color 0.2s;
+    }
+    .synth-textarea::placeholder { color: rgba(255,255,255,0.3); font-style: italic; }
+    .synth-textarea:focus { border-color: var(--teal); }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      max-width: 820px; margin: 24px auto 0;
+      padding: 0 32px;
+      display: flex; gap: 12px; flex-wrap: wrap;
+    }
+    button {
+      font-family: 'DM Sans', sans-serif;
+      border-radius: 8px; border: 1.5px solid var(--border);
+      padding: 10px 22px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--navy); color: white; border-color: var(--navy); }
+    .btn-primary:hover { background: var(--navy-mid); }
+    .btn-teal { background: var(--teal); color: white; border-color: var(--teal); }
+    .btn-teal:hover { background: #00A890; }
+    .btn-ghost { background: none; color: var(--text-mid); }
+    .btn-ghost:hover { background: var(--cream); }
+    .save-msg { max-width: 820px; margin: 10px auto 0; padding: 0 32px; font-size: 12px; color: var(--teal); font-style: italic; min-height: 18px; transition: opacity 0.3s; opacity: 0; }
+    .save-msg.show { opacity: 1; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      max-width: 820px; margin: 32px auto 0;
+      padding: 0 32px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .footer-brand { font-size: 12px; color: var(--text-muted); }
+    .footer-brand strong { color: var(--navy); }
+    .footer-note { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+    @media (max-width: 540px) {
+      .header-inner, .main, .progress-wrap, .btn-row, .page-footer { padding-left: 16px; padding-right: 16px; }
+      .conn-grid { grid-template-columns: 1fr; }
+      .conn-arrow { transform: rotate(90deg); }
+    }
+
+    @media print {
+      body { background: white; }
+      .btn-row, .progress-wrap, .page-footer, .save-msg { display: none; }
+      textarea, .conn-select { background: #F8F9FF !important; color: #1A2744 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be · Module 3, Lesson 1</div>
+      <h1>Vision-Values<br><span>Connection Map</span></h1>
+      <p class="header-sub">"Your vision only carries weight when it's rooted in what you actually value."</p>
+      <div class="badges">
+        <span class="badge badge-gold">🗺️ Connection Map</span>
+        <span class="badge badge-teal">⭐ Inspire a Shared Vision</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-row">
+      <span class="progress-label">Your Progress</span>
+      <span class="progress-pct" id="pct-display">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+      <p><strong>How to use this map:</strong> Start by entering your Vision Statement draft, then select up to 5 of your core values from Module 1. For each value, draw a connection to show how it anchors a specific part of your vision. The synthesis section at the bottom ties everything together. Complete this before Lesson 2.</p>
+    </div>
+
+    <!-- STEP 1: VISION STATEMENT INPUT -->
+    <div class="vision-display">
+      <div class="vision-display-label">Step 1 — Your Vision Statement (from your draft worksheet)</div>
+      <textarea id="vision-input" placeholder="Paste or type your 3-sentence Vision Statement here..."></textarea>
+      <div class="vision-display-hint">This is the center of your map — everything connects back to it.</div>
+    </div>
+
+    <!-- STEP 2: SELECT VALUES -->
+    <div class="values-section">
+      <div class="section-label">Step 2 — Select Your Core Values</div>
+      <p style="font-size:13px; color:var(--text-mid); margin-bottom:18px; line-height:1.6;">Choose up to <strong>5 values</strong> from your Module 1 Values Card Sort. These are the values that appear in your vision — whether you've named them or not. Click to select.</p>
+      <div class="values-grid" id="values-grid">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- STEP 3: CONNECTION MAP VISUAL -->
+    <div class="map-section">
+      <div class="section-label">Your Map — Values Anchoring Your Vision</div>
+      <div class="map-canvas" id="map-canvas">
+        <div class="map-center" id="map-center">
+          <div class="map-center-label">My Vision</div>
+          <div class="map-center-text" id="map-vision-text">Your vision will appear here once you type it above.</div>
+        </div>
+        <div class="map-spokes" id="map-spokes">
+          <div class="map-empty" id="map-empty">Select your values above to see them appear here.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 4: CONNECTIONS -->
+    <div class="connections-section">
+      <div class="section-label">Step 3 — Draw the Connections</div>
+      <div class="connection-hint">
+        <strong>For each selected value:</strong> Explain specifically how this value shows up in your vision — what part of your vision does it anchor, motivate, or make credible?
+      </div>
+      <div id="conn-list">
+        <!-- populated by JS -->
+      </div>
+    </div>
+
+    <!-- STEP 5: SYNTHESIS -->
+    <div class="synthesis-section">
+      <div class="section-label">Step 4 — Synthesis</div>
+      <div class="synth-card">
+        <div class="synth-label">Pulling It Together</div>
+        <div class="synth-title">What does your Vision-Values Connection Map reveal?</div>
+
+        <div class="synth-row">
+          <div class="synth-q">Which value shows up most strongly across your vision? What does that tell you?</div>
+          <textarea class="synth-textarea" id="synth-1" placeholder="Write your response..."></textarea>
+        </div>
+        <div class="synth-row">
+          <div class="synth-q">Are there parts of your vision that don't yet connect to a clear value? What value might be missing?</div>
+          <textarea class="synth-textarea" id="synth-2" placeholder="Write your response..."></textarea>
+        </div>
+        <div class="synth-row">
+          <div class="synth-q">If someone challenged your vision, which value would you return to first to defend it? Why?</div>
+          <textarea class="synth-textarea" id="synth-3" placeholder="Write your response..."></textarea>
+        </div>
+        <div class="synth-row">
+          <div class="synth-q">Who is your vision most accountable to — and which of your values holds that accountability?</div>
+          <textarea class="synth-textarea" id="synth-4" placeholder="Write your response..."></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <button class="btn-teal" onclick="saveProgress()">💾 Save Progress</button>
+    <button class="btn-primary" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <button class="btn-ghost" onclick="clearAll()">↺ Start Over</button>
+  </div>
+  <div class="save-msg" id="save-msg">Progress saved ✓</div>
+
+  <!-- FOOTER -->
+  <div class="page-footer">
+    <div class="footer-brand"><strong>Becoming the Leader Only You Can Be</strong> · Life Aligned Center for Leadership & Justice Studies</div>
+    <div class="footer-note">Module 3, Lesson 1 · Vision-Values Connection Map</div>
+  </div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────
+const VALUES = [
+  { name: "Equity",       desc: "Fairness and justice for all" },
+  { name: "Community",    desc: "Belonging, connection, collective care" },
+  { name: "Integrity",    desc: "Doing right even when unseen" },
+  { name: "Courage",      desc: "Acting despite fear or risk" },
+  { name: "Excellence",   desc: "Pursuing the highest standard" },
+  { name: "Service",      desc: "Contributing beyond yourself" },
+  { name: "Authenticity", desc: "Being fully, honestly yourself" },
+  { name: "Justice",      desc: "Challenging systems that harm" },
+  { name: "Education",    desc: "Learning as liberation" },
+  { name: "Resilience",   desc: "Rising through difficulty" },
+  { name: "Belonging",    desc: "No one left on the outside" },
+  { name: "Legacy",       desc: "Building for those who come after" },
+  { name: "Custom",       desc: "", custom: true },
+];
+
+const SPOKE_COLORS = ["var(--teal)", "var(--gold)", "var(--lav)", "#4FC3F7", "#A5D6A7"];
+
+let selected = new Set();
+let connData = {};
+let customValue = "";
+
+// ── INIT ─────────────────────────────────────────────────────────────────
+function init() {
+  renderValuesGrid();
+  loadProgress();
+  bindListeners();
+}
+
+function bindListeners() {
+  document.getElementById("vision-input").addEventListener("input", () => {
+    document.getElementById("map-vision-text").textContent =
+      document.getElementById("vision-input").value.trim() || "Your vision will appear here once you type it above.";
+    updateProgress();
+  });
+  ["synth-1","synth-2","synth-3","synth-4"].forEach(id => {
+    document.getElementById(id).addEventListener("input", updateProgress);
+  });
+}
+
+// ── RENDER VALUES GRID ────────────────────────────────────────────────────
+function renderValuesGrid() {
+  const grid = document.getElementById("values-grid");
+  grid.innerHTML = "";
+  VALUES.forEach((v, i) => {
+    const card = document.createElement("div");
+    card.className = "value-card" + (v.custom ? " custom-card" : "") + (selected.has(v.name) ? " selected" : "");
+    card.dataset.idx = i;
+    if (v.custom) {
+      card.innerHTML = `<div class="value-check"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+        <input class="custom-input" id="custom-val-input" placeholder="+ Add your own value" value="${customValue}" />
+        <div class="value-desc" style="margin-top:4px">From your Module 1 Values Card Sort</div>`;
+      card.addEventListener("click", (e) => {
+        if (e.target.tagName === "INPUT") return;
+        toggleCustom(card);
+      });
+      const inp = card.querySelector("input");
+      inp.addEventListener("input", e => {
+        customValue = e.target.value.trim();
+        if (selected.has("Custom") && customValue) {
+          selected.delete("Custom");
+          selected.add(customValue || "Custom");
+        }
+        renderConnections();
+        renderSpokes();
+      });
+    } else {
+      card.innerHTML = `<div class="value-check"><svg viewBox="0 0 14 14"><polyline points="2,7 6,11 12,3"/></svg></div>
+        <div class="value-name">${v.name}</div>
+        <div class="value-desc">${v.desc}</div>`;
+      card.addEventListener("click", () => toggleValue(v.name, card));
+    }
+    grid.appendChild(card);
+  });
+}
+
+function toggleValue(name, card) {
+  if (selected.has(name)) {
+    selected.delete(name);
+    card.classList.remove("selected");
+  } else {
+    if (selected.size >= 5) { showMsg("Select up to 5 values."); return; }
+    selected.add(name);
+    card.classList.add("selected");
+  }
+  renderConnections();
+  renderSpokes();
+  updateProgress();
+}
+
+function toggleCustom(card) {
+  const name = customValue || "Custom";
+  if (selected.has(name)) {
+    selected.delete(name);
+    card.classList.remove("selected");
+  } else {
+    if (selected.size >= 5) { showMsg("Select up to 5 values."); return; }
+    selected.add(name);
+    card.classList.add("selected");
+  }
+  renderConnections();
+  renderSpokes();
+  updateProgress();
+}
+
+// ── RENDER SPOKES MAP ─────────────────────────────────────────────────────
+function renderSpokes() {
+  const spokes = document.getElementById("map-spokes");
+  const empty = document.getElementById("map-empty");
+  const arr = [...selected];
+  if (arr.length === 0) {
+    spokes.innerHTML = "";
+    if (!document.getElementById("map-empty")) {
+      const d = document.createElement("div");
+      d.className = "map-empty"; d.id = "map-empty";
+      d.textContent = "Select your values above to see them appear here.";
+      spokes.appendChild(d);
+    }
+    return;
+  }
+  spokes.innerHTML = arr.map((v, i) =>
+    `<div class="map-spoke" style="border-color:${SPOKE_COLORS[i]}; background: ${SPOKE_COLORS[i]}18">
+       <span class="spoke-dot" style="background:${SPOKE_COLORS[i]}"></span>${v}
+     </div>`
+  ).join("");
+}
+
+// ── RENDER CONNECTIONS ────────────────────────────────────────────────────
+function renderConnections() {
+  const list = document.getElementById("conn-list");
+  const arr = [...selected];
+  list.innerHTML = "";
+  arr.forEach((v, i) => {
+    const prev = connData[v] || "";
+    const card = document.createElement("div");
+    card.className = "conn-card";
+    card.innerHTML = `
+      <div class="conn-header">
+        <div class="conn-num" style="background:${SPOKE_COLORS[i]}">${i+1}</div>
+        <div class="conn-title">Value: <strong>${v}</strong></div>
+      </div>
+      <div class="conn-grid">
+        <div class="conn-field">
+          <div class="conn-field-label">My Value</div>
+          <div style="padding:10px 12px; background:${SPOKE_COLORS[i]}18; border:1.5px solid ${SPOKE_COLORS[i]}; border-radius:8px; font-weight:600; font-size:13px">${v}</div>
+        </div>
+        <div class="conn-arrow">→</div>
+        <div class="conn-field">
+          <div class="conn-field-label">How It Shows Up in My Vision</div>
+          <textarea class="conn-textarea" data-val="${v}" placeholder="This value shows up in my vision because...">${prev}</textarea>
+        </div>
+      </div>
+    `;
+    card.querySelector("textarea").addEventListener("input", e => {
+      connData[v] = e.target.value;
+      updateProgress();
+    });
+    list.appendChild(card);
+  });
+}
+
+// ── PROGRESS ─────────────────────────────────────────────────────────────
+function updateProgress() {
+  const checks = [
+    document.getElementById("vision-input").value.trim().length > 0,
+    selected.size >= 1,
+    selected.size >= 3,
+    Object.values(connData).filter(v => v.trim().length > 0).length >= 1,
+    Object.values(connData).filter(v => v.trim().length > 0).length >= selected.size,
+    document.getElementById("synth-1").value.trim().length > 0,
+    document.getElementById("synth-2").value.trim().length > 0,
+    document.getElementById("synth-3").value.trim().length > 0,
+    document.getElementById("synth-4").value.trim().length > 0,
+  ];
+  const pct = Math.round((checks.filter(Boolean).length / checks.length) * 100);
+  document.getElementById("pct-display").textContent = pct + "%";
+  document.getElementById("prog-fill").style.width = pct + "%";
+}
+
+// ── SAVE / LOAD ───────────────────────────────────────────────────────────
+function saveProgress() {
+  try {
+    const data = {
+      vision: document.getElementById("vision-input").value,
+      selected: [...selected],
+      customValue,
+      connData,
+      synth: [1,2,3,4].map(n => document.getElementById("synth-"+n).value),
+    };
+    sessionStorage.setItem("m3l1_vvm", JSON.stringify(data));
+    showMsg("Progress saved ✓");
+  } catch(e) { showMsg("Could not save — try printing instead."); }
+}
+
+function loadProgress() {
+  try {
+    const raw = sessionStorage.getItem("m3l1_vvm");
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    if (d.vision) document.getElementById("vision-input").value = d.vision;
+    document.getElementById("map-vision-text").textContent = d.vision || "Your vision will appear here once you type it above.";
+    if (d.customValue) customValue = d.customValue;
+    if (d.selected) d.selected.forEach(v => selected.add(v));
+    if (d.connData) connData = d.connData;
+    renderValuesGrid();
+    renderSpokes();
+    renderConnections();
+    if (d.synth) d.synth.forEach((v, i) => { document.getElementById("synth-"+(i+1)).value = v; });
+    updateProgress();
+  } catch(e) {}
+}
+
+function clearAll() {
+  if (!confirm("Clear all your responses and start over?")) return;
+  selected.clear(); connData = {}; customValue = "";
+  document.getElementById("vision-input").value = "";
+  document.getElementById("map-vision-text").textContent = "Your vision will appear here once you type it above.";
+  [1,2,3,4].forEach(n => document.getElementById("synth-"+n).value = "");
+  sessionStorage.removeItem("m3l1_vvm");
+  renderValuesGrid();
+  renderSpokes();
+  renderConnections();
+  updateProgress();
+}
+
+function showMsg(msg) {
+  const el = document.getElementById("save-msg");
+  el.textContent = msg;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 3000);
+}
+
+init();
+</script>
+</body>
+</html>
