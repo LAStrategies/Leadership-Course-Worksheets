@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scenario Practice: You're Not the Expected Leader | BTLOYCB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:      #1A2744;
+      --navy-mid:  #243354;
+      --lav:       #C386DE;
+      --lav-dark:  #9B5AB8;
+      --lav-pale:  #F5EBF9;
+      --teal:      #00BFA5;
+      --gold:      #C9A84C;
+      --gold-pale: #FFFBEB;
+      --cream:     #FAF7F2;
+      --white:     #FFFFFF;
+      --muted:     #7B8BA8;
+      --body:      #2D3748;
+      --light:     #F5EBF9;
+      --border:    rgba(26,39,68,0.1);
+      --radius:    12px;
+      --shadow:    0 4px 20px rgba(26,39,68,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--body);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg,
+        transparent, transparent 40px,
+        rgba(195,134,222,0.04) 40px, rgba(195,134,222,0.04) 80px);
+    }
+    .header-inner {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 36px 32px 32px;
+    }
+    .course-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--lav); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .course-label::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 1px; background: var(--lav);
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900; font-size: clamp(22px, 4vw, 34px);
+      color: var(--white); line-height: 1.15; margin-bottom: 6px;
+    }
+    .header h1 span { color: var(--lav); }
+    .header-sub {
+      font-size: 13px; color: rgba(255,255,255,0.45);
+      font-style: italic; margin-bottom: 22px;
+    }
+    .header-badges {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 100px; padding: 5px 12px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .badge-gold {
+      background: rgba(201,168,76,0.18);
+      border: 1px solid rgba(201,168,76,0.38);
+      color: var(--gold);
+    }
+    .badge-lav {
+      background: rgba(195,134,222,0.18);
+      border: 1px solid rgba(195,134,222,0.38);
+      color: var(--lav);
+    }
+
+    /* ── PROGRESS BAR ── */
+    .progress-wrap {
+      max-width: 800px; margin: 0 auto;
+      padding: 20px 32px 0;
+    }
+    .progress-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline; margin-bottom: 8px;
+    }
+    .progress-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .progress-pct { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+    .progress-track {
+      height: 6px; background: #E5D6EF;
+      border-radius: 100px; overflow: hidden; margin-bottom: 20px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--lav), #D9A8EE);
+      border-radius: 100px; width: 0%;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── MAIN ── */
+    .main { max-width: 800px; margin: 0 auto; padding: 28px 32px 0; }
+
+    /* ── INTRO BOX ── */
+    .intro-box {
+      background: var(--white);
+      border-left: 4px solid var(--lav);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 18px; margin-bottom: 24px;
+      font-size: 13.5px; color: var(--muted); line-height: 1.65;
+      box-shadow: var(--shadow);
+    }
+    .intro-box strong { color: var(--navy); font-weight: 700; }
+
+    /* ── SCENARIO CARD ── */
+    .scenario-card {
+      background: var(--navy);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow: 0 6px 28px rgba(26,39,68,0.22);
+    }
+    .scenario-header {
+      background: linear-gradient(135deg, var(--lav-dark) 0%, #6B2D8B 100%);
+      padding: 18px 24px;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .scenario-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .scenario-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.55); margin-bottom: 3px;
+    }
+    .scenario-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 17px; font-weight: 700; color: var(--white);
+    }
+    .scenario-body {
+      padding: 22px 24px 20px;
+    }
+    .scenario-situation {
+      font-family: 'Lato', sans-serif;
+      font-size: 15px; color: rgba(255,255,255,0.82);
+      line-height: 1.7;
+    }
+    .scenario-situation strong {
+      color: var(--lav); font-weight: 700;
+    }
+
+    /* ── APPLY BANNER ── */
+    .apply-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(195,134,222,0.12);
+      border: 1px solid rgba(195,134,222,0.3);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 16px;
+    }
+    .apply-tag {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--lav); white-space: nowrap;
+    }
+    .apply-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px; font-weight: 700; color: var(--lav);
+    }
+
+    /* ── PHASE STRIP ── */
+    .phase-strip {
+      display: flex; gap: 0; margin-bottom: 24px;
+      border-radius: var(--radius); overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .phase-item {
+      flex: 1; padding: 10px 12px; text-align: center;
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px; font-weight: 600;
+      color: var(--muted); background: var(--white);
+      border-right: 1px solid var(--border);
+      transition: all 0.2s;
+    }
+    .phase-item:last-child { border-right: none; }
+    .phase-item.active { background: var(--lav); color: var(--white); }
+    .phase-item.done { background: var(--lav-pale); color: var(--lav-dark); }
+    .phase-num { font-size: 9px; opacity: 0.7; display: block; margin-bottom: 2px; }
+
+    /* ── SCENE SITUATION BOX ── */
+    .scene-situation {
+      background: var(--navy-mid);
+      border-left: 4px solid var(--lav);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px; margin-bottom: 20px;
+      box-shadow: var(--shadow);
+    }
+    .scene-eyebrow {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--lav); margin-bottom: 8px;
+    }
+    .scene-text {
+      font-size: 14px; color: rgba(255,255,255,0.85);
+      line-height: 1.7;
+    }
+    .scene-text em { color: var(--lav); font-style: normal; font-weight: 700; }
+
+    /* ── CHOICE CARDS ── */
+    .choices-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px; font-weight: 700;
+      color: var(--navy); margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+    .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    .choice-btn {
+      width: 100%; background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 10px; padding: 14px 18px;
+      text-align: left; cursor: pointer;
+      font-family: 'Lato', sans-serif;
+      font-size: 13.5px; color: var(--body);
+      line-height: 1.5;
+      display: flex; align-items: flex-start; gap: 12px;
+      transition: all 0.2s; box-shadow: 0 2px 6px rgba(26,39,68,0.06);
+    }
+    .choice-btn:hover:not(:disabled) { border-color: var(--lav); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .choice-btn:disabled { cursor: default; }
+    .choice-btn.selected-right { border-color: var(--teal); background: #EDF9F6; }
+    .choice-btn.selected-caution { border-color: var(--gold); background: var(--gold-pale); }
+    .choice-btn.selected-miss { border-color: #E57373; background: #FFF3F3; }
+    .choice-letter {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--lav); color: white;
+      font-family: 'Poppins', sans-serif; font-size: 11px; font-weight: 700;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .choice-btn.selected-right .choice-letter { background: var(--teal); }
+    .choice-btn.selected-caution .choice-letter { background: var(--gold); }
+    .choice-btn.selected-miss .choice-letter { background: #E57373; }
+
+    /* ── CONSEQUENCE ── */
+    .consequence {
+      border-radius: 10px; padding: 16px 18px;
+      margin-bottom: 16px; font-size: 13px;
+      line-height: 1.65; display: none;
+    }
+    .consequence.show { display: block; }
+    .consequence.good { background: #EDF9F6; border: 1.5px solid var(--teal); }
+    .consequence.caution { background: var(--gold-pale); border: 1.5px solid var(--gold); }
+    .consequence.miss { background: #FFF3F3; border: 1.5px solid #E57373; }
+    .consequence-icon { font-size: 18px; margin-bottom: 6px; display: block; }
+    .consequence-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 13px; margin-bottom: 6px; color: var(--navy); }
+    .consequence.good .consequence-title { color: #005E4E; }
+    .consequence.caution .consequence-title { color: #7B6020; }
+    .consequence.miss .consequence-title { color: #C62828; }
+    .consequence-body { color: var(--body); }
+
+    /* ── CONTINUE BUTTON ── */
+    .btn-next-scene {
+      background: var(--lav); color: white; border: none;
+      border-radius: 8px; padding: 11px 24px;
+      font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; display: none; margin-top: 4px;
+    }
+    .btn-next-scene.show { display: inline-flex; align-items: center; gap: 8px; }
+    .btn-next-scene:hover { background: var(--lav-dark); }
+
+    /* ── Q-CARDS (Reflection) ── */
+    .questions-section { margin-bottom: 28px; }
+    .q-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 14px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transition: box-shadow 0.2s;
+    }
+    .q-card:focus-within {
+      box-shadow: 0 4px 24px rgba(195,134,222,0.18);
+      border-color: rgba(195,134,222,0.4);
+    }
+    .q-header { display: flex; align-items: flex-start; gap: 0; }
+    .q-num {
+      width: 52px; min-width: 52px;
+      padding: 16px 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Poppins', sans-serif;
+      font-size: 18px; font-weight: 700;
+      color: var(--white); flex-shrink: 0;
+    }
+    .q-arrow { font-size: 13px; margin-right: 6px; opacity: 0.7; }
+    .q-prompt-wrap {
+      flex: 1; padding: 14px 16px 14px 12px;
+      border-left: 1px solid rgba(0,0,0,0.06);
+    }
+    .q-prompt {
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--navy); line-height: 1.45;
+    }
+    .q-hint { font-size: 12px; color: var(--muted); margin-top: 4px; font-style: italic; line-height: 1.5; }
+    .q-response-wrap { padding: 0 16px 14px 52px; }
+    textarea.q-response {
+      width: 100%; font-family: 'Lato', sans-serif;
+      font-size: 13.5px; color: var(--body);
+      background: var(--light);
+      border: 1px solid #E0D0EC;
+      border-radius: 8px; padding: 10px 12px;
+      resize: vertical; min-height: 72px;
+      line-height: 1.6; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    textarea.q-response:focus { border-color: var(--lav); background: #FBF5FE; }
+    textarea.q-response::placeholder { color: #A0AABF; font-style: italic; }
+    .char-count { font-size: 10.5px; color: var(--muted); text-align: right; margin-top: 4px; }
+
+    /* Q number colors */
+    .q1 .q-num { background: var(--lav); }
+    .q2 .q-num { background: var(--teal); }
+    .q3 .q-num { background: var(--gold); }
+    .q4 .q-num { background: var(--lav-dark); }
+    .q5 .q-num { background: #3D4F6E; }
+
+    /* ── DECISION BOX ── */
+    .decision-section {
+      background: var(--navy);
+      border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 20px;
+      box-shadow: 0 6px 28px rgba(26,39,68,0.2);
+    }
+    .decision-header {
+      background: linear-gradient(135deg, var(--lav-dark) 0%, #6B2D8B 100%);
+      padding: 16px 22px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .decision-header-icon {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .decision-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); }
+    .decision-sub { font-size: 11.5px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .decision-body { padding: 20px 22px; }
+    .decision-prompt { font-size: 13px; color: rgba(255,255,255,0.55); font-style: italic; margin-bottom: 12px; line-height: 1.6; }
+    textarea.decision-response {
+      width: 100%; font-family: 'Lato', sans-serif;
+      font-size: 14px; color: var(--white);
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; padding: 12px 14px;
+      resize: vertical; min-height: 90px;
+      line-height: 1.65; outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea.decision-response:focus { border-color: var(--lav); }
+    textarea.decision-response::placeholder { color: rgba(255,255,255,0.3); font-style: italic; }
+
+    /* ── YLOS REMINDER ── */
+    .ylos-box { max-width: 800px; margin: 0 auto 20px; padding: 0 32px; }
+    .ylos-inner {
+      background: var(--white);
+      border: 1px solid var(--lav);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .ylos-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      background: var(--lav); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px;
+    }
+    .ylos-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .ylos-text strong { color: var(--navy); }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      max-width: 800px; margin: 0 auto;
+      padding: 0 32px; display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    button {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      font-weight: 700; padding: 10px 18px;
+      border-radius: 8px; cursor: pointer;
+      border: 1px solid rgba(26,39,68,0.2);
+      background: var(--white); color: var(--navy);
+      transition: all 0.2s; letter-spacing: 0.02em;
+    }
+    button:hover { background: var(--lav-pale); border-color: #C9A0DC; }
+    .btn-primary { background: var(--navy); color: var(--cream); border-color: var(--navy); }
+    .btn-primary:hover { background: var(--navy-mid); }
+    .btn-lav { background: var(--lav); color: var(--white); border-color: var(--lav); }
+    .btn-lav:hover { background: var(--lav-dark); }
+
+    .save-msg {
+      max-width: 800px; margin: 10px auto 0;
+      padding: 0 32px; font-size: 12px;
+      color: var(--lav); font-style: italic;
+      min-height: 18px; transition: opacity 0.3s; opacity: 0;
+    }
+    .save-msg.show { opacity: 1; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      max-width: 800px; margin: 32px auto 0; padding: 0 32px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .footer-brand { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--muted); }
+    .footer-brand strong { color: var(--navy); }
+    .footer-note { font-size: 11px; color: var(--muted); font-style: italic; }
+
+    /* hidden sections */
+    .scene-section { display: none; }
+    .scene-section.active { display: block; }
+    .reflection-wrap { display: none; }
+    .reflection-wrap.active { display: block; }
+
+    @media (max-width: 540px) {
+      .header-inner, .main, .progress-wrap,
+      .ylos-box, .btn-row, .page-footer { padding-left: 16px; padding-right: 16px; }
+      .q-response-wrap { padding-left: 16px; }
+      .phase-strip { flex-direction: column; }
+      .phase-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .phase-item:last-child { border-bottom: none; }
+    }
+
+    @media print {
+      body { background: white; }
+      .btn-row, .save-msg, .phase-strip, .btn-next-scene { display: none; }
+      .scenario-card, .q-card, .decision-section { box-shadow: none; }
+      .scene-section { display: block !important; }
+      .reflection-wrap { display: block !important; }
+      textarea { background: #F8F4FE !important; color: #1A2744 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be · Module 3, Lesson 2</div>
+      <h1>Scenario Practice:<br><span>You're Not the Expected Leader</span></h1>
+      <p class="header-sub">"How do you share a vision without alienating the people you care about?"</p>
+      <div class="header-badges">
+        <span class="badge badge-gold">🎭 Scenario Practice</span>
+        <span class="badge badge-lav">⭐ Inspire a Shared Vision</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-row">
+      <span class="progress-label">Your Progress</span>
+      <span class="progress-pct" id="pct-display">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+      <strong>How to use this scenario:</strong> Read the situation, then work through three real decision moments — each one asks you to choose a response and see the consequences play out. After all three scenes, you'll move to reflection questions to connect what you experienced to your own vision. Type your responses directly into the fields. There are no wrong answers in the reflection — but the choices matter.
+    </div>
+
+    <!-- SCENARIO CARD -->
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🎭</div>
+        <div>
+          <div class="scenario-label">Scenario Practice</div>
+          <div class="scenario-title">You're Not the Expected Leader</div>
+        </div>
+      </div>
+      <div class="scenario-body">
+        <p class="scenario-situation">
+          Your friend group talks about <strong>"making it"</strong> — but no one ever says what that actually means. Everyone is talented. Everyone knows it. But lately the conversations feel stuck: complaints about what's not working, jokes about the future that aren't really jokes. You have a <strong>vision for something bigger</strong> — for all of you — but you don't want to seem preachy. You don't want to position yourself as <strong>"better than."</strong> And you're not sure they're ready to hear it.
+        </p>
+        <div class="apply-banner">
+          <span class="apply-tag">Apply →</span>
+          <span class="apply-label">INSPIRE A SHARED VISION</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PHASE STRIP -->
+    <div class="phase-strip" id="phase-strip">
+      <div class="phase-item active" id="ph-1"><span class="phase-num">SCENE 1</span>The Opening</div>
+      <div class="phase-item" id="ph-2"><span class="phase-num">SCENE 2</span>The Pushback</div>
+      <div class="phase-item" id="ph-3"><span class="phase-num">SCENE 3</span>The Invitation</div>
+      <div class="phase-item" id="ph-4"><span class="phase-num">PART 4</span>Reflection</div>
+    </div>
+
+    <!-- ══════════ SCENE 1 ══════════ -->
+    <div class="scene-section active" id="scene-1">
+
+      <div class="scene-situation">
+        <div class="scene-eyebrow">Scene 1 — The Opening</div>
+        <p class="scene-text">You're all hanging out after class. Someone says: <em>"I'm so tired. I don't know why we're even doing all this."</em> The energy drops. Everyone nods. You feel the weight of it — and underneath it, something else. This is the moment where you could say something. Or not.</p>
+      </div>
+
+      <div class="choices-label">→ How do you respond?</div>
+      <div class="choices" id="choices-1">
+        <button class="choice-btn" id="c1A" onclick="choose(1,'A')">
+          <span class="choice-letter">A</span>
+          Launch into your vision: "I've actually been thinking about this — what if we all decided to aim for something bigger together? Here's what I have in mind..."
+        </button>
+        <button class="choice-btn" id="c1B" onclick="choose(1,'B')">
+          <span class="choice-letter">B</span>
+          Ask a question first: "What would 'doing all this' actually feel like if it worked out the way you wanted? Like — what does the good version look like?"
+        </button>
+        <button class="choice-btn" id="c1C" onclick="choose(1,'C')">
+          <span class="choice-letter">C</span>
+          Validate and pivot: "Yeah, I feel that. I've also been sitting with something — what we're actually building toward. Not sure how to say it yet but... can I try?"
+        </button>
+      </div>
+
+      <div class="consequence" id="con-1-A">
+        <span class="consequence-icon">⚡</span>
+        <div class="consequence-title">Technically honest — but it landed wrong.</div>
+        <p class="consequence-body">Your friends go quiet. One of them says "okay, visionary" — half-joking. The moment passes. You shared the vision, but you jumped to Resolution before they knew you'd heard the Context. They felt managed, not invited. Vision without first honoring the feeling in the room often reads as disconnection — even when it comes from genuine care.</p>
+      </div>
+      <div class="consequence" id="con-1-B">
+        <span class="consequence-icon">✅</span>
+        <div class="consequence-title">This is exactly the move.</div>
+        <p class="consequence-body">The group opens up. Three people share what they actually want — some of which surprises you. You're listening, not leading yet. But by the end of the conversation, you've learned what your vision needs to include to actually reach them. You invited before you declared — and now you know their entry point. This is how shared vision begins: not with a speech, but with a question.</p>
+      </div>
+      <div class="consequence" id="con-1-C">
+        <span class="consequence-icon">🌟</span>
+        <div class="consequence-title">Good instinct — honest and grounded.</div>
+        <p class="consequence-body">Validating the feeling first lowers the stakes. Saying "I'm not sure how to say it yet" signals humility, not weakness. Your friends lean in — they're curious. You've created an opening without claiming you have all the answers. This is honest leadership, and it works especially well when you're still shaping the vision yourself.</p>
+      </div>
+
+      <button class="btn-next-scene" id="btn-next-1" onclick="nextScene(2)">Continue to Scene 2 →</button>
+    </div>
+
+    <!-- ══════════ SCENE 2 ══════════ -->
+    <div class="scene-section" id="scene-2">
+
+      <div class="scene-situation">
+        <div class="scene-eyebrow">Scene 2 — The Pushback</div>
+        <p class="scene-text">A week later. You've started sharing your vision more openly. A close friend pulls you aside: <em>"I don't know — it just feels like you're trying to be the leader of the group. Nobody asked for that."</em> This is a credibility and personal objection — and it's coming from someone you care about. How you respond here determines whether you build a bridge or burn one.</p>
+      </div>
+
+      <div class="choices-label">→ How do you respond?</div>
+      <div class="choices" id="choices-2">
+        <button class="choice-btn" id="c2A" onclick="choose(2,'A')">
+          <span class="choice-letter">A</span>
+          Defend yourself: "I'm not trying to be the leader of anything. I'm just trying to get us to think bigger. Someone has to."
+        </button>
+        <button class="choice-btn" id="c2B" onclick="choose(2,'B')">
+          <span class="choice-letter">B</span>
+          Back down completely: "You're right, I'll stop. I don't want to make it weird."
+        </button>
+        <button class="choice-btn" id="c2C" onclick="choose(2,'C')">
+          <span class="choice-letter">C</span>
+          Get curious without abandoning the vision: "That's fair — I appreciate you telling me. What's feeling off about it? I don't want to leave anyone behind."
+        </button>
+      </div>
+
+      <div class="consequence" id="con-2-A">
+        <span class="consequence-icon">⚠️</span>
+        <div class="consequence-title">You're not wrong — but the defensiveness closes the door.</div>
+        <p class="consequence-body">"Someone has to" positions you above the group. Your friend hears it as confirmation of what they suspected. The relationship cools. Your vision is still valid — but you've made it harder to bring this person in. When resistance comes from people you care about, defensiveness reads as detachment. Their concern is real, even if the framing is imperfect.</p>
+      </div>
+      <div class="consequence" id="con-2-B">
+        <span class="consequence-icon">⚠️</span>
+        <div class="consequence-title">This protects the relationship — but costs you the vision.</div>
+        <p class="consequence-body">Your friend relaxes. But the momentum stops. And over time you wonder if you abandoned something real just to keep the peace. There's a difference between adjusting how you communicate and abandoning what you believe. The goal is not to stop leading — it's to lead in a way that honors the relationship. Backing down completely isn't humility. It's self-erasure.</p>
+      </div>
+      <div class="consequence" id="con-2-C">
+        <span class="consequence-icon">✅</span>
+        <div class="consequence-title">Curiosity over defensiveness — every time.</div>
+        <p class="consequence-body">Your friend pauses. Then says: "I just don't want it to feel like you're pulling away from us." You hear it now: the concern isn't about leadership — it's about belonging. You say: "I don't want that either. Actually, the whole reason I care about this is because of us." The conversation shifts. You've met resistance with curiosity, heard the real concern, and reframed without backing down. This is how vision survives pushback.</p>
+      </div>
+
+      <button class="btn-next-scene" id="btn-next-2" onclick="nextScene(3)">Continue to Scene 3 →</button>
+    </div>
+
+    <!-- ══════════ SCENE 3 ══════════ -->
+    <div class="scene-section" id="scene-3">
+
+      <div class="scene-situation">
+        <div class="scene-eyebrow">Scene 3 — The Invitation</div>
+        <p class="scene-text">Your group is together again. The energy has shifted — there's been more honest conversation. You feel the moment. You want to share your vision for real, for all of them. You have 90 seconds. How you open this determines whether it lands as a declaration — or a shared possibility.</p>
+      </div>
+
+      <div class="choices-label">→ How do you begin?</div>
+      <div class="choices" id="choices-3">
+        <button class="choice-btn" id="c3A" onclick="choose(3,'A')">
+          <span class="choice-letter">A</span>
+          "I want to share something I've been building in my head, and I want your honest reaction. It's about all of us — not just me."
+        </button>
+        <button class="choice-btn" id="c3B" onclick="choose(3,'B')">
+          <span class="choice-letter">B</span>
+          "I have a vision for where we could all be in five years. Here it is..." [then delivers a polished, complete vision pitch]
+        </button>
+        <button class="choice-btn" id="c3C" onclick="choose(3,'C')">
+          <span class="choice-letter">C</span>
+          "You know how we've been talking about what 'making it' actually means? I've been thinking about what it could look like — and I keep coming back to all of you."
+        </button>
+      </div>
+
+      <div class="consequence" id="con-3-A">
+        <span class="consequence-icon">🌟</span>
+        <div class="consequence-title">Humble, inclusive, and specific — this lands.</div>
+        <p class="consequence-body">"I want your honest reaction" disarms the room before you've said anything. It signals this isn't a declaration — it's a conversation. "It's about all of us" tells them they're inside the vision, not just being recruited into yours. Your friends lean in. They're ready to hear it. This is the Invitation done right.</p>
+      </div>
+      <div class="consequence" id="con-3-B">
+        <span class="consequence-icon">⚡</span>
+        <div class="consequence-title">The vision is real — but it landed as a presentation.</div>
+        <p class="consequence-body">Your friends listen, but someone says "wow, that's ambitious" — supportive but distant. The polished pitch signals the vision was already formed without them, which makes it harder to invite them in. With peers and close community, the energy of the opening matters more than the polish of the content. You needed to begin in the "we" — not the "I."</p>
+      </div>
+      <div class="consequence" id="con-3-C">
+        <span class="consequence-icon">✅</span>
+        <div class="consequence-title">The strongest opening in this context.</div>
+        <p class="consequence-body">You started with their words — "making it" — which they immediately recognize. You've been listening. "I keep coming back to all of you" signals the vision emerged from them, not apart from them. Someone says "okay, what does that look like?" That question is the moment. You've earned the Invitation — now share the vision.</p>
+      </div>
+
+      <button class="btn-next-scene" id="btn-next-3" onclick="nextScene('reflection')">Move to Reflection →</button>
+    </div>
+
+    <!-- ══════════ REFLECTION ══════════ -->
+    <div class="reflection-wrap" id="reflection-wrap">
+
+      <div class="questions-section">
+
+        <div class="q-card q1">
+          <div class="q-header">
+            <div class="q-num">1</div>
+            <div class="q-prompt-wrap">
+              <div class="q-prompt"><span class="q-arrow">→</span> In Scene 1, why does asking a question before sharing your vision matter — especially with people you're close to?</div>
+              <div class="q-hint">Think about the difference between inspiring and persuading. What did the question do that a speech couldn't? How does it change who owns the vision?</div>
+            </div>
+          </div>
+          <div class="q-response-wrap">
+            <textarea class="q-response" id="r1" placeholder="Asking a question first matters because…" rows="3" oninput="update()"></textarea>
+            <div class="char-count" id="cc1">0 characters</div>
+          </div>
+        </div>
+
+        <div class="q-card q2">
+          <div class="q-header">
+            <div class="q-num">2</div>
+            <div class="q-prompt-wrap">
+              <div class="q-prompt"><span class="q-arrow">→</span> In Scene 2, the real concern behind the pushback wasn't about leadership — it was about belonging. How do you tell the difference between the stated objection and the one underneath it?</div>
+              <div class="q-hint">What would you have missed if you'd responded only to the surface objection? What does this teach you about how to navigate resistance from people you care about?</div>
+            </div>
+          </div>
+          <div class="q-response-wrap">
+            <textarea class="q-response" id="r2" placeholder="The difference between a surface objection and the real one is…" rows="3" oninput="update()"></textarea>
+            <div class="char-count" id="cc2">0 characters</div>
+          </div>
+        </div>
+
+        <div class="q-card q3">
+          <div class="q-header">
+            <div class="q-num">3</div>
+            <div class="q-prompt-wrap">
+              <div class="q-prompt"><span class="q-arrow">→</span> What made the difference between the moments that landed and those that didn't — when sharing a vision without seeming preachy or "better than"?</div>
+              <div class="q-hint">Think about language, posture, and entry point. What shifted when the opening was a question vs. a declaration?</div>
+            </div>
+          </div>
+          <div class="q-response-wrap">
+            <textarea class="q-response" id="r3" placeholder="What made the difference was…" rows="3" oninput="update()"></textarea>
+            <div class="char-count" id="cc3">0 characters</div>
+          </div>
+        </div>
+
+        <div class="q-card q4">
+          <div class="q-header">
+            <div class="q-num">4</div>
+            <div class="q-prompt-wrap">
+              <div class="q-prompt"><span class="q-arrow">→</span> Think about your own friend group, family, or community. When you imagine sharing your vision with them — what moment are you most afraid of? What does this scenario teach you about how to navigate it?</div>
+              <div class="q-hint">Be specific. Name the fear, then name the move.</div>
+            </div>
+          </div>
+          <div class="q-response-wrap">
+            <textarea class="q-response" id="r4" placeholder="The moment I'm most afraid of is… and what I'd do is…" rows="3" oninput="update()"></textarea>
+            <div class="char-count" id="cc4">0 characters</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- MY DECISION -->
+      <div class="decision-section">
+        <div class="decision-header">
+          <div class="decision-header-icon">✍️</div>
+          <div>
+            <div class="decision-title">My Vision Statement for This Community</div>
+            <div class="decision-sub">Draft a 2–3 sentence version you could share with your closest community right now</div>
+          </div>
+        </div>
+        <div class="decision-body">
+          <p class="decision-prompt">Use "we" before "I." Root it in something shared between you. Then give them a role — show them they're inside the vision, not outside of it. Write it the way you'd actually say it to them.</p>
+          <textarea class="decision-response" id="r5" placeholder="You know how we… I've been thinking about what it could look like if we… What I'd want for all of us is… and the role I'm inviting you into is…" rows="5" oninput="update()"></textarea>
+        </div>
+      </div>
+
+    </div><!-- /.reflection-wrap -->
+
+  </div><!-- /.main -->
+
+  <!-- YLOS REMINDER -->
+  <div class="ylos-box">
+    <div class="ylos-inner">
+      <div class="ylos-icon">📘</div>
+      <div class="ylos-text">
+        <strong>Add to Your YLOS — Module 3, Section 3.3:</strong> Your vision statement draft from this scenario is a real practice run for audience-specific communication. Copy your "My Vision Statement for This Community" response into your Vision Communication Playbook under the "Peers & Close Community" audience. Returning to it when you face a real version of this moment will remind you that you've already thought it through.
+      </div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <button class="btn-primary" onclick="saveWork()">💾 Save My Work</button>
+    <button class="btn-lav" onclick="printSheet()">🖨 Print / Save as PDF</button>
+    <button onclick="resetAll()">↺ Reset</button>
+  </div>
+  <div class="save-msg" id="save-msg">✓ Responses saved to this browser</div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-brand"><strong>BTLOYCB</strong> · Life Aligned Center for Leadership & Justice Studies</div>
+    <div class="footer-note">Module 3, Lesson 2 · Scenario Practice</div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'btloycb_m3l2_scenario';
+    const REFLECT_FIELDS = ['r1','r2','r3','r4','r5'];
+    const CONSEQUENCES = {
+      '1-A': 'caution', '1-B': 'good', '1-C': 'good',
+      '2-A': 'caution', '2-B': 'caution', '2-C': 'good',
+      '3-A': 'good',    '3-B': 'caution', '3-C': 'good',
+    };
+
+    let choices = {};
+    let scenesComplete = 0;
+
+    function choose(scene, letter) {
+      if (choices[scene]) return;
+      choices[scene] = letter;
+
+      const key = scene + '-' + letter;
+      const type = CONSEQUENCES[key];
+
+      // Style all buttons in this scene
+      ['A','B','C'].forEach(l => {
+        const btn = document.getElementById('c' + scene + l);
+        if (!btn) return;
+        btn.disabled = true;
+        btn.style.cursor = 'default';
+        if (l === letter) {
+          if (type === 'good') btn.classList.add('selected-right');
+          else btn.classList.add('selected-caution');
+        }
+      });
+
+      // Show consequence
+      const conEl = document.getElementById('con-' + scene + '-' + letter);
+      if (conEl) {
+        conEl.className = 'consequence ' + type + ' show';
+      }
+
+      // Show continue button
+      const nextBtn = document.getElementById('btn-next-' + scene);
+      if (nextBtn) nextBtn.classList.add('show');
+
+      update();
+    }
+
+    function nextScene(next) {
+      if (next === 'reflection') {
+        document.getElementById('scene-3').classList.remove('active');
+        document.getElementById('reflection-wrap').classList.add('active');
+        setPhase(4);
+      } else {
+        document.getElementById('scene-' + (next - 1)).classList.remove('active');
+        document.getElementById('scene-' + next).classList.add('active');
+        setPhase(next);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      update();
+    }
+
+    function setPhase(active) {
+      [1,2,3,4].forEach(n => {
+        const el = document.getElementById('ph-' + n);
+        if (!el) return;
+        el.classList.remove('active', 'done');
+        if (n < active) el.classList.add('done');
+        else if (n === active) el.classList.add('active');
+      });
+    }
+
+    function update() {
+      // Char counts
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('r' + i);
+        const cc = document.getElementById('cc' + i);
+        if (el && cc) cc.textContent = el.value.length + ' characters';
+      }
+
+      // Progress: 3 scenes + 5 reflection fields = 8 total
+      const scenesDone = Object.keys(choices).length;
+      const reflDone = REFLECT_FIELDS.filter(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim().length > 0;
+      }).length;
+      const total = 3 + REFLECT_FIELDS.length;
+      const pct = Math.round(((scenesDone + reflDone) / total) * 100);
+      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('pct-display').textContent = pct + '%';
+    }
+
+    function saveWork() {
+      const data = { choices };
+      REFLECT_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = el.value;
+      });
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        const msg = document.getElementById('save-msg');
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 2500);
+      } catch(e) {}
+    }
+
+    function loadWork() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        const data = JSON.parse(saved);
+
+        // Restore choices
+        if (data.choices) {
+          Object.entries(data.choices).forEach(([scene, letter]) => {
+            const sc = parseInt(scene);
+            choices[sc] = letter;
+            const key = sc + '-' + letter;
+            const type = CONSEQUENCES[key];
+            ['A','B','C'].forEach(l => {
+              const btn = document.getElementById('c' + sc + l);
+              if (!btn) return;
+              btn.disabled = true; btn.style.cursor = 'default';
+              if (l === letter) btn.classList.add(type === 'good' ? 'selected-right' : 'selected-caution');
+            });
+            const conEl = document.getElementById('con-' + sc + '-' + letter);
+            if (conEl) conEl.className = 'consequence ' + type + ' show';
+            const nextBtn = document.getElementById('btn-next-' + sc);
+            if (nextBtn) nextBtn.classList.add('show');
+          });
+        }
+
+        // Restore text fields
+        REFLECT_FIELDS.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && data[id]) el.value = data[id];
+        });
+        update();
+      } catch(e) {}
+    }
+
+    function resetAll() {
+      if (!confirm('Clear all responses? This cannot be undone.')) return;
+      choices = {};
+      REFLECT_FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      // Reset buttons
+      [1,2,3].forEach(s => {
+        ['A','B','C'].forEach(l => {
+          const btn = document.getElementById('c' + s + l);
+          if (btn) { btn.disabled = false; btn.style.cursor = 'pointer'; btn.className = 'choice-btn'; }
+        });
+        const conEls = document.querySelectorAll(`[id^="con-${s}-"]`);
+        conEls.forEach(el => el.className = 'consequence');
+        const nextBtn = document.getElementById('btn-next-' + s);
+        if (nextBtn) nextBtn.classList.remove('show');
+      });
+      // Reset scenes
+      document.querySelectorAll('.scene-section').forEach(el => el.classList.remove('active'));
+      document.getElementById('scene-1').classList.add('active');
+      document.getElementById('reflection-wrap').classList.remove('active');
+      setPhase(1);
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+      update();
+    }
+
+    function printSheet() { window.print(); }
+
+    loadWork();
+  </script>
+
+</body>
+</html>
