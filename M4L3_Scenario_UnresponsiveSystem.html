@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scenario: The Unresponsive System | BTLOYCB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:      #1B2A5E;
+      --navy-mid:  #243566;
+      --teal:      #1A8F8C;
+      --teal-lt:   #C8E8E7;
+      --teal-deep: #0D6B68;
+      --lav:       #8B6FBE;
+      --lav-lt:    #E8E0F5;
+      --lav-mid:   #B8A4D8;
+      --gold:      #C9A84C;
+      --gold-lt:   #FFF8E1;
+      --green:     #1E7E5A;
+      --green-lt:  #D4EDE3;
+      --sect-bg:   #E8EBF4;
+      --cream:     #F5F7F5;
+      --white:     #FFFFFF;
+      --muted:     #6B7A99;
+      --body:      #1B2A5E;
+      --border:    rgba(27,42,94,0.1);
+      --radius:    12px;
+      --shadow:    0 4px 20px rgba(27,42,94,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--body);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      background: var(--navy);
+      position: relative;
+      overflow: hidden;
+    }
+    .header::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg,
+        transparent, transparent 28px,
+        rgba(139,111,190,0.05) 28px, rgba(139,111,190,0.05) 56px,
+        transparent 56px, transparent 84px,
+        rgba(26,143,140,0.04) 84px, rgba(26,143,140,0.04) 112px);
+    }
+    .header::after {
+      content: ''; position: absolute; left:0; top:0; bottom:0;
+      width: 5px; background: var(--teal);
+    }
+    .header-inner {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 36px 32px 32px 40px;
+    }
+    .course-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+    }
+    .course-label::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 1px; background: var(--teal);
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900; font-size: clamp(22px, 4vw, 34px);
+      color: var(--white); line-height: 1.15; margin-bottom: 6px;
+    }
+    .header-sub {
+      font-size: 13px; color: rgba(255,255,255,0.45);
+      font-style: italic; margin-bottom: 22px;
+    }
+    .header-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 100px; padding: 5px 12px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .badge-teal  { background: rgba(26,143,140,0.18); border: 1px solid rgba(26,143,140,0.4); color: var(--teal-lt); }
+    .badge-lav   { background: rgba(139,111,190,0.22); border: 1px solid rgba(139,111,190,0.45); color: var(--lav-mid); }
+    .badge-gold  { background: rgba(201,168,76,0.22); border: 1px solid rgba(201,168,76,0.45); color: #F0D080; }
+    .badge-navy  { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7); }
+
+    /* ── PROGRESS ── */
+    .progress-section {
+      background: var(--white); border-bottom: 1px solid var(--border); padding: 14px 32px;
+      max-width: 800px; margin: 0 auto;
+    }
+    .progress-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 8px; font-size: 12px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    }
+    .pct { color: var(--teal); font-weight: 900; font-size: 14px; }
+    .progress-track { height: 6px; background: var(--sect-bg); border-radius: 3px; overflow: hidden; }
+    .progress-fill {
+      height: 100%; width: 0%;
+      background: linear-gradient(90deg, var(--teal-deep), var(--teal), var(--lav));
+      border-radius: 3px; transition: width 0.4s ease;
+    }
+
+    /* ── MAIN ── */
+    .main { max-width: 800px; margin: 0 auto; padding: 28px 32px 0; }
+
+    /* ── INTRO ── */
+    .intro-box {
+      background: var(--white); border-left: 4px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 18px; margin-bottom: 24px;
+      font-size: 13.5px; color: var(--muted); line-height: 1.65;
+      box-shadow: var(--shadow);
+    }
+    .intro-box strong { color: var(--navy); }
+
+    /* ── SCENARIO CARD ── */
+    .scenario-card {
+      background: var(--navy); border-radius: var(--radius); overflow: hidden;
+      margin-bottom: 24px; box-shadow: 0 6px 28px rgba(27,42,94,0.22);
+    }
+    .scenario-header {
+      background: linear-gradient(135deg, var(--teal-deep) 0%, var(--teal) 100%);
+      padding: 16px 24px; display: flex; align-items: center; gap: 14px;
+    }
+    .scenario-icon { font-size: 26px; }
+    .scenario-label { font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 2px; }
+    .scenario-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; color: var(--white); }
+    .scenario-body { padding: 20px 24px 16px; }
+    .scenario-situation { font-size: 14.5px; line-height: 1.72; color: rgba(255,255,255,0.88); margin-bottom: 16px; }
+    .scenario-situation strong { color: var(--teal-lt); }
+    .apply-banner {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(26,143,140,0.18); border: 1px solid rgba(26,143,140,0.35);
+      border-radius: 8px; padding: 10px 16px;
+    }
+    .apply-tag { font-size: 11px; font-weight: 700; color: var(--teal-lt); letter-spacing: 0.08em; text-transform: uppercase; }
+    .apply-label { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700; color: var(--white); }
+
+    /* ── CONTEXT ── */
+    .context-box {
+      background: var(--lav-lt); border-left: 4px solid var(--lav);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 18px; margin-bottom: 24px;
+      font-size: 13px; color: var(--navy); line-height: 1.65;
+      box-shadow: var(--shadow);
+    }
+    .context-box strong { color: var(--lav); }
+
+    /* ── ESCALATION TRACKER ── */
+    .tracker {
+      background: var(--white); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 28px;
+      box-shadow: var(--shadow); border-top: 3px solid var(--gold);
+    }
+    .tracker-title {
+      font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700;
+      color: var(--navy); margin-bottom: 6px;
+    }
+    .tracker-sub { font-size: 12.5px; color: var(--muted); margin-bottom: 16px; line-height: 1.5; }
+    .tracker-stages { display: flex; gap: 0; }
+    .stage {
+      flex: 1; padding: 10px 12px; border: 2px solid #E0E0E0; border-right: none;
+      cursor: pointer; transition: all 0.2s; text-align: center;
+      background: white;
+    }
+    .stage:first-child { border-radius: 8px 0 0 8px; }
+    .stage:last-child { border-radius: 0 8px 8px 0; border-right: 2px solid #E0E0E0; }
+    .stage.active-speak  { background: var(--teal-lt); border-color: var(--teal); }
+    .stage.active-wait   { background: var(--lav-lt); border-color: var(--lav); }
+    .stage.active-escalate { background: var(--gold-lt); border-color: var(--gold); }
+    .stage-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+    .stage.active-speak .stage-label   { color: var(--teal); }
+    .stage.active-wait .stage-label    { color: var(--lav); }
+    .stage.active-escalate .stage-label{ color: var(--gold); }
+    .stage-icon { font-size: 18px; margin-bottom: 4px; }
+    .stage-rationale { margin-top: 12px; font-size: 12.5px; color: var(--muted); line-height: 1.55; font-style: italic; display: none; }
+    .stage-rationale.visible { display: block; }
+    .tracker-response-wrap { margin-top: 14px; }
+    .tracker-response {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 10px 12px; font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--body); resize: vertical; background: var(--cream); outline: none;
+      transition: border-color 0.2s;
+    }
+    .tracker-response:focus { border-color: var(--gold); background: white; }
+
+    /* ── QUESTIONS ── */
+    .questions-section { display: flex; flex-direction: column; gap: 20px; margin-bottom: 28px; }
+
+    .q-card {
+      background: var(--white); border-radius: var(--radius);
+      overflow: hidden; box-shadow: var(--shadow);
+    }
+    .q-card.q1 { border-top: 3px solid var(--teal); }
+    .q-card.q2 { border-top: 3px solid var(--lav); }
+    .q-card.q3 { border-top: 3px solid var(--navy); }
+    .q-card.q4 { border-top: 3px solid var(--gold); }
+
+    .q-header { display: flex; gap: 14px; align-items: flex-start; padding: 18px 20px 12px; }
+    .q-num {
+      width: 32px; height: 32px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .q1 .q-num { background: var(--teal); color: white; }
+    .q2 .q-num { background: var(--lav); color: white; }
+    .q3 .q-num { background: var(--navy); color: white; }
+    .q4 .q-num { background: var(--gold); color: white; }
+
+    .q-prompt-wrap { flex: 1; }
+    .q-arrow { font-weight: 700; margin-right: 4px; }
+    .q1 .q-arrow { color: var(--teal); }
+    .q2 .q-arrow { color: var(--lav); }
+    .q3 .q-arrow { color: var(--navy); }
+    .q4 .q-arrow { color: var(--gold); }
+    .q-prompt { font-size: 14.5px; font-weight: 700; color: var(--navy); line-height: 1.4; margin-bottom: 6px; }
+    .q-hint { font-size: 12.5px; color: var(--muted); line-height: 1.55; font-style: italic; }
+
+    .q-response-wrap { padding: 0 20px 16px; }
+    .q-response {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--body); resize: vertical; background: var(--cream); outline: none;
+      transition: border-color 0.2s;
+    }
+    .q1 .q-response:focus { border-color: var(--teal); background: white; }
+    .q2 .q-response:focus { border-color: var(--lav); background: white; }
+    .q3 .q-response:focus { border-color: var(--navy); background: white; }
+    .q4 .q-response:focus { border-color: var(--gold); background: white; }
+    .char-count { margin-top: 4px; font-size: 11px; color: var(--muted); text-align: right; }
+
+    /* ── ADVOCACY MOVE ── */
+    .move-section {
+      background: var(--navy); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 28px; box-shadow: var(--shadow);
+    }
+    .move-header {
+      padding: 16px 22px; display: flex; align-items: center; gap: 14px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(139,111,190,0.15);
+    }
+    .move-header-icon { font-size: 24px; }
+    .move-title { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 17px; color: white; }
+    .move-sub { font-size: 12px; color: rgba(255,255,255,0.5); font-style: italic; margin-top: 2px; }
+    .move-body { padding: 18px 22px 20px; }
+    .move-prompt { font-size: 13.5px; color: rgba(255,255,255,0.7); line-height: 1.6; margin-bottom: 14px; }
+    .move-response {
+      width: 100%; border: 1.5px solid rgba(139,111,190,0.35); border-radius: 8px;
+      padding: 12px 14px; font-family: 'Lato', sans-serif; font-size: 14px;
+      color: white; resize: vertical; background: rgba(255,255,255,0.06); outline: none;
+      transition: border-color 0.2s;
+    }
+    .move-response:focus { border-color: var(--lav-mid); background: rgba(255,255,255,0.1); }
+    .move-response::placeholder { color: rgba(255,255,255,0.3); }
+
+    /* ── YLOS ── */
+    .ylos-box { max-width: 800px; margin: 0 auto 0; padding: 0 32px; }
+    .ylos-inner {
+      background: var(--lav-lt); border-left: 4px solid var(--lav);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px; display: flex; gap: 14px; align-items: flex-start;
+    }
+    .ylos-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+    .ylos-text { font-size: 13px; color: var(--navy); line-height: 1.65; }
+    .ylos-text strong { color: var(--lav); }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      max-width: 800px; margin: 24px auto 0; padding: 0 32px;
+    }
+    .btn-primary { padding: 10px 20px; border-radius: 8px; border: none; background: var(--navy); color: white; font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+    .btn-lav     { padding: 10px 20px; border-radius: 8px; border: none; background: var(--lav); color: white; font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .btn-reset   { padding: 10px 20px; border-radius: 8px; border: none; background: var(--sect-bg); color: var(--muted); font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; }
+    .btn-primary:hover, .btn-lav:hover { opacity: 0.88; }
+
+    .save-msg { max-width: 800px; margin: 10px auto 0; padding: 0 32px; font-size: 12px; color: var(--teal); font-weight: 700; opacity: 0; transition: opacity 0.3s; }
+    .save-msg.show { opacity: 1; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      max-width: 800px; margin: 28px auto 0; padding: 16px 32px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 11px; color: var(--muted);
+    }
+    .footer-brand strong { color: var(--navy); }
+
+    @media print {
+      .btn-row, .save-msg, .progress-section { display: none !important; }
+      .q-response, .move-response, .tracker-response { background: white !important; color: black !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Module 4 · Lesson 3 · Challenge the Process</div>
+      <h1>Scenario: The Unresponsive System</h1>
+      <div class="header-sub">Advocating for Change in Institutional Spaces</div>
+      <div class="header-badges">
+        <span class="badge badge-teal">🏛 Interactive Scenario</span>
+        <span class="badge badge-lav">⏱ 20–25 min</span>
+        <span class="badge badge-gold">📘 Adds to YLOS</span>
+        <span class="badge badge-navy">Navigate · Frame · Escalate</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-section">
+    <div class="progress-header">
+      <span>Your progress</span>
+      <span class="pct" id="pct-display">0%</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="prog-fill"></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+      <strong>How to use this scenario:</strong> Read the situation carefully. Then work through the escalation decision, the four reflection questions, and the "My Advocacy Move" synthesis. This scenario applies the full Lesson 3 framework — pre-suasion strategy, framing language, and the Speak/Wait/Escalate decision. There are no wrong answers. The goal is practice before you face this situation in real life.
+    </div>
+
+    <!-- SCENARIO CARD -->
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">🏛</div>
+        <div>
+          <div class="scenario-label">Scenario Practice</div>
+          <div class="scenario-title">The Unresponsive System</div>
+        </div>
+      </div>
+      <div class="scenario-body">
+        <p class="scenario-situation">
+          You've identified a <strong>real problem affecting students of color on your campus</strong> — a process that creates barriers others don't face, a resource that's inaccessible, or a practice that communicates who belongs and who doesn't. You've done your homework: you've documented the pattern, gathered some evidence, and talked to other students who've experienced the same thing.
+          <br><br>
+          You raised it once, informally, with someone who seemed sympathetic. You got a <strong>polite brush-off</strong> — "we hear you," "we're working on it," "these things take time." <strong>Nothing changed.</strong> You want to push further, but you're not sure how — or when it makes sense to escalate from informal advocacy to something more formal.
+        </p>
+        <div class="apply-banner">
+          <span class="apply-tag">Apply →</span>
+          <span class="apply-label">CHANGE AGENTS NAVIGATE, THEY DON'T JUST PUSH</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTEXT CALLOUT -->
+    <div class="context-box">
+      <strong>Before you respond:</strong> Call on everything from this module. You've mapped systems (Lesson 1), assessed risks and documented evidence (Lesson 2), and now you're applying the advocacy and framing strategies from Lesson 3. Work through the escalation decision first, then each question in order.
+    </div>
+
+    <!-- ESCALATION TRACKER -->
+    <div class="tracker">
+      <div class="tracker-title">Step 1 — Where Are You Right Now?</div>
+      <div class="tracker-sub">Based on the scenario, where are you in the Speak / Wait / Escalate framework? Select the stage that best describes your current position, then explain your reasoning below.</div>
+      <div class="tracker-stages">
+        <div class="stage" id="stage-speak" onclick="selectStage('speak')">
+          <div class="stage-icon">🗣</div>
+          <div class="stage-label">Speak Now</div>
+        </div>
+        <div class="stage" id="stage-wait" onclick="selectStage('wait')">
+          <div class="stage-icon">⏳</div>
+          <div class="stage-label">Wait &amp; Build</div>
+        </div>
+        <div class="stage" id="stage-escalate" onclick="selectStage('escalate')">
+          <div class="stage-icon">📢</div>
+          <div class="stage-label">Escalate</div>
+        </div>
+      </div>
+      <div class="stage-rationale" id="rationale-speak">
+        <strong style="color:var(--teal)">Speak Now:</strong> You have a relationship with someone in the room, data ready, and the decision hasn't been finalized. Act with your framing — name the evidence, invite a conversation.
+      </div>
+      <div class="stage-rationale" id="rationale-wait">
+        <strong style="color:var(--lav)">Wait &amp; Build:</strong> You don't yet have a champion, the timing is politically bad, or you need a stronger coalition. Use this window to build before moving formally.
+      </div>
+      <div class="stage-rationale" id="rationale-escalate">
+        <strong style="color:var(--gold)">Escalate:</strong> Informal channels have been tried and dismissed. The harm is ongoing. You have documented the pattern. Time to move to formal channels — policy, governance, or public accountability.
+      </div>
+      <div class="tracker-response-wrap">
+        <textarea class="tracker-response" id="r0" placeholder="I chose this stage because… The evidence that points me here is… The conditions that would move me to the next stage are…" rows="3" oninput="update()"></textarea>
+      </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div class="questions-section">
+
+      <div class="q-card q1">
+        <div class="q-header">
+          <div class="q-num">1</div>
+          <div class="q-prompt-wrap">
+            <div class="q-prompt"><span class="q-arrow">→</span> Who else has experienced this problem? How do you document and organize that evidence?</div>
+            <div class="q-hint">Advocacy requires more than your own experience. What stories, data, or observations would strengthen your case? How would you collect and present them in a way that gives decision-makers something to point to — and that protects the people who shared their experience with you?</div>
+          </div>
+        </div>
+        <div class="q-response-wrap">
+          <textarea class="q-response" id="r1" placeholder="Others who've experienced this include… The evidence I can gather is… I'd organize and present it by…" rows="4" oninput="update()"></textarea>
+          <div class="char-count" id="cc1">0 characters</div>
+        </div>
+      </div>
+
+      <div class="q-card q2">
+        <div class="q-header">
+          <div class="q-num">2</div>
+          <div class="q-prompt-wrap">
+            <div class="q-prompt"><span class="q-arrow">→</span> Who is the right person to bring this to — and who could help you get access to them?</div>
+            <div class="q-hint">The person who gave you the polite brush-off may not be the right decision-maker. Who has the actual authority to change this? Who influences that person? And who in the system — an advisor, a faculty member, a senior student leader — might help you get a real conversation rather than another deflection?</div>
+          </div>
+        </div>
+        <div class="q-response-wrap">
+          <textarea class="q-response" id="r2" placeholder="The person with actual authority here is… Someone who influences them is… My path to a real conversation might be through…" rows="4" oninput="update()"></textarea>
+          <div class="char-count" id="cc2">0 characters</div>
+        </div>
+      </div>
+
+      <div class="q-card q3">
+        <div class="q-header">
+          <div class="q-num">3</div>
+          <div class="q-prompt-wrap">
+            <div class="q-prompt"><span class="q-arrow">→</span> How do you frame this as an institutional opportunity — not a personal grievance?</div>
+            <div class="q-hint">You've been brushed off once — which means your current framing may not be giving decision-makers a path to say yes. Try rewriting your key message using the framing principle: connect the change to the institution's stated goals. What does the institution already say it cares about? How does your proposed change help them get there?</div>
+          </div>
+        </div>
+        <div class="q-response-wrap">
+          <textarea class="q-response" id="r3" placeholder="The institution's stated goal that connects here is… My reframed message would be… The language I'd use to give them a path to say yes is…" rows="4" oninput="update()"></textarea>
+          <div class="char-count" id="cc3">0 characters</div>
+        </div>
+      </div>
+
+      <div class="q-card q4">
+        <div class="q-header">
+          <div class="q-num">4</div>
+          <div class="q-prompt-wrap">
+            <div class="q-prompt"><span class="q-arrow">→</span> At what point does patient advocacy become complicity? When do you escalate — and to whom?</div>
+            <div class="q-hint">This is the hardest question in the lesson — and only you can answer it. Based on the ongoing harm, the evidence you've gathered, and what you've tried: what is the threshold that would move you from informal to formal advocacy? What formal channels exist — policy, governance, public accountability — and what would it take to use them?</div>
+          </div>
+        </div>
+        <div class="q-response-wrap">
+          <textarea class="q-response" id="r4" placeholder="The threshold that would move me to formal channels is… The formal channels available to me are… I would involve these people or structures when…" rows="4" oninput="update()"></textarea>
+          <div class="char-count" id="cc4">0 characters</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MY ADVOCACY MOVE -->
+    <div class="move-section">
+      <div class="move-header">
+        <div class="move-header-icon">🗺</div>
+        <div>
+          <div class="move-title">My Advocacy Move</div>
+          <div class="move-sub">Synthesize your thinking — what is your concrete next step in this scenario?</div>
+        </div>
+      </div>
+      <div class="move-body">
+        <p class="move-prompt">Based on your four responses and your escalation decision: write 2–3 sentences describing your concrete next move. Who are you approaching first? What are you saying? What's your framing? And what would move you to the next stage if this doesn't work?</p>
+        <textarea class="move-response" id="r5" placeholder="My first move is… I'm framing it as… If this doesn't work, I will move to…" rows="4" oninput="update()"></textarea>
+      </div>
+    </div>
+
+  </div><!-- /.main -->
+
+  <!-- YLOS -->
+  <div class="ylos-box">
+    <div class="ylos-inner">
+      <div class="ylos-icon">📘</div>
+      <div class="ylos-text">
+        <strong>Add to Your YLOS — Advocacy Playbook:</strong> Your "My Advocacy Move" response is a real advocacy plan in miniature. Copy it to your YLOS and note the escalation threshold you identified. These become your reference points when you face a real version of this situation and need to remember what you'd already decided was worth doing.
+      </div>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="btn-row">
+    <button class="btn-primary" onclick="saveWork()">💾 Save My Work</button>
+    <button class="btn-lav" onclick="printSheet()">🖨 Print / Save as PDF</button>
+    <button class="btn-reset" onclick="resetAll()">↺ Reset</button>
+  </div>
+  <div class="save-msg" id="save-msg">✓ Responses saved to this browser</div>
+
+  <!-- FOOTER -->
+  <footer class="page-footer">
+    <div class="footer-brand"><strong>BTLOYCB</strong> · Life Aligned Center for Leadership &amp; Justice Studies</div>
+    <div>Module 4, Lesson 3 · Scenario Practice</div>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'btloycb_m4l3_scenario';
+    const FIELDS = ['r0','r1','r2','r3','r4','r5'];
+    let selectedStage = null;
+
+    function selectStage(stage) {
+      selectedStage = stage;
+      ['speak','wait','escalate'].forEach(s => {
+        document.getElementById(`stage-${s}`).className = 'stage';
+        document.getElementById(`rationale-${s}`).className = 'stage-rationale';
+      });
+      document.getElementById(`stage-${stage}`).classList.add(`active-${stage}`);
+      document.getElementById(`rationale-${stage}`).classList.add('visible');
+      update();
+    }
+
+    function update() {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById('r' + i);
+        const cc = document.getElementById('cc' + i);
+        if (el && cc) cc.textContent = el.value.length + ' characters';
+      }
+      const textFilled = FIELDS.filter(id => {
+        const el = document.getElementById(id);
+        return el && el.value.trim().length > 0;
+      }).length;
+      const stageFilled = selectedStage ? 1 : 0;
+      const total = FIELDS.length + 1;
+      const filled = textFilled + stageFilled;
+      const pct = Math.round((filled / total) * 100);
+      document.getElementById('prog-fill').style.width = pct + '%';
+      document.getElementById('pct-display').textContent = pct + '%';
+    }
+
+    function saveWork() {
+      const data = { stage: selectedStage };
+      FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) data[id] = el.value;
+      });
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        const msg = document.getElementById('save-msg');
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 2500);
+      } catch(e) {}
+    }
+
+    function loadWork() {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (!saved) return;
+        const data = JSON.parse(saved);
+        if (data.stage) selectStage(data.stage);
+        FIELDS.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && data[id]) el.value = data[id];
+        });
+        update();
+      } catch(e) {}
+    }
+
+    function resetAll() {
+      if (!confirm('Clear all responses? This cannot be undone.')) return;
+      selectedStage = null;
+      ['speak','wait','escalate'].forEach(s => {
+        document.getElementById(`stage-${s}`).className = 'stage';
+        document.getElementById(`rationale-${s}`).className = 'stage-rationale';
+      });
+      FIELDS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+      });
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+      update();
+    }
+
+    function printSheet() { window.print(); }
+    loadWork();
+  </script>
+
+</body>
+</html>
