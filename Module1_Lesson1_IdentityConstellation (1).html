@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Identity Constellation Mapping | Module 1, Lesson 1</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #0D2B6B; color: #FFFFFF; min-height: 100vh; display: flex; flex-direction: column; }
+
+  .header { background: #091A42; border-bottom: 2px solid #00BFA5; padding: 14px 24px 12px; }
+  .header .eyebrow { font-size: 10px; letter-spacing: 2.5px; color: #00BFA5; font-weight: 700; text-transform: uppercase; margin-bottom: 3px; }
+  .header h1 { font-size: 20px; font-weight: 700; color: #FFFFFF; }
+  .header p  { font-size: 12px; color: #8EB8E0; margin-top: 2px; }
+
+  .main { display: flex; flex: 1; gap: 0; min-height: 0; }
+
+  .canvas-side { flex: 1; display: flex; flex-direction: column; padding: 14px 14px 10px; min-width: 0; }
+  .toolbar { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .toolbar span { font-size: 11px; color: #8EB8E0; flex: 1; }
+
+  .btn { background: #1B4FCC; color: #fff; border: none; border-radius: 5px; padding: 6px 12px; font-size: 11px; font-family: Arial,sans-serif; font-weight: 700; cursor: pointer; }
+  .btn:hover { background: #2260EE; }
+  .btn.teal { background: #00BFA5; color: #0A1F52; }
+  .btn.teal:hover { background: #00D4B8; }
+  .btn.outline { background: transparent; border: 1.5px solid #2A4E8A; color: #8EB8E0; }
+  .btn.outline:hover { border-color: #00BFA5; color: #00BFA5; }
+
+  #map-wrap { position: relative; flex: 1; background: #091A42; border: 1.5px solid #2246AA; border-radius: 10px; overflow: hidden; min-height: 460px; }
+  #line-canvas { position: absolute; top:0; left:0; pointer-events: none; z-index: 1; }
+  #map-nodes { position: absolute; top:0; left:0; width:100%; height:100%; z-index: 2; }
+
+  .center-node { position:absolute; width:100px; height:100px; border-radius:50%; background:#1B4FCC; border:2.5px solid #00BFA5; display:flex; flex-direction:column; align-items:center; justify-content:center; transform:translate(-50%,-50%); cursor:pointer; text-align:center; padding:8px; box-shadow:0 0 24px rgba(0,191,165,0.2); z-index:10; }
+  .center-node .cn-label { font-size:8px; color:#00BFA5; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:3px; }
+  .center-node .cn-name { font-size:13px; font-weight:700; color:#fff; line-height:1.2; word-break:break-word; }
+  .center-node.selected { border-color:#F2B300; box-shadow:0 0 0 3px rgba(242,179,0,0.35); }
+
+  .id-node { position:absolute; width:82px; height:82px; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; transform:translate(-50%,-50%); cursor:pointer; text-align:center; padding:7px; border:2px solid rgba(255,255,255,0.2); transition:border-color .15s, box-shadow .15s; z-index:5; user-select:none; }
+  .id-node:hover { border-color:#00BFA5; }
+  .id-node.selected { border-color:#F2B300; box-shadow:0 0 0 3px rgba(242,179,0,0.3); }
+  .id-node.connected { border-color:rgba(0,191,165,0.7); }
+  .id-node .node-label { font-size:10px; font-weight:700; color:#fff; line-height:1.2; word-break:break-word; }
+  .id-node .node-cat { font-size:8px; color:rgba(255,255,255,0.5); text-transform:uppercase; margin-top:3px; }
+
+  .hint { font-size:11px; color:#5A7BAA; margin-top:8px; line-height:1.5; }
+
+  .right-panel { width:272px; min-width:230px; background:#091A42; border-left:1.5px solid #2246AA; display:flex; flex-direction:column; overflow:hidden; }
+
+  .tabs { display:flex; border-bottom:1px solid #2246AA; flex-shrink:0; }
+  .tab { flex:1; padding:9px 4px; font-size:11px; font-weight:700; color:#5A7BAA; background:none; border:none; cursor:pointer; text-transform:uppercase; letter-spacing:.8px; }
+  .tab.active { color:#00BFA5; border-bottom:2px solid #00BFA5; }
+
+  .tab-body { flex:1; overflow-y:auto; }
+  .tab-pane { display:none; padding:14px 14px; }
+  .tab-pane.active { display:block; }
+
+  .sec-label { font-size:9px; font-weight:700; color:#00BFA5; text-transform:uppercase; letter-spacing:1.5px; margin-bottom:8px; }
+  .field-row { margin-bottom:9px; }
+  .field-row label { display:block; font-size:10px; color:#8EB8E0; margin-bottom:3px; }
+
+  input[type=text], select, textarea { background:#0D2B6B; border:1.5px solid #2A4E8A; border-radius:5px; color:#fff; font-family:Arial,sans-serif; font-size:12px; padding:7px 9px; width:100%; outline:none; }
+  input[type=text]:focus, select:focus, textarea:focus { border-color:#00BFA5; }
+  select option { background:#0D2B6B; }
+  textarea { resize:vertical; min-height:58px; }
+
+  .color-row { display:flex; gap:6px; flex-wrap:wrap; margin-top:4px; }
+  .cswatch { width:22px; height:22px; border-radius:50%; border:2px solid transparent; cursor:pointer; }
+  .cswatch:hover, .cswatch.active { border-color:#fff; }
+
+  .chips { display:flex; flex-direction:column; gap:5px; }
+  .chip { display:flex; align-items:center; gap:7px; background:#0F2E60; border:1px solid #2A4E8A; border-radius:5px; padding:6px 8px; cursor:pointer; font-size:11px; color:#D0DCEF; transition:border-color .12s; }
+  .chip:hover { border-color:#00BFA5; }
+  .chip .dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .chip .chip-text { flex:1; }
+  .chip .chip-del { background:none; border:none; color:#B91C1C; cursor:pointer; font-size:13px; font-weight:700; line-height:1; }
+  .chip .chip-del:hover { color:#EF4444; }
+
+  .rq { margin-bottom:14px; }
+  .rq-num { font-size:9px; font-weight:700; color:#00BFA5; letter-spacing:1px; text-transform:uppercase; margin-bottom:3px; }
+  .rq-text { font-size:11px; color:#D0DCEF; line-height:1.45; margin-bottom:5px; }
+
+  .footer { background:#091A42; border-top:1px solid #2246AA; padding:7px 20px; font-size:9px; color:#4A6A8A; display:flex; justify-content:space-between; flex-shrink:0; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Module 1 · Lesson 1 · Activity</div>
+  <h1>Identity Constellation Mapping</h1>
+  <p>Leadership didn't start in college — it started in your story. &nbsp; ⏱ 15–20 min</p>
+</div>
+
+<div class="main">
+  <div class="canvas-side">
+    <div class="toolbar">
+      <span>Click two circles to connect them with a line. Drag any circle to reposition it.</span>
+      <button class="btn outline" id="clearLinesBtn">Clear Lines</button>
+      <button class="btn teal" id="printBtn">⬇ Save / Print</button>
+    </div>
+
+    <div id="map-wrap">
+      <canvas id="line-canvas"></canvas>
+      <div id="map-nodes"></div>
+    </div>
+
+    <div class="hint">
+      <strong style="color:#8EB8E0;">What to map:</strong>
+      Your identities (race, ethnicity, faith, gender), communities, roles and responsibilities, and experiences that shaped your leadership. Add each as a circle, then draw lines to show connections.
+    </div>
+  </div>
+
+  <div class="right-panel">
+    <div class="tabs">
+      <button class="tab active" data-tab="add">Add</button>
+      <button class="tab" data-tab="nodes">Nodes</button>
+      <button class="tab" data-tab="reflect">Reflect</button>
+    </div>
+
+    <div class="tab-body">
+      <!-- ADD -->
+      <div class="tab-pane active" id="tab-add">
+        <div class="field-row" style="margin-bottom:14px;">
+          <div class="sec-label">Your Name (Center)</div>
+          <input type="text" id="centerName" placeholder="Your name" />
+        </div>
+
+        <div class="sec-label">Add an Identity Node</div>
+
+        <div class="field-row">
+          <label>Label</label>
+          <input type="text" id="nodeLabel" placeholder="e.g. Black Woman, First-Gen, Eldest Daughter" />
+        </div>
+
+        <div class="field-row">
+          <label>Category</label>
+          <select id="nodeCat">
+            <option>Identity</option>
+            <option>Community</option>
+            <option>Role / Responsibility</option>
+            <option>Experience</option>
+            <option>Cultural Wealth</option>
+          </select>
+        </div>
+
+        <div class="field-row">
+          <label>Color</label>
+          <div class="color-row" id="colorRow"></div>
+        </div>
+
+        <button class="btn teal" id="addNodeBtn" style="width:100%;margin-top:6px;">+ Add to Map</button>
+      </div>
+
+      <!-- NODES -->
+      <div class="tab-pane" id="tab-nodes">
+        <div class="sec-label">Your Nodes</div>
+        <div class="chips" id="nodeChips">
+          <div style="font-size:11px;color:#4A6A8A;font-style:italic;">No nodes yet. Use the Add tab.</div>
+        </div>
+      </div>
+
+      <!-- REFLECT -->
+      <div class="tab-pane" id="tab-reflect">
+        <div class="sec-label">Reflection Questions</div>
+
+        <div class="rq">
+          <div class="rq-num">Question 1</div>
+          <div class="rq-text">Which identity feels most central to your leadership — and why?</div>
+          <textarea id="r1" rows="4" placeholder="Write here..."></textarea>
+        </div>
+        <div class="rq">
+          <div class="rq-num">Question 2</div>
+          <div class="rq-text">Which identity has been underestimated or misunderstood by others?</div>
+          <textarea id="r2" rows="4" placeholder="Write here..."></textarea>
+        </div>
+        <div class="rq">
+          <div class="rq-num">Question 3</div>
+          <div class="rq-text">How do your identities influence the way you show up for others?</div>
+          <textarea id="r3" rows="4" placeholder="Write here..."></textarea>
+        </div>
+        <div style="font-size:10px;color:#4A6A8A;margin-top:6px;font-style:italic;line-height:1.5;">Add your completed constellation to Section 1.2 of your YLOS.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <span>Becoming the Leader Only You Can Be &nbsp;|&nbsp; Rooted Leaders RISE &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies</span>
+  <span>Module 1, Lesson 1</span>
+</div>
+
+<script>
+const COLORS = ["#1B4FCC","#00BFA5","#6A0C91","#C386DE","#F2B300","#E05A3C","#0891B2","#059669","#7C3AED","#DB2777","#16A34A","#1D4ED8"];
+
+const RING_POS = [
+  {ax:0.50,ay:0.11},{ax:0.79,ay:0.21},{ax:0.89,ay:0.50},{ax:0.79,ay:0.79},
+  {ax:0.50,ay:0.89},{ax:0.21,ay:0.79},{ax:0.11,ay:0.50},{ax:0.21,ay:0.21}
+];
+
+let nodes = [], lines = [], selected = null, nextId = 1;
+let selectedColor = COLORS[0];
+let dragging = undefined, dOffX = 0, dOffY = 0;
+
+const wrap      = document.getElementById('map-wrap');
+const canvas    = document.getElementById('line-canvas');
+const ctx       = canvas.getContext('2d');
+const mapNodes  = document.getElementById('map-nodes');
+const centerNameInput = document.getElementById('centerName');
+const nodeChips = document.getElementById('nodeChips');
+
+// Tabs
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById('tab-' + t.dataset.tab).classList.add('active');
+}));
+
+// Color swatches
+COLORS.forEach(c => {
+  const sw = document.createElement('div');
+  sw.className = 'cswatch' + (c === selectedColor ? ' active' : '');
+  sw.style.background = c;
+  sw.addEventListener('click', () => {
+    selectedColor = c;
+    document.querySelectorAll('.cswatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+  });
+  document.getElementById('colorRow').appendChild(sw);
+});
+
+// Canvas
+function resizeCanvas() {
+  canvas.width = wrap.offsetWidth;
+  canvas.height = wrap.offsetHeight;
+  redrawLines();
+}
+window.addEventListener('resize', resizeCanvas);
+
+// Center node
+function buildCenter() {
+  let el = document.getElementById('cn-el');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'cn-el';
+    el.className = 'center-node';
+    el.innerHTML = '<div class="cn-label">Your Name</div><div class="cn-name" id="cn-text"></div>';
+    el.style.left = '50%';
+    el.style.top  = '50%';
+    el.addEventListener('click', () => { if (!dragging) handleClick(0, el); });
+    makeDraggable(el, null);
+    mapNodes.appendChild(el);
+  }
+  document.getElementById('cn-text').textContent = centerNameInput.value || '—';
+}
+centerNameInput.addEventListener('input', () => {
+  const t = document.getElementById('cn-text');
+  if (t) t.textContent = centerNameInput.value || '—';
+});
+
+// Add node
+document.getElementById('addNodeBtn').addEventListener('click', () => {
+  const label = document.getElementById('nodeLabel').value.trim();
+  if (!label) { document.getElementById('nodeLabel').focus(); return; }
+  const idx = nodes.length % RING_POS.length;
+  const pos = RING_POS[idx];
+  const id = nextId++;
+  const n = { id, label, cat: document.getElementById('nodeCat').value, color: selectedColor,
+    x: pos.ax * wrap.offsetWidth, y: pos.ay * wrap.offsetHeight };
+  nodes.push(n);
+  renderNode(n);
+  refreshChips();
+  document.getElementById('nodeLabel').value = '';
+  document.getElementById('nodeLabel').focus();
+});
+
+function renderNode(n) {
+  const el = document.createElement('div');
+  el.className = 'id-node';
+  el.id = 'node-' + n.id;
+  el.style.left = n.x + 'px';
+  el.style.top  = n.y + 'px';
+  el.style.background = n.color;
+  el.innerHTML = `<span class="node-label">${n.label}</span><span class="node-cat">${n.cat}</span>`;
+  el.addEventListener('click', e => { if (!dragging) handleClick(n.id, el); });
+  makeDraggable(el, n.id);
+  mapNodes.appendChild(el);
+}
+
+// Click to connect
+function handleClick(id, el) {
+  if (selected === null) {
+    selected = id;
+    document.querySelectorAll('.id-node,.center-node').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+  } else if (selected === id) {
+    el.classList.remove('selected');
+    selected = null;
+  } else {
+    toggleLine(selected, id);
+    document.querySelectorAll('.id-node,.center-node').forEach(e => e.classList.remove('selected'));
+    selected = null;
+    refreshConnected();
+    redrawLines();
+  }
+}
+
+function toggleLine(a, b) {
+  const k = (x,y) => Math.min(x,y)+'-'+Math.max(x,y);
+  const key = k(a,b);
+  const i = lines.findIndex(l => k(l.a,l.b) === key);
+  if (i >= 0) lines.splice(i,1); else lines.push({a,b});
+}
+
+function refreshConnected() {
+  nodes.forEach(n => {
+    const el = document.getElementById('node-' + n.id);
+    if (el) el.classList.toggle('connected', lines.some(l => l.a===n.id || l.b===n.id));
+  });
+}
+
+function getPos(id) {
+  if (id === 0) {
+    const el = document.getElementById('cn-el');
+    return el ? { x: parseFloat(el.style.left), y: parseFloat(el.style.top) } : null;
+  }
+  const n = nodes.find(n => n.id === id);
+  return n ? { x: n.x, y: n.y } : null;
+}
+
+function redrawLines() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  lines.forEach(l => {
+    const a = getPos(l.a), b = getPos(l.b);
+    if (!a || !b) return;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.strokeStyle = 'rgba(0,191,165,0.5)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+}
+
+document.getElementById('clearLinesBtn').addEventListener('click', () => {
+  lines = []; refreshConnected(); redrawLines();
+});
+
+// Drag
+function makeDraggable(el, nodeId) {
+  el.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    dragging = nodeId;
+    const r = wrap.getBoundingClientRect();
+    dOffX = e.clientX - r.left - parseFloat(el.style.left);
+    dOffY = e.clientY - r.top  - parseFloat(el.style.top);
+    e.stopPropagation();
+  });
+  el.addEventListener('touchstart', e => {
+    const t = e.touches[0];
+    dragging = nodeId;
+    const r = wrap.getBoundingClientRect();
+    dOffX = t.clientX - r.left - parseFloat(el.style.left);
+    dOffY = t.clientY - r.top  - parseFloat(el.style.top);
+    e.stopPropagation();
+  }, { passive: true });
+}
+
+function moveEl(cx, cy) {
+  const r = wrap.getBoundingClientRect();
+  const x = cx - r.left - dOffX, y = cy - r.top - dOffY;
+  if (dragging === null) {
+    const el = document.getElementById('cn-el');
+    if (el) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
+  } else {
+    const n = nodes.find(n => n.id === dragging);
+    if (n) {
+      n.x = x; n.y = y;
+      const el = document.getElementById('node-' + n.id);
+      if (el) { el.style.left = x + 'px'; el.style.top = y + 'px'; }
+    }
+  }
+  redrawLines();
+}
+
+document.addEventListener('mousemove', e => { if (dragging !== undefined) moveEl(e.clientX, e.clientY); });
+document.addEventListener('mouseup',   () => { dragging = undefined; });
+document.addEventListener('touchmove', e => { if (dragging !== undefined) moveEl(e.touches[0].clientX, e.touches[0].clientY); }, { passive: true });
+document.addEventListener('touchend',  () => { dragging = undefined; });
+
+// Chips
+function refreshChips() {
+  nodeChips.innerHTML = '';
+  if (!nodes.length) {
+    nodeChips.innerHTML = '<div style="font-size:11px;color:#4A6A8A;font-style:italic;">No nodes yet. Use the Add tab.</div>';
+    return;
+  }
+  nodes.forEach(n => {
+    const ch = document.createElement('div');
+    ch.className = 'chip';
+    ch.innerHTML = `<div class="dot" style="background:${n.color}"></div><div class="chip-text">${n.label}<br><span style="font-size:9px;color:#5A7BAA;">${n.cat}</span></div><button class="chip-del" data-id="${n.id}">✕</button>`;
+    ch.querySelector('.chip-del').addEventListener('click', e => {
+      e.stopPropagation();
+      const id = parseInt(e.target.dataset.id);
+      nodes = nodes.filter(n => n.id !== id);
+      lines = lines.filter(l => l.a !== id && l.b !== id);
+      document.getElementById('node-' + id)?.remove();
+      refreshChips(); refreshConnected(); redrawLines();
+    });
+    nodeChips.appendChild(ch);
+  });
+}
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+window.addEventListener('load', () => {
+  setTimeout(() => { resizeCanvas(); buildCenter(); }, 80);
+});
+</script>
+</body>
+</html>
