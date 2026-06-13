@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reflection Journal | Becoming the Leader Only You Can Be</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: #0D2B6B;
+    color: #FFFFFF;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: #091A42;
+    border-bottom: 2px solid #00BFA5;
+    padding: 16px 28px 14px;
+  }
+  .header .eyebrow {
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    color: #00BFA5;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .header h1 { font-size: 22px; font-weight: 700; color: #FFFFFF; }
+  .header .subline {
+    font-size: 12px;
+    color: #8EB8E0;
+    margin-top: 3px;
+  }
+
+  /* ── COVER FIELDS ── */
+  .cover-bar {
+    background: #0F2E60;
+    border-bottom: 1px solid #2246AA;
+    padding: 12px 28px;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .cover-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cover-field label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #00BFA5;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    white-space: nowrap;
+  }
+  .cover-field input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #2A4E8A;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding: 2px 6px 4px;
+    outline: none;
+    min-width: 160px;
+  }
+  .cover-field input:focus { border-bottom-color: #00BFA5; }
+
+  /* ── LAYOUT ── */
+  .body-wrap {
+    display: flex;
+    flex: 1;
+    min-height: 0;
+  }
+
+  /* ── SIDEBAR NAV ── */
+  .sidebar {
+    width: 220px;
+    min-width: 200px;
+    background: #091A42;
+    border-right: 1.5px solid #2246AA;
+    padding: 16px 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+  }
+  .nav-module-title {
+    font-size: 9px;
+    font-weight: 700;
+    color: #00BFA5;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 10px 16px 4px;
+  }
+  .nav-module-title:not(:first-child) { margin-top: 8px; }
+
+  .nav-item {
+    display: block;
+    padding: 8px 16px;
+    font-size: 11px;
+    color: #8EB8E0;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    background: none;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    text-align: left;
+    width: 100%;
+    line-height: 1.4;
+    font-family: Arial, sans-serif;
+    transition: color 0.12s, border-color 0.12s;
+  }
+  .nav-item:hover { color: #FFFFFF; background: rgba(0,191,165,0.07); }
+  .nav-item.active {
+    color: #FFFFFF;
+    border-left-color: #00BFA5;
+    background: rgba(0,191,165,0.12);
+    font-weight: 700;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .pane {
+    display: none;
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px 32px 32px;
+  }
+  .pane.active { display: block; }
+
+  .pane-eyebrow {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: #00BFA5;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .pane-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+  }
+  .pane-how-to {
+    font-size: 12px;
+    color: #8EB8E0;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #2246AA;
+  }
+
+  /* ── COVER PAGE ── */
+  .cover-how-to {
+    background: #0F2E60;
+    border: 1px solid #2A4E8A;
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+  .cover-how-to p {
+    font-size: 13px;
+    color: #D0DCEF;
+    line-height: 1.7;
+    font-style: italic;
+  }
+
+  /* ── LESSON BLOCK ── */
+  .lesson-block {
+    margin-bottom: 28px;
+  }
+  .lesson-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: #00BFA5;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .lesson-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 14px;
+  }
+
+  /* ── QUESTION BLOCK ── */
+  .q-block { margin-bottom: 16px; }
+  .q-num {
+    font-size: 9px;
+    font-weight: 700;
+    color: #F2B300;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .q-text {
+    font-size: 12px;
+    color: #D0DCEF;
+    line-height: 1.5;
+    margin-bottom: 6px;
+  }
+  textarea {
+    background: #091A42;
+    border: 1.5px solid #2A4E8A;
+    border-radius: 6px;
+    color: #FFFFFF;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    padding: 9px 11px;
+    width: 100%;
+    resize: vertical;
+    min-height: 72px;
+    outline: none;
+    line-height: 1.5;
+  }
+  textarea:focus { border-color: #00BFA5; }
+
+  /* ── DIVIDER ── */
+  .lesson-divider {
+    border: none;
+    border-top: 1px solid #2246AA;
+    margin: 20px 0;
+  }
+
+  /* ── BOTTOM BAR ── */
+  .bottom-bar {
+    background: #091A42;
+    border-top: 1px solid #2246AA;
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .nav-arrows { display: flex; gap: 8px; }
+  .btn {
+    background: #1B4FCC;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 7px 14px;
+    font-size: 11px;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn:hover { background: #2260EE; }
+  .btn.teal { background: #00BFA5; color: #0A1F52; }
+  .btn.teal:hover { background: #00D4B8; }
+  .btn.outline {
+    background: transparent;
+    border: 1.5px solid #2A4E8A;
+    color: #8EB8E0;
+  }
+  .btn.outline:hover { border-color: #00BFA5; color: #00BFA5; }
+
+  .save-status {
+    font-size: 11px;
+    color: #5A7BAA;
+    font-style: italic;
+  }
+  .save-status.saved { color: #00BFA5; }
+
+  /* ── PROGRESS ── */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .progress-label { font-size: 10px; color: #5A7BAA; white-space: nowrap; }
+  .progress-track {
+    width: 120px;
+    height: 4px;
+    background: #1B3A6B;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #00BFA5;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: #091A42;
+    border-top: 1px solid #162B5A;
+    padding: 7px 20px;
+    font-size: 9px;
+    color: #4A6A8A;
+    display: flex;
+    justify-content: space-between;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: #FFFFFF !important; color: #000000 !important; }
+    .sidebar, .bottom-bar, .footer, .cover-bar { display: none !important; }
+    .body-wrap { display: block !important; }
+    .header {
+      background: #0D2B6B !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      padding: 14px 20px !important;
+    }
+    .header h1, .header .eyebrow, .header .subline { color: #FFFFFF !important; }
+    .main { overflow: visible !important; }
+    .pane { display: block !important; overflow: visible !important; padding: 20px 28px !important; }
+    .pane-eyebrow, .lesson-label, .q-num { color: #0D2B6B !important; }
+    .pane-title, .lesson-title { color: #000000 !important; }
+    .pane-how-to, .q-text { color: #333333 !important; }
+    .pane-how-to { border-bottom-color: #CCCCCC !important; }
+    .lesson-divider { border-color: #CCCCCC !important; }
+    .cover-how-to {
+      background: #F0F4FF !important;
+      border-color: #CCCCCC !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .cover-how-to p { color: #333333 !important; }
+    textarea {
+      background: #FFFFFF !important;
+      border: 1px solid #AAAAAA !important;
+      color: #000000 !important;
+      min-height: 60px !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .lesson-block { page-break-inside: avoid; }
+    .pane-title { font-size: 18px !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Becoming the Leader Only You Can Be · Rooted Leaders RISE</div>
+  <h1>Reflection Journal</h1>
+  <p class="subline">Life Aligned Center for Leadership &amp; Justice Studies &nbsp;|&nbsp; Instructor: Lisa A. Hoston, M.S. &amp; MBA</p>
+</div>
+
+<div class="cover-bar">
+  <div class="cover-field">
+    <label>Name</label>
+    <input type="text" id="cover-name" placeholder="Your name" autocomplete="off" />
+  </div>
+  <div class="cover-field">
+    <label>Date Started</label>
+    <input type="date" id="cover-date" />
+  </div>
+</div>
+
+<div class="body-wrap">
+
+  <!-- SIDEBAR -->
+  <nav class="sidebar" aria-label="Journal navigation">
+    <div class="nav-module-title">Start Here</div>
+    <button class="nav-item active" data-pane="cover">About This Journal</button>
+
+    <div class="nav-module-title">Module 1 · Foundation</div>
+    <button class="nav-item" data-pane="m1l1">L1 — You Belong in Leadership Spaces</button>
+    <button class="nav-item" data-pane="m1l2">L2 — Course Orientation &amp; YLOS Setup</button>
+
+    <div class="nav-module-title">Module 2 · R — Self-Leadership</div>
+    <button class="nav-item" data-pane="m2l1">L1 — Leadership Voice &amp; Leading by Example</button>
+    <button class="nav-item" data-pane="m2l2">L2 — Core Values &amp; Aligning Actions</button>
+    <button class="nav-item" data-pane="m2l3">L3 — Imposter Syndrome &amp; Authentic Confidence</button>
+
+    <div class="nav-module-title">Module 3 · I — Relational Leadership</div>
+    <button class="nav-item" data-pane="m3l1">L1 — Communicating a Vision</button>
+    <button class="nav-item" data-pane="m3l2">L2 — Active Listening &amp; Leading Across Difference</button>
+    <button class="nav-item" data-pane="m3l3">L3 — Conflict Clarity &amp; Peer Leadership</button>
+
+    <div class="nav-module-title">Module 4 · S — Situational Leadership</div>
+    <button class="nav-item" data-pane="m4l1">L1 — Reading the Room &amp; Situational Agility</button>
+    <button class="nav-item" data-pane="m4l2">L2 — Leading Without a Title &amp; Navigating Power</button>
+    <button class="nav-item" data-pane="m4l3">L3 — Building Coalitions Across Difference</button>
+
+    <div class="nav-module-title">Module 5 · E — Strategic Leadership</div>
+    <button class="nav-item" data-pane="m5l1">L1 — Delegation &amp; Empowerment</button>
+    <button class="nav-item" data-pane="m5l2">L2 — Psychological Safety &amp; Building Trust</button>
+    <button class="nav-item" data-pane="m5l3">L3 — Recognition &amp; Sustainable Leadership</button>
+
+    <div class="nav-module-title">Module 6 · Integration</div>
+    <button class="nav-item" data-pane="m6l1">L1 — Measuring Your Growth</button>
+    <button class="nav-item" data-pane="m6l2">L2 — Your Leadership Forward</button>
+  </nav>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- COVER -->
+    <div class="pane active" id="pane-cover">
+      <div class="pane-eyebrow">Welcome</div>
+      <div class="pane-title">Reflection Journal</div>
+      <div class="pane-how-to">Your name, date, and cohort are saved at the top of every page. Fill them in above and they will carry through the whole journal.</div>
+      <div class="cover-how-to">
+        <p>Write after each lesson. Be honest, not polished. This is a tool for you, not a performance for anyone else. The more you put in, the more useful it becomes when you need it most. There are no wrong answers here — only honest ones.</p>
+      </div>
+      <div class="lesson-block">
+        <div class="lesson-label">How this journal works</div>
+        <ul style="padding-left: 18px; font-size: 13px; color: #D0DCEF; line-height: 2;">
+          <li>Use the sidebar to navigate to any lesson's reflection prompts.</li>
+          <li>Your responses are saved automatically in your browser as you type.</li>
+          <li>Use <strong style="color:#00BFA5;">Save / Print</strong> at any time to download a printable version of the full journal.</li>
+          <li>Revisit your responses — especially at Module 6 — to see how you have grown.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- M1 L1 -->
+    <div class="pane" id="pane-m1l1">
+      <div class="pane-eyebrow">Module 1 · Lesson 1 · Welcome &amp; Overview</div>
+      <div class="pane-title">You Belong in Leadership Spaces</div>
+      <div class="pane-how-to">Write after completing Lesson 1. Be honest, not polished. This is the seed of your leadership story.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What parts of your story shaped how you show up for others?</div>
+        <textarea id="m1l1_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">What strengths do you carry from your family, culture, and community?</div>
+        <textarea id="m1l1_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">Which form(s) of Community Cultural Wealth do you most strongly possess?</div>
+        <textarea id="m1l1_q3" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 4</div>
+        <div class="q-text">When did you first realize you were a leader — even if no one called it that?</div>
+        <textarea id="m1l1_q4" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M1 L2 -->
+    <div class="pane" id="pane-m1l2">
+      <div class="pane-eyebrow">Module 1 · Lesson 2 · Welcome &amp; Overview</div>
+      <div class="pane-title">Course Orientation &amp; YLOS Setup</div>
+      <div class="pane-how-to">Write after setting up your YLOS and completing your RISE baseline. No right answers — only honest ones.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What is your initial personal definition of leadership, in your own words?</div>
+        <textarea id="m1l2_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">Rate yourself 1–10 on each RISE pillar right now. What feels most true about where you are?</div>
+        <textarea id="m1l2_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What do you most hope to build and walk away with from this course?</div>
+        <textarea id="m1l2_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M2 L1 -->
+    <div class="pane" id="pane-m2l1">
+      <div class="pane-eyebrow">Module 2 · Lesson 1 · R — Self-Leadership · Root Yourself</div>
+      <div class="pane-title">Your Leadership Voice &amp; Leading by Example</div>
+      <div class="pane-how-to">Write after completing Module 2, Lesson 1. Reflect on your natural leadership voice and the example you set every day — with or without a title.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What does your leadership voice sound like when you're at your best?</div>
+        <textarea id="m2l1_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">Where do you feel the most aligned between who you are and how you lead?</div>
+        <textarea id="m2l1_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What example are you setting right now, even without a title?</div>
+        <textarea id="m2l1_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M2 L2 -->
+    <div class="pane" id="pane-m2l2">
+      <div class="pane-eyebrow">Module 2 · Lesson 2 · R — Self-Leadership · Root Yourself</div>
+      <div class="pane-title">Your Core Values &amp; Aligning Actions</div>
+      <div class="pane-how-to">Write after completing Module 2, Lesson 2. Be specific about which values feel most like yours — and where you learned them.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">Which 3–5 values feel most essential to who you are as a leader?</div>
+        <textarea id="m2l2_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">How do these values show up — or get suppressed — in different contexts?</div>
+        <textarea id="m2l2_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">Who taught you each value? Family? Community? An experience? Hard necessity?</div>
+        <textarea id="m2l2_q3" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 4</div>
+        <div class="q-text">Where do you feel the most alignment between your values and your actions? The most tension?</div>
+        <textarea id="m2l2_q4" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M2 L3 -->
+    <div class="pane" id="pane-m2l3">
+      <div class="pane-eyebrow">Module 2 · Lesson 3 · R — Self-Leadership · Root Yourself</div>
+      <div class="pane-title">Imposter Syndrome &amp; Authentic Confidence</div>
+      <div class="pane-how-to">Write after completing Module 2, Lesson 3. Imposter syndrome lies. Use this reflection to start building your counter-narrative.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">Where does imposter syndrome show up most for you? What does it tell you?</div>
+        <textarea id="m2l3_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">What evidence in your own story contradicts the imposter narrative?</div>
+        <textarea id="m2l3_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What would it mean to lead from your full self — not a managed version of it?</div>
+        <textarea id="m2l3_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M3 L1 -->
+    <div class="pane" id="pane-m3l1">
+      <div class="pane-eyebrow">Module 3 · Lesson 1 · I — Relational Leadership · Influence With Purpose</div>
+      <div class="pane-title">Communicating a Vision</div>
+      <div class="pane-how-to">Write after completing Module 3, Lesson 1. Think about the vision you have been carrying — even if you have not said it out loud yet.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What vision are you carrying that no one has given you permission to say out loud yet?</div>
+        <textarea id="m3l1_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">How does your background connect to what you want to change in the world?</div>
+        <textarea id="m3l1_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What story from your own life best captures why you want to lead?</div>
+        <textarea id="m3l1_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M3 L2 -->
+    <div class="pane" id="pane-m3l2">
+      <div class="pane-eyebrow">Module 3 · Lesson 2 · I — Relational Leadership · Influence With Purpose</div>
+      <div class="pane-title">Active Listening &amp; Leading Across Difference</div>
+      <div class="pane-how-to">Write after completing Module 3, Lesson 2. Focus on how you listen — and what gets in the way.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">When do you feel most heard as a leader? What conditions make that possible?</div>
+        <textarea id="m3l2_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">When is it hardest for you to really listen — and why?</div>
+        <textarea id="m3l2_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">How do you communicate differently across different audiences? What stays the same?</div>
+        <textarea id="m3l2_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M3 L3 -->
+    <div class="pane" id="pane-m3l3">
+      <div class="pane-eyebrow">Module 3 · Lesson 3 · I — Relational Leadership · Influence With Purpose</div>
+      <div class="pane-title">Conflict Clarity &amp; Peer Leadership</div>
+      <div class="pane-how-to">Write after completing Module 3, Lesson 3. Be honest about your default — most leaders avoid conflict longer than they should.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What is your default response to conflict — avoid, attack, or address? Where did you learn that?</div>
+        <textarea id="m3l3_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">What is a conflict you have been avoiding that needs your leadership voice?</div>
+        <textarea id="m3l3_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What does leading peers look like for you when you have no formal authority?</div>
+        <textarea id="m3l3_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M4 L1 -->
+    <div class="pane" id="pane-m4l1">
+      <div class="pane-eyebrow">Module 4 · Lesson 1 · S — Situational Leadership · Shift the Room</div>
+      <div class="pane-title">Reading the Room &amp; Situational Agility</div>
+      <div class="pane-how-to">Write after completing Module 4, Lesson 1. Think about moments when your read on a situation made all the difference — for better or worse.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">Which of the four leadership modes comes most naturally to you? Which is hardest?</div>
+        <textarea id="m4l1_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">Think of a time you read a room well. What did you notice that others may have missed?</div>
+        <textarea id="m4l1_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">Think of a time you misread a room. What would you do differently?</div>
+        <textarea id="m4l1_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M4 L2 -->
+    <div class="pane" id="pane-m4l2">
+      <div class="pane-eyebrow">Module 4 · Lesson 2 · S — Situational Leadership · Shift the Room</div>
+      <div class="pane-title">Leading Without a Title &amp; Navigating Power</div>
+      <div class="pane-how-to">Write after completing Module 4, Lesson 2. Be honest about where you have influence you have not fully claimed yet.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">Where in your leadership life do you have more informal influence than you have claimed?</div>
+        <textarea id="m4l2_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">How have power dynamics affected your ability to lead? What have you learned from navigating them?</div>
+        <textarea id="m4l2_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What does it cost you to lead in spaces where you face bias — and how do you recover?</div>
+        <textarea id="m4l2_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M4 L3 -->
+    <div class="pane" id="pane-m4l3">
+      <div class="pane-eyebrow">Module 4 · Lesson 3 · S — Situational Leadership · Shift the Room</div>
+      <div class="pane-title">Building Coalitions Across Difference</div>
+      <div class="pane-how-to">Write after completing Module 4, Lesson 3. Think about who is not yet in your coalition — and why.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">Who belongs in your coalition that you have not invited yet?</div>
+        <textarea id="m4l3_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">Where have you avoided reaching across difference because it felt uncomfortable or risky?</div>
+        <textarea id="m4l3_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What shared values connect you to people who seem very different from you?</div>
+        <textarea id="m4l3_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M5 L1 -->
+    <div class="pane" id="pane-m5l1">
+      <div class="pane-eyebrow">Module 5 · Lesson 1 · E — Strategic Leadership · Elevate Others</div>
+      <div class="pane-title">Delegation &amp; Empowerment</div>
+      <div class="pane-how-to">Write after completing Module 5, Lesson 1. Think about what you are holding onto — and who you could be developing by letting it go.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What would you need to let go of to trust others with more responsibility?</div>
+        <textarea id="m5l1_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">Who in your life helped you step into your potential? What did they do specifically?</div>
+        <textarea id="m5l1_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">How do you want to be remembered as a leader by those you have worked with?</div>
+        <textarea id="m5l1_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M5 L2 -->
+    <div class="pane" id="pane-m5l2">
+      <div class="pane-eyebrow">Module 5 · Lesson 2 · E — Strategic Leadership · Elevate Others</div>
+      <div class="pane-title">Psychological Safety &amp; Building Trust</div>
+      <div class="pane-how-to">Write after completing Module 5, Lesson 2. Psychological safety is built slowly and broken quickly — this reflection helps you see your role in both.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What does it feel like to be in a psychologically safe environment? What conditions create that?</div>
+        <textarea id="m5l2_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">What do you do — intentionally or unintentionally — that might make others feel less safe?</div>
+        <textarea id="m5l2_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What is one relationship where you need to rebuild or deepen trust?</div>
+        <textarea id="m5l2_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M5 L3 -->
+    <div class="pane" id="pane-m5l3">
+      <div class="pane-eyebrow">Module 5 · Lesson 3 · E — Strategic Leadership · Elevate Others</div>
+      <div class="pane-title">Recognition &amp; Sustainable Leadership</div>
+      <div class="pane-how-to">Write after completing Module 5, Lesson 3. You cannot pour from an empty cup — this reflection is about making sure yours stays full.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">Who in your life deserves recognition they have not received yet? What has stopped you?</div>
+        <textarea id="m5l3_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">What does your support system look like right now? Where are the gaps?</div>
+        <textarea id="m5l3_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What does sustainable leadership look like for you — not in theory, but in your actual life?</div>
+        <textarea id="m5l3_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M6 L1 -->
+    <div class="pane" id="pane-m6l1">
+      <div class="pane-eyebrow">Module 6 · Lesson 1 · Integration · Commit &amp; Apply</div>
+      <div class="pane-title">Measuring Your Growth</div>
+      <div class="pane-how-to">Write after completing Module 6, Lesson 1. Go back and read your very first reflections from Module 1 before answering these. Notice what has changed.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What is the most important thing you have learned about yourself as a leader in this course?</div>
+        <textarea id="m6l1_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">What did you believe about leadership at the start that you now see differently?</div>
+        <textarea id="m6l1_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What are you most proud of that you built, said, or did during this course?</div>
+        <textarea id="m6l1_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+    <!-- M6 L2 -->
+    <div class="pane" id="pane-m6l2">
+      <div class="pane-eyebrow">Module 6 · Lesson 2 · Integration · Commit &amp; Apply</div>
+      <div class="pane-title">Your Leadership Forward</div>
+      <div class="pane-how-to">Write after completing Module 6, Lesson 2. This is your final journal entry — and the first page of what comes next.</div>
+      <div class="q-block">
+        <div class="q-num">Question 1</div>
+        <div class="q-text">What do you want to be true about your leadership one year from now?</div>
+        <textarea id="m6l2_q1" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 2</div>
+        <div class="q-text">Who do you want to invite into your leadership journey going forward?</div>
+        <textarea id="m6l2_q2" placeholder="Write here..."></textarea>
+      </div>
+      <div class="q-block">
+        <div class="q-num">Question 3</div>
+        <div class="q-text">What is the one commitment you are making to yourself as you leave this course?</div>
+        <textarea id="m6l2_q3" placeholder="Write here..."></textarea>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /body-wrap -->
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <div class="nav-arrows">
+    <button class="btn outline" id="prevBtn">← Previous</button>
+    <button class="btn outline" id="nextBtn">Next →</button>
+  </div>
+  <div class="progress-row">
+    <span class="progress-label" id="progressLabel">1 of 14</span>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 7%;"></div>
+    </div>
+  </div>
+  <span class="save-status" id="saveStatus">Responses saved automatically</span>
+  <button class="btn teal" id="printBtn">⬇ Save / Print</button>
+</div>
+
+<div class="footer">
+  <span>Becoming the Leader Only You Can Be &nbsp;|&nbsp; Rooted Leaders RISE &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies</span>
+  <span>Reflection Journal</span>
+</div>
+
+<script>
+const PANES = [
+  'cover','m1l1','m1l2',
+  'm2l1','m2l2','m2l3',
+  'm3l1','m3l2','m3l3',
+  'm4l1','m4l2','m4l3',
+  'm5l1','m5l2','m5l3',
+  'm6l1','m6l2'
+];
+let currentIndex = 0;
+
+function showPane(id) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('pane-' + id).classList.add('active');
+  document.querySelector(`.nav-item[data-pane="${id}"]`).classList.add('active');
+  currentIndex = PANES.indexOf(id);
+  updateProgress();
+  window.scrollTo(0, 0);
+}
+
+function updateProgress() {
+  const total = PANES.length;
+  const current = currentIndex + 1;
+  document.getElementById('progressLabel').textContent = current + ' of ' + total;
+  document.getElementById('progressFill').style.width = Math.round((current / total) * 100) + '%';
+}
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => showPane(btn.dataset.pane));
+});
+
+document.getElementById('prevBtn').addEventListener('click', () => {
+  if (currentIndex > 0) showPane(PANES[currentIndex - 1]);
+});
+document.getElementById('nextBtn').addEventListener('click', () => {
+  if (currentIndex < PANES.length - 1) showPane(PANES[currentIndex + 1]);
+});
+
+document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+// Auto-save to localStorage
+const STORAGE_KEY = 'btloycb_journal_v1';
+
+function save() {
+  const data = {};
+  document.querySelectorAll('textarea, input').forEach(el => {
+    if (el.id) data[el.id] = el.value;
+  });
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const s = document.getElementById('saveStatus');
+    s.textContent = 'Saved ✓';
+    s.classList.add('saved');
+    setTimeout(() => {
+      s.textContent = 'Responses saved automatically';
+      s.classList.remove('saved');
+    }, 2000);
+  } catch(e) {}
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    Object.keys(data).forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = data[id];
+    });
+  } catch(e) {}
+}
+
+document.addEventListener('input', save);
+window.addEventListener('load', () => { load(); updateProgress(); });
+</script>
+</body>
+</html>
