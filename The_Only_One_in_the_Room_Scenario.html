@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Only One in the Room — Module 2 · Lesson 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#1a6b7c; --teal-dark:#0d4a57; --teal-light:#2a8fa3; --teal-pale:#e6f2f5; --teal-pale2:#cce5eb;
+  --orange:#e8920a; --orange-light:#f5a832; --orange-pale:#fdf3e0; --gold:#c97d0c;
+  --rust:#a6412e; --rust-pale:#f7e9e5;
+  --white:#fff; --off-white:#f7f5f2; --text:#1c2a2f; --text-muted:#5a737a; --border:#c5dce1;
+  --shadow:0 4px 24px rgba(13,74,87,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+.page-header{background:var(--teal-dark);color:white;padding:36px 44px 30px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-70px;right:-70px;width:260px;height:260px;border-radius:50%;background:rgba(232,146,10,.14)}
+.page-header::after{content:'';position:absolute;bottom:-50px;left:38%;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.05)}
+.header-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:white;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,40px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.page-header .tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,.72)}
+.header-meta{margin-top:16px;font-size:12.5px;color:rgba(255,255,255,.48);letter-spacing:.4px}
+
+.main{max-width:1040px;margin:0 auto;padding:32px 20px 64px}
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin:30px 0 14px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.instruction-card{background:white;border-left:5px solid var(--orange);border-radius:10px;padding:20px 26px;margin-bottom:24px;box-shadow:var(--shadow)}
+.instruction-card p{color:var(--text-muted);font-size:14.5px;line-height:1.7}
+.instruction-card strong{color:var(--teal-dark)}
+
+.name-band{background:white;border-radius:12px;padding:18px 28px;margin-bottom:8px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);flex-wrap:wrap}
+.name-band label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);white-space:nowrap}
+.name-input-wrap{flex:1;min-width:200px;display:flex;align-items:center;border-bottom:2px solid var(--teal);padding-bottom:4px}
+#studentName{flex:1;border:none;outline:none;font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--teal-dark);background:transparent}
+#studentName::placeholder{color:#b0c8ce}
+.name-star{color:var(--orange);font-size:14px}
+
+/* SCENARIO */
+.scenario-card{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:8px}
+.scenario-head{background:var(--teal-dark);padding:14px 26px;display:flex;align-items:center;gap:12px}
+.scenario-head .tag{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange-light)}
+.scenario-head h3{font-family:'Playfair Display',serif;font-size:18px;color:white}
+.scenario-body{padding:22px 26px}
+.scenario-body p{font-size:15.5px;line-height:1.75;color:var(--text)}
+.scenario-body .tension{margin-top:14px;padding:12px 16px;background:var(--rust-pale);border-left:4px solid var(--rust);border-radius:0 8px 8px 0;font-size:14px;color:var(--text)}
+.scenario-body .tension strong{color:var(--rust)}
+
+/* READ THE MOMENT — selectable options */
+.read-options{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.option-card{background:white;border:2px solid var(--border);border-radius:12px;padding:16px 18px;cursor:pointer;transition:all .18s;box-shadow:var(--shadow)}
+.option-card:hover{border-color:var(--teal)}
+.option-card.selected{border-color:var(--teal);background:var(--teal-pale)}
+.option-card.selected.protect{border-color:var(--rust);background:var(--rust-pale)}
+.option-card .oc-top{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.oc-dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:white;font-weight:700}
+.option-card.selected .oc-dot{background:var(--teal);border-color:var(--teal)}
+.option-card.selected.protect .oc-dot{background:var(--rust);border-color:var(--rust)}
+.oc-title{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--teal-dark)}
+.option-card p{font-size:13px;color:var(--text-muted);line-height:1.5}
+
+/* PROMPTS */
+.prompt{background:white;border-radius:12px;box-shadow:var(--shadow);padding:18px 22px;margin-bottom:16px}
+.prompt .p-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:6px}
+.p-num{min-width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:14px;font-weight:700;margin-top:1px;flex-shrink:0}
+.p-q{font-size:15.5px;font-weight:600;color:var(--teal-dark);line-height:1.4}
+.p-hint{font-size:12.5px;color:var(--text-muted);font-style:italic;margin:2px 0 10px 40px}
+.prompt textarea{width:100%;min-height:84px;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.prompt textarea:focus{outline:none;border-color:var(--teal);background:white}
+.prompt textarea::placeholder{color:#a8bec5;font-style:italic}
+
+/* ADAPT VS ABANDON reference */
+.aa{display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:8px}
+.aa-col{padding:18px 20px}
+.aa-adapt{background:var(--teal-pale)}
+.aa-abandon{background:var(--rust-pale)}
+.aa-col h4{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:10px}
+.aa-adapt h4{color:var(--teal-dark)}
+.aa-abandon h4{color:var(--rust)}
+.aa-col ul{list-style:none}
+.aa-col li{font-size:13.5px;line-height:1.5;margin-bottom:8px;padding-left:18px;position:relative;color:var(--text)}
+.aa-adapt li::before{content:'✓';position:absolute;left:0;color:var(--teal);font-weight:700}
+.aa-abandon li::before{content:'✕';position:absolute;left:0;color:var(--rust);font-weight:700}
+
+/* REFLECTION / YLOS / SAVE (shared) */
+.reflection-wrap{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
+.reflection-head{background:var(--teal-dark);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px}
+.reflection-head .ri{font-size:24px}
+.reflection-head h3{font-family:'Playfair Display',serif;font-size:19px}
+.reflection-head .teal-pill{margin-left:auto;background:var(--teal);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px}
+.rq-list{padding:24px 28px}
+.rq{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed var(--border)}
+.rq:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.rq-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.rq-num{min-width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;margin-top:1px;flex-shrink:0}
+.rq-question{font-size:15px;font-weight:600;color:var(--teal-dark);line-height:1.4}
+.rq textarea{width:100%;min-height:84px;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.rq textarea:focus{outline:none;border-color:var(--teal);background:white}
+.rq textarea::placeholder{color:#a8bec5;font-style:italic}
+
+.ylos-box{background:linear-gradient(130deg,var(--teal-dark) 0%,var(--teal-light) 100%);color:white;border-radius:14px;padding:26px 32px;display:flex;gap:18px;align-items:flex-start;margin-top:24px;box-shadow:0 6px 30px rgba(13,74,87,.25)}
+.ylos-icon{font-size:38px;line-height:1;flex-shrink:0}
+.ylos-content h4{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:6px}
+.ylos-content p{font-size:14px;color:rgba(255,255,255,.85);line-height:1.65}
+.ylos-content strong{color:var(--orange-light)}
+
+.save-footer{background:white;border-radius:12px;border-top:4px solid var(--orange);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);margin-top:24px}
+.save-footer-text{font-size:14px;color:var(--text-muted)}
+.save-footer-text strong{color:var(--teal-dark)}
+.save-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-outline{background:white;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-outline:hover{background:var(--teal-pale)}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+
+#toast{position:fixed;bottom:28px;right:24px;background:var(--teal-dark);color:white;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(70px);opacity:0;transition:all .38s cubic-bezier(.34,1.56,.64,1);z-index:9999}
+#toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:720px){ .read-options,.aa{grid-template-columns:1fr} }
+@media print{
+  body{background:white;font-size:12px}
+  .save-footer,#toast,.instruction-card{display:none!important}
+  .page-header,.ylos-box,.reflection-head,.scenario-head,.option-card.selected{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .scenario-card,.prompt,.aa,.reflection-wrap{page-break-inside:avoid}
+  textarea{background:#fafafa;border:1px solid #ccc}
+  @page{margin:.6in}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 2 · Lesson 3 · Scenario</div>
+  <h1>The Only One in the Room</h1>
+  <p class="tagline">Authenticity or identity safety? Learn to tell the difference in the moment.</p>
+  <p class="header-meta">Becoming the Leader Only You Can Be &nbsp;|&nbsp; Rooted Leaders RISE &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies &nbsp;|&nbsp; Module 2, Lesson 3</p>
+</header>
+
+<div class="main">
+
+  <div class="instruction-card">
+    <p>Read the scenario, then work through it. There's no single right answer — the skill is telling the difference between <strong>authenticity</strong> (choosing to share your full self) and <strong>identity safety</strong> (choosing to protect it because a space hasn't earned it yet). Both can be the right call. <strong>Your answers save automatically</strong> as you type.</p>
+  </div>
+
+  <div class="name-band">
+    <label>Your Name</label>
+    <div class="name-input-wrap">
+      <span class="name-star">✦&nbsp;</span>
+      <input type="text" id="studentName" placeholder="Type your name" autocomplete="off" data-save>
+    </div>
+  </div>
+
+  <div class="scenario-card">
+    <div class="scenario-head"><span class="tag">The Scenario</span><h3>The Only One in the Room</h3></div>
+    <div class="scenario-body">
+      <p>You're the only person from your background in a class or meeting. You have an idea that runs against the direction the room is heading. Speaking up feels risky — you're not sure the space is safe for your full perspective, and the imposter voice is loud. You have a few seconds to decide how to show up.</p>
+      <div class="tension"><strong>The tension:</strong> Say what you really think and risk being dismissed or singled out — or stay measured, protect yourself, and possibly let a worse idea win.</div>
+    </div>
+  </div>
+
+  <div class="section-label">Step 1 · Read the Moment</div>
+  <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">Before you act, name what kind of moment this is. Tap the read that fits — then explain how you can tell.</p>
+  <div class="read-options">
+    <div class="option-card" id="opt-share" onclick="pickRead('share')">
+      <div class="oc-top"><span class="oc-dot"></span><span class="oc-title">Authenticity — Share</span></div>
+      <p>The space is safe enough. Speaking up honors your voice, and the cost of silence is higher than the cost of speaking.</p>
+    </div>
+    <div class="option-card protect" id="opt-protect" onclick="pickRead('protect')">
+      <div class="oc-top"><span class="oc-dot"></span><span class="oc-title">Identity Safety — Protect</span></div>
+      <p>This room hasn't earned your full self yet. Protecting your energy or safety here is strategic, not a failure of authenticity.</p>
+    </div>
+  </div>
+
+  <div class="section-label">Step 2 · Work the Moment</div>
+
+  <div class="prompt">
+    <div class="p-top"><span class="p-num">1</span><span class="p-q">How can you tell which read this is — authenticity or identity safety?</span></div>
+    <div class="p-hint">What signals in the room (or in you) point one way or the other? Name them.</div>
+    <textarea placeholder="I can tell because…" data-save id="q1"></textarea>
+  </div>
+
+  <div class="prompt">
+    <div class="p-top"><span class="p-num">2</span><span class="p-q">What would adapting your style look like here — without abandoning your values?</span></div>
+    <div class="p-hint">Adjust how you deliver the idea (tone, timing, framing) while keeping the substance intact.</div>
+    <textarea placeholder="I could adapt by…" data-save id="q2"></textarea>
+  </div>
+
+  <div class="prompt">
+    <div class="p-top"><span class="p-num">3</span><span class="p-q">What's the smallest authentic action you could take that still moves things?</span></div>
+    <div class="p-hint">Not all-or-nothing. A question, a reframe, a private follow-up afterward — the smallest true move.</div>
+    <textarea placeholder="The smallest thing I could do is…" data-save id="q3"></textarea>
+  </div>
+
+  <div class="prompt">
+    <div class="p-top"><span class="p-num">4</span><span class="p-q">Name the tax — what would this cost you, and where's your anchor space to recover?</span></div>
+    <div class="p-hint">If showing up (or holding back) costs you something, name it — and name where you get to be fully yourself afterward.</div>
+    <textarea placeholder="This would cost me… My anchor space is…" data-save id="q4"></textarea>
+  </div>
+
+  <div class="section-label">Reference · Adapt vs. Abandon</div>
+  <div class="aa">
+    <div class="aa-col aa-adapt">
+      <h4>Adapting (Strategic)</h4>
+      <ul>
+        <li>You adjust tone or timing so you'll be heard</li>
+        <li>Your values stay intact; only delivery flexes</li>
+        <li>You can name why you're doing it</li>
+        <li>You come back to your full self in anchor spaces</li>
+      </ul>
+    </div>
+    <div class="aa-col aa-abandon">
+      <h4>Abandoning (Costly)</h4>
+      <ul>
+        <li>You silence your perspective so you won't stand out</li>
+        <li>You act against your values to be accepted</li>
+        <li>You've stopped noticing you're doing it</li>
+        <li>You have nowhere you get to be fully yourself</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="reflection-wrap">
+    <div class="reflection-head"><span class="ri">📓</span><h3>Reflect</h3><span class="teal-pill">JOURNAL</span></div>
+    <div class="rq-list">
+      <div class="rq"><div class="rq-top"><div class="rq-num">1</div><div class="rq-question">Think of a real room where you're often "the only one." What has this scenario helped you see about how you show up there?</div></div><textarea placeholder="In that room, I tend to… and now I notice…" data-save-rq></textarea></div>
+      <div class="rq"><div class="rq-top"><div class="rq-num">2</div><div class="rq-question">What's one thing you'll do differently the next time you're the only one in the room?</div></div><textarea placeholder="Next time, I will…" data-save-rq></textarea></div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-icon">📋</div>
+    <div class="ylos-content">
+      <h4>Add to Your YLOS — My Roots: Authenticity & Belonging</h4>
+      <p>Add your read, your smallest authentic action, and the <strong>tax + anchor space</strong> you named to the <strong>Identity-Safety</strong> notes in your YLOS. Pair this with your Belonging Action Plan — together they're your real-time playbook for rooms that weren't built for you.</p>
+    </div>
+  </div>
+
+  <div class="save-footer">
+    <div class="save-footer-text"><strong>When you're done:</strong> save your work or print this scenario and add it to the My Roots section of your YLOS.</div>
+    <div class="save-actions">
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn btn-teal" onclick="saveWork()">💾 Save My Work</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div id="toast"></div>
+
+<script>
+const FIELDS=Array.from(document.querySelectorAll('[data-save]'));
+const RQS=Array.from(document.querySelectorAll('[data-save-rq]'));
+
+function pickRead(which){
+  const s=document.getElementById('opt-share'), p=document.getElementById('opt-protect');
+  s.classList.toggle('selected', which==='share');
+  p.classList.toggle('selected', which==='protect');
+  localStorage.setItem('oos_read', which);
+}
+function autosave(){
+  FIELDS.forEach(el=>{ if(el.id) localStorage.setItem('oos_'+el.id, el.value); });
+  RQS.forEach((el,i)=>localStorage.setItem('oos_rq_'+i, el.value));
+}
+function loadWork(){
+  try{
+    FIELDS.forEach(el=>{ if(el.id){ const v=localStorage.getItem('oos_'+el.id); if(v!==null) el.value=v; } });
+    RQS.forEach((el,i)=>{ const v=localStorage.getItem('oos_rq_'+i); if(v!==null) el.value=v; });
+    const r=localStorage.getItem('oos_read'); if(r) pickRead(r);
+  }catch(e){}
+}
+function saveWork(){ try{ autosave(); toast('✓ Your work has been saved!'); }catch(e){ toast('⚠ Could not save — check browser settings.'); } }
+FIELDS.concat(RQS).forEach(el=>el.addEventListener('input', autosave));
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+loadWork();
+</script>
+</body>
+</html>
