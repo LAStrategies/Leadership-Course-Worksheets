@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Values Card Sort — Module 2 · Lesson 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#1a6b7c; --teal-dark:#0d4a57; --teal-light:#2a8fa3; --teal-pale:#e6f2f5; --teal-pale2:#cce5eb;
+  --orange:#e8920a; --orange-light:#f5a832; --orange-pale:#fdf3e0; --gold:#c97d0c;
+  --white:#fff; --off-white:#f7f5f2; --text:#1c2a2f; --text-muted:#5a737a; --border:#c5dce1;
+  --shadow:0 4px 24px rgba(13,74,87,.11); --shadow-hover:0 8px 30px rgba(13,74,87,.20);
+  --muted-bd:#b7c3cc;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+/* HEADER */
+.page-header{background:var(--teal-dark);color:white;padding:36px 44px 30px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-70px;right:-70px;width:260px;height:260px;border-radius:50%;background:rgba(232,146,10,.14)}
+.page-header::after{content:'';position:absolute;bottom:-50px;left:38%;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.05)}
+.header-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:white;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,40px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.page-header .tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,.72)}
+.header-meta{margin-top:16px;font-size:12.5px;color:rgba(255,255,255,.48);letter-spacing:.4px}
+
+/* LAYOUT */
+.main{max-width:1040px;margin:0 auto;padding:32px 20px 64px}
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* INSTRUCTION CARD */
+.instruction-card{background:white;border-left:5px solid var(--orange);border-radius:10px;padding:20px 26px;margin-bottom:24px;box-shadow:var(--shadow)}
+.instruction-card p{color:var(--text-muted);font-size:14.5px;line-height:1.7}
+.instruction-card strong{color:var(--teal-dark)}
+
+/* NAME BAND */
+.name-band{background:white;border-radius:12px;padding:18px 28px;margin-bottom:24px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);flex-wrap:wrap}
+.name-band label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);white-space:nowrap}
+.name-input-wrap{flex:1;min-width:200px;display:flex;align-items:center;border-bottom:2px solid var(--teal);padding-bottom:4px}
+#studentName{flex:1;border:none;outline:none;font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--teal-dark);background:transparent}
+#studentName::placeholder{color:#b0c8ce}
+.name-star{color:var(--orange);font-size:14px}
+
+/* ROUND TABS */
+.round-tabs{display:flex;gap:0;margin-bottom:24px;border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.round-tab{flex:1;padding:14px 10px;text-align:center;cursor:pointer;font-weight:700;font-size:13px;transition:all .2s;background:white;color:var(--text-muted);border:none;position:relative;font-family:'Source Sans 3',sans-serif}
+.round-tab .round-num{display:block;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:3px}
+.round-tab.active{background:var(--teal-dark);color:white}
+.round-tab.active .round-num{color:var(--orange-light)}
+.round-tab.completed{background:var(--teal);color:white}
+.round-tab.completed .round-num{color:white}
+.round-tab.completed::after{content:'✓';position:absolute;top:7px;right:9px;font-size:12px;opacity:.85}
+
+/* PANELS */
+.round-panel{display:none}
+.round-panel.active{display:block}
+.round-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.round-badge{background:var(--teal-dark);color:var(--orange-light);font-weight:700;font-size:12px;padding:6px 14px;border-radius:20px;white-space:nowrap;letter-spacing:.6px}
+.round-title{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:var(--teal-dark)}
+.round-desc{font-size:14px;color:var(--text-muted);margin-bottom:20px;padding:12px 18px;background:white;border-radius:10px;border-left:4px solid var(--orange);line-height:1.65;box-shadow:var(--shadow)}
+.round-desc strong{color:var(--teal-dark)}
+
+/* SORT WORKSPACE */
+.sort-workspace{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card-pool-section{grid-column:1/-1}
+.buckets-row{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card-pool{background:white;border-radius:12px;padding:16px;box-shadow:var(--shadow);min-height:110px}
+.cards-grid{display:flex;flex-wrap:wrap;gap:8px}
+
+/* VALUE CARDS */
+.value-card{background:var(--teal-dark);color:white;font-weight:600;font-size:12.5px;padding:8px 14px;border-radius:22px;cursor:grab;user-select:none;transition:all .18s;box-shadow:0 2px 6px rgba(13,74,87,.25);touch-action:none}
+.value-card:hover{background:var(--teal-light);transform:translateY(-2px);box-shadow:var(--shadow-hover)}
+.value-card.dragging{opacity:.5;transform:scale(.95);cursor:grabbing}
+
+/* BUCKETS */
+.bucket{border-radius:12px;padding:14px;min-height:150px;border:2.5px dashed transparent;transition:all .2s;position:relative}
+.bucket.essential{background:var(--teal-pale);border-color:var(--teal)}
+.bucket.important{background:var(--orange-pale);border-color:var(--orange)}
+.bucket.not-important{background:#eef1f2;border-color:var(--muted-bd)}
+.bucket.drag-over{transform:scale(1.02);box-shadow:var(--shadow-hover)}
+.bucket.essential.drag-over{background:#d5ecf1}
+.bucket.important.drag-over{background:#fbe9cb}
+.bucket.not-important.drag-over{background:#e5e9eb}
+.bucket-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.bucket-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.bucket-title{font-weight:700;font-size:13px;color:var(--teal-dark)}
+.bucket-count{margin-left:auto;background:white;color:var(--teal-dark);font-weight:700;font-size:12px;min-width:24px;height:24px;border-radius:12px;display:flex;align-items:center;justify-content:center;padding:0 7px;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.bucket-cards{display:flex;flex-wrap:wrap;gap:8px;min-height:60px}
+.bucket-placeholder{color:var(--text-muted);font-size:12.5px;font-style:italic;opacity:.7;padding:8px 4px}
+
+/* ROUND NAV */
+.round-nav{display:flex;align-items:center;gap:14px;margin-top:22px;flex-wrap:wrap}
+.progress-note{font-size:13px;font-weight:600;color:var(--text-muted)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-primary{background:var(--orange);color:white;margin-left:auto}
+.btn-primary:hover{background:var(--gold);transform:translateY(-1px)}
+.btn-secondary{background:white;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-secondary:hover{background:var(--teal-pale)}
+.warn-msg{color:#b0291e;font-size:12.5px;font-weight:700;display:none;margin-top:10px}
+
+/* TOP 5 */
+.top5-workspace{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.top5-pool,.top5-drop{background:white;border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.top5-drop{background:var(--teal-pale);border:2px dashed var(--teal)}
+.drop-hint{color:var(--text-muted);font-size:13px;font-style:italic;text-align:center;padding:28px 12px;line-height:1.6}
+.top5-slots{display:flex;flex-direction:column;gap:10px}
+.top5-slot{display:flex;align-items:center;gap:12px;background:white;border-radius:10px;padding:11px 14px;box-shadow:0 1px 4px rgba(13,74,87,.1)}
+.slot-num{background:var(--orange);color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.slot-card-name{flex:1;font-weight:700;color:var(--teal-dark);font-size:14px}
+.slot-remove{background:none;border:none;color:#b0291e;font-size:14px;cursor:pointer;padding:2px 6px;border-radius:5px}
+.slot-remove:hover{background:#fbe3e0}
+.top5-count-bar{margin-top:14px;text-align:center;font-weight:700;font-size:13px}
+
+/* CORE 3 */
+.core3-workspace{display:grid;grid-template-columns:0.9fr 1.5fr;gap:20px}
+.core3-pool{background:white;border-radius:12px;padding:18px;box-shadow:var(--shadow);height:fit-content}
+.core3-cards{display:flex;flex-direction:column;gap:10px}
+.core3-card{display:flex;align-items:center;gap:10px;background:var(--off-white);border:2px solid var(--border);border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .18s;font-weight:700;color:var(--teal-dark);font-size:14px}
+.core3-card:hover{border-color:var(--teal)}
+.core3-card.selected{background:var(--teal-dark);color:white;border-color:var(--teal-dark)}
+.core3-card .check{width:20px;height:20px;border-radius:50%;border:2px solid var(--muted-bd);flex-shrink:0}
+.core3-card.selected .check{background:var(--orange);border-color:var(--orange)}
+.mapping-area{display:flex;flex-direction:column;gap:16px}
+.mapping-card{background:white;border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+.mapping-card-header{background:var(--teal-dark);padding:12px 18px;display:flex;align-items:center;gap:12px}
+.mapping-card-num{background:var(--orange);color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mapping-card-title{font-family:'Playfair Display',serif;font-weight:700;font-size:17px;color:white}
+.mapping-fields{padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mapping-field{display:flex;flex-direction:column;gap:5px}
+.mapping-field label{font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal)}
+.mapping-field textarea{width:100%;min-height:62px;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-family:'Source Sans 3',sans-serif;font-size:13.5px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.55}
+.mapping-field textarea:focus{outline:none;border-color:var(--teal);background:white}
+.mapping-field textarea::placeholder{color:#a8bec5;font-style:italic}
+
+/* REFLECTION */
+.reflection-wrap{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:28px}
+.reflection-head{background:var(--teal-dark);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px}
+.reflection-head .ri{font-size:24px}
+.reflection-head h3{font-family:'Playfair Display',serif;font-size:19px}
+.reflection-head .teal-pill{margin-left:auto;background:var(--teal);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px}
+.rq-list{padding:24px 28px}
+.rq{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed var(--border)}
+.rq:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.rq-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.rq-num{min-width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;margin-top:1px;flex-shrink:0}
+.rq-question{font-size:15px;font-weight:600;color:var(--teal-dark);line-height:1.4}
+.rq textarea{width:100%;min-height:88px;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.rq textarea:focus{outline:none;border-color:var(--teal);background:white}
+.rq textarea::placeholder{color:#a8bec5;font-style:italic}
+.discussion-box{margin:0 28px 24px;background:var(--orange-pale);border-left:5px solid var(--orange);border-radius:0 10px 10px 0;padding:16px 20px}
+.discussion-box .disc-label{font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+.discussion-box p{font-size:14px;color:var(--teal-dark);font-style:italic;line-height:1.6}
+
+/* YLOS */
+.ylos-box{background:linear-gradient(130deg,var(--teal-dark) 0%,var(--teal-light) 100%);color:white;border-radius:14px;padding:26px 32px;display:flex;gap:18px;align-items:flex-start;margin-top:28px;box-shadow:0 6px 30px rgba(13,74,87,.25)}
+.ylos-icon{font-size:38px;line-height:1;flex-shrink:0}
+.ylos-content h4{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:6px}
+.ylos-content p{font-size:14px;color:rgba(255,255,255,.85);line-height:1.65}
+.ylos-content strong{color:var(--orange-light)}
+
+/* SAVE FOOTER */
+.save-footer{background:white;border-radius:12px;border-top:4px solid var(--orange);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);margin-top:24px}
+.save-footer-text{font-size:14px;color:var(--text-muted)}
+.save-footer-text strong{color:var(--teal-dark)}
+.save-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-outline{background:white;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-outline:hover{background:var(--teal-pale)}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:24px;background:var(--teal-dark);color:white;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(70px);opacity:0;transition:all .38s cubic-bezier(.34,1.56,.64,1);z-index:9999}
+#toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:720px){
+  .top5-workspace,.core3-workspace,.mapping-fields{grid-template-columns:1fr}
+  .buckets-row{grid-template-columns:1fr}
+}
+@media print{
+  body{background:white;font-size:12px}
+  .round-tabs,.round-nav,.btn,.save-footer,#toast,.instruction-card{display:none!important}
+  .round-panel{display:block!important;page-break-inside:avoid}
+  .page-header,.ylos-box,.reflection-head,.mapping-card-header,.value-card,.round-badge{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .rq textarea,.mapping-field textarea{background:#fafafa;border:1px solid #ccc}
+  @page{margin:.6in}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 2 · Lesson 2 · Activity</div>
+  <h1>Values Card Sort</h1>
+  <p class="tagline">Your values have names — let's find them.</p>
+  <p class="header-meta">Becoming the Leader Only You Can Be &nbsp;|&nbsp; Rooted Leaders RISE &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies &nbsp;|&nbsp; Module 2, Lesson 2 · 25 min</p>
+</header>
+
+<div class="main">
+
+  <div class="instruction-card">
+    <p><strong>How it works:</strong> Work through all three rounds in order. In <strong>Round 1</strong>, drag each value into the pile that feels right. In <strong>Round 2</strong>, choose your Top 5. In <strong>Round 3</strong>, name your Core 3 and complete your Values Map. Go with your gut — your first instinct is often the most honest answer.</p>
+  </div>
+
+  <div class="name-band">
+    <label>Your Name</label>
+    <div class="name-input-wrap">
+      <span class="name-star">✦&nbsp;</span>
+      <input type="text" id="studentName" placeholder="Type your name" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- ROUND TABS -->
+  <div class="round-tabs">
+    <button class="round-tab active" onclick="goToRound(1)" id="tab-1"><span class="round-num">1</span>Sort All 40 Values</button>
+    <button class="round-tab" onclick="goToRound(2)" id="tab-2"><span class="round-num">2</span>Find Your Top 5</button>
+    <button class="round-tab" onclick="goToRound(3)" id="tab-3"><span class="round-num">3</span>Name Your Core 3</button>
+  </div>
+
+  <!-- ROUND 1 -->
+  <div class="round-panel active" id="round-1">
+    <div class="round-header">
+      <span class="round-badge">ROUND 1 of 3</span>
+      <span class="round-title">Sort All 40 Values</span>
+    </div>
+    <div class="round-desc">Drag each value from the pool into one of three piles: <strong>Essential</strong> (core to who you are), <strong>Important</strong> (you value it, but it's not defining), or <strong>Not Important Right Now</strong>. Go with your gut — don't overthink it.</div>
+    <div class="sort-workspace">
+      <div class="card-pool-section">
+        <div class="section-label">40 Values — drag each one into a pile below</div>
+        <div class="card-pool"><div class="cards-grid" id="card-pool"></div></div>
+      </div>
+      <div class="buckets-row">
+        <div class="bucket essential" id="bucket-essential" ondragover="onDragOver(event)" ondrop="onDrop(event,'essential')" ondragleave="onDragLeave(event)">
+          <div class="bucket-header"><div class="bucket-dot" style="background:var(--teal)"></div><span class="bucket-title">Essential</span><span class="bucket-count" id="count-essential">0</span></div>
+          <div class="bucket-cards" id="cards-essential"><div class="bucket-placeholder">Drop cards here</div></div>
+        </div>
+        <div class="bucket important" id="bucket-important" ondragover="onDragOver(event)" ondrop="onDrop(event,'important')" ondragleave="onDragLeave(event)">
+          <div class="bucket-header"><div class="bucket-dot" style="background:var(--orange)"></div><span class="bucket-title">Important</span><span class="bucket-count" id="count-important">0</span></div>
+          <div class="bucket-cards" id="cards-important"><div class="bucket-placeholder">Drop cards here</div></div>
+        </div>
+        <div class="bucket not-important" id="bucket-not-important" ondragover="onDragOver(event)" ondrop="onDrop(event,'not-important')" ondragleave="onDragLeave(event)">
+          <div class="bucket-header"><div class="bucket-dot" style="background:var(--muted-bd)"></div><span class="bucket-title">Not Important Right Now</span><span class="bucket-count" id="count-not-important">0</span></div>
+          <div class="bucket-cards" id="cards-not-important"><div class="bucket-placeholder">Drop cards here</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="round-nav">
+      <span class="progress-note" id="r1-progress">Sort all 40 cards to continue</span>
+      <button class="btn btn-secondary" onclick="resetRound1()">↺ Reset</button>
+      <button class="btn btn-primary" onclick="goToRound2()">Next: Find Your Top 5 →</button>
+    </div>
+    <div class="warn-msg" id="r1-warn">Please sort all 40 values before continuing.</div>
+  </div>
+
+  <!-- ROUND 2 -->
+  <div class="round-panel" id="round-2">
+    <div class="round-header">
+      <span class="round-badge">ROUND 2 of 3</span>
+      <span class="round-title">Find Your Top 5</span>
+    </div>
+    <div class="round-desc">From your <strong>Essential</strong> pile, choose exactly <strong>5 values</strong> that feel most fundamentally true to who you are — the ones you live by even when it's hard.</div>
+    <div class="top5-workspace">
+      <div class="top5-pool">
+        <div class="section-label">Your Essential Values — click to select</div>
+        <div id="essential-clickable" style="display:flex;flex-wrap:wrap;gap:8px;min-height:60px;"></div>
+        <div id="r2-no-essential" style="display:none;font-size:13px;color:var(--text-muted);font-style:italic;padding:12px 0;">No Essential values yet — go back to Round 1 and sort your cards first.</div>
+      </div>
+      <div class="top5-drop">
+        <div class="section-label">Your Top 5</div>
+        <div id="top5-hint" class="drop-hint">Click values on the left to add them here.<br>Select exactly 5.</div>
+        <div class="top5-slots" id="top5-slots" style="display:none;"></div>
+        <div class="top5-count-bar" id="top5-count"></div>
+      </div>
+    </div>
+    <div class="round-nav">
+      <button class="btn btn-secondary" onclick="goToRound(1)">← Back</button>
+      <span class="progress-note" id="r2-progress">Select 5 values to continue</span>
+      <button class="btn btn-primary" onclick="goToRound3()">Next: Name Your Core 3 →</button>
+    </div>
+    <div class="warn-msg" id="r2-warn">Please select exactly 5 values before continuing.</div>
+  </div>
+
+  <!-- ROUND 3 -->
+  <div class="round-panel" id="round-3">
+    <div class="round-header">
+      <span class="round-badge">ROUND 3 of 3</span>
+      <span class="round-title">Name Your Core 3 + Complete Your Values Map</span>
+    </div>
+    <div class="round-desc">From your Top 5, choose your <strong>Core 3</strong> — the non-negotiables you wouldn't compromise, even under pressure. Then map each one.</div>
+    <div class="core3-workspace">
+      <div class="core3-pool">
+        <div class="section-label">Your Top 5 — select 3</div>
+        <div class="core3-cards" id="core3-choices"></div>
+        <div class="warn-msg" id="r3-warn">Select exactly 3 core values.</div>
+      </div>
+      <div class="mapping-area" id="mapping-area">
+        <div style="text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;font-style:italic;">Select your 3 core values on the left to reveal your Values Map.</div>
+      </div>
+    </div>
+
+    <div class="reflection-wrap">
+      <div class="reflection-head"><span class="ri">📓</span><h3>Reflection Questions</h3><span class="teal-pill">JOURNAL</span></div>
+      <div class="rq-list">
+        <div class="rq"><div class="rq-top"><div class="rq-num">1</div><div class="rq-question">Which 3–5 values feel most essential to who you are as a leader?</div></div><textarea placeholder="Take your time — there's no wrong answer. Write what feels true for you."></textarea></div>
+        <div class="rq"><div class="rq-top"><div class="rq-num">2</div><div class="rq-question">How do these values show up — or get suppressed — in different contexts (school, work, family, community)?</div></div><textarea placeholder="Think about a specific situation where you felt fully aligned with your values — or the opposite."></textarea></div>
+        <div class="rq"><div class="rq-top"><div class="rq-num">3</div><div class="rq-question">Who taught you each value? Family, community, an experience, or hard necessity?</div></div><textarea placeholder="The origin of a value often tells you why it runs so deep."></textarea></div>
+        <div class="rq"><div class="rq-top"><div class="rq-num">4</div><div class="rq-question">Where do you feel the most alignment between your values and your actions? The most tension?</div></div><textarea placeholder="Tension isn't failure — it's data. What does the gap tell you?"></textarea></div>
+      </div>
+      <div class="discussion-box">
+        <div class="disc-label">💬 Discussion Prompt</div>
+        <p>Share your top 3 values and one specific story of how you've lived one of them in action. What made that moment feel like leadership — even if no one called it that?</p>
+      </div>
+    </div>
+
+    <div class="ylos-box">
+      <div class="ylos-icon">📋</div>
+      <div class="ylos-content">
+        <h4>Add to Your YLOS — My Roots: Core Values Map</h4>
+        <p>When you finish, add your completed Values Map to the <strong>My Roots</strong> section of your YLOS. Your Core 3, what each means, where it came from, and how you live it — this is the foundation of your leadership identity. It's a living document; return to it as you grow.</p>
+      </div>
+    </div>
+
+    <div class="save-footer">
+      <div class="save-footer-text"><strong>When you're done:</strong> save your work or print this worksheet and add it to the My Roots section of your YLOS.</div>
+      <div class="save-actions">
+        <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
+        <button class="btn btn-teal" onclick="saveProgress()">💾 Save My Work</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div id="toast"></div>
+
+<script>
+const ALL_VALUES = [
+  "Accountability","Authenticity","Belonging","Boldness","Commitment",
+  "Community","Compassion","Courage","Creativity","Dignity",
+  "Discipline","Empathy","Equity","Excellence","Fairness",
+  "Faith","Family","Forgiveness","Freedom","Generosity",
+  "Gratitude","Growth","Honesty","Humility","Integrity",
+  "Justice","Kindness","Loyalty","Perseverance","Purpose",
+  "Relationships","Resilience","Respect","Responsibility","Service",
+  "Trust","Unity","Voice","Wisdom","Zeal"
+];
+const state = { placements:{}, top5:[], core3:[] };
+let draggedValue = null;
+
+function buildPool(){
+  const pool = document.getElementById('card-pool');
+  pool.innerHTML = '';
+  ALL_VALUES.forEach(v => { if (state.placements[v]) return; pool.appendChild(makeCard(v,'pool')); });
+  updateCounts();
+}
+function makeCard(value, location){
+  const el = document.createElement('div');
+  el.className = 'value-card'; el.textContent = value; el.dataset.value = value; el.draggable = true;
+  el.addEventListener('dragstart', e => { draggedValue = value; el.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; });
+  el.addEventListener('dragend', () => el.classList.remove('dragging'));
+  if (location !== 'pool'){ el.title = 'Double-click to return to pool'; el.addEventListener('dblclick', () => returnToPool(value)); }
+  return el;
+}
+function onDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); e.dataTransfer.dropEffect='move'; }
+function onDragLeave(e){ e.currentTarget.classList.remove('drag-over'); }
+function onDrop(e, bucket){ e.preventDefault(); e.currentTarget.classList.remove('drag-over'); if(!draggedValue) return; placeCard(draggedValue, bucket); draggedValue=null; }
+function placeCard(value, bucket){ state.placements[value]=bucket; refreshBuckets(); buildPool(); updateProgress(); }
+function returnToPool(value){ delete state.placements[value]; refreshBuckets(); buildPool(); updateProgress(); }
+function refreshBuckets(){
+  ['essential','important','not-important'].forEach(b => {
+    const container = document.getElementById('cards-'+b); container.innerHTML='';
+    const vals = Object.entries(state.placements).filter(([,v])=>v===b).map(([k])=>k);
+    if (vals.length===0){ container.innerHTML='<div class="bucket-placeholder">Drop cards here</div>'; }
+    else { vals.forEach(v => container.appendChild(makeCard(v,b))); }
+    document.getElementById('count-'+b).textContent = vals.length;
+  });
+}
+function updateCounts(){
+  ['essential','important','not-important'].forEach(b => {
+    const n = Object.values(state.placements).filter(v=>v===b).length;
+    document.getElementById('count-'+b).textContent = n;
+  });
+}
+function updateProgress(){
+  const placed = Object.keys(state.placements).length;
+  const remaining = ALL_VALUES.length - placed;
+  const prog = document.getElementById('r1-progress');
+  if (remaining===0){ prog.textContent='✓ All 40 values sorted!'; prog.style.color='var(--teal)'; }
+  else { prog.textContent = remaining+' value'+(remaining!==1?'s':'')+' remaining'; prog.style.color=''; }
+}
+function resetRound1(){
+  if (!confirm('Reset Round 1? All your sorted cards will return to the pool.')) return;
+  Object.keys(state.placements).forEach(k=>delete state.placements[k]);
+  state.top5=[]; state.core3=[]; buildPool(); refreshBuckets(); updateProgress();
+  document.getElementById('tab-2').className='round-tab'; document.getElementById('tab-3').className='round-tab';
+}
+function goToRound2(){
+  const placed = Object.keys(state.placements).length;
+  const warn = document.getElementById('r1-warn');
+  if (placed < ALL_VALUES.length){ warn.style.display='block'; setTimeout(()=>warn.style.display='none',3000); return; }
+  document.getElementById('tab-1').classList.add('completed'); document.getElementById('tab-1').classList.remove('active');
+  buildRound2(); goToRound(2);
+}
+function buildRound2(){
+  const essentials = Object.entries(state.placements).filter(([,v])=>v==='essential').map(([k])=>k).sort();
+  const container = document.getElementById('essential-clickable');
+  const noEss = document.getElementById('r2-no-essential');
+  container.innerHTML='';
+  if (essentials.length===0){ noEss.style.display='block'; return; }
+  noEss.style.display='none';
+  essentials.forEach(v => {
+    const el = document.createElement('div'); el.className='value-card'; el.textContent=v; el.dataset.value=v; el.style.cursor='pointer';
+    if (state.top5.includes(v)){ el.style.background='var(--teal)'; el.style.boxShadow='0 0 0 3px var(--teal-pale2)'; }
+    el.addEventListener('click', () => toggleTop5(v, el)); container.appendChild(el);
+  });
+  renderTop5Slots();
+}
+function toggleTop5(value){
+  const idx = state.top5.indexOf(value);
+  if (idx>-1){ state.top5.splice(idx,1); }
+  else { if (state.top5.length>=5){ showToast('You can only select 5 values. Remove one first.'); return; } state.top5.push(value); }
+  buildRound2();
+}
+function renderTop5Slots(){
+  const slots = document.getElementById('top5-slots');
+  const hint = document.getElementById('top5-hint');
+  const countEl = document.getElementById('top5-count');
+  const prog = document.getElementById('r2-progress');
+  slots.innerHTML='';
+  if (state.top5.length===0){ hint.style.display='block'; slots.style.display='none'; }
+  else {
+    hint.style.display='none'; slots.style.display='flex';
+    state.top5.forEach((v,i) => {
+      const slot = document.createElement('div'); slot.className='top5-slot';
+      slot.innerHTML = '<span class="slot-num">'+(i+1)+'</span><span class="slot-card-name">'+v+'</span><button class="slot-remove" onclick="removeTop5(\''+v+'\')" title="Remove">✕</button>';
+      slots.appendChild(slot);
+    });
+  }
+  countEl.textContent = state.top5.length===5 ? '✓ Top 5 selected!' : state.top5.length+' / 5 selected';
+  countEl.style.color = state.top5.length===5 ? 'var(--teal)' : 'var(--gold)';
+  prog.textContent = state.top5.length===5 ? '✓ Ready to continue' : 'Select '+(5-state.top5.length)+' more value'+((5-state.top5.length)!==1?'s':'');
+  prog.style.color = state.top5.length===5 ? 'var(--teal)' : '';
+}
+function removeTop5(value){ state.top5 = state.top5.filter(v=>v!==value); buildRound2(); }
+function goToRound3(){
+  const warn = document.getElementById('r2-warn');
+  if (state.top5.length!==5){ warn.style.display='block'; setTimeout(()=>warn.style.display='none',3000); return; }
+  document.getElementById('tab-2').classList.add('completed'); document.getElementById('tab-2').classList.remove('active');
+  buildRound3(); goToRound(3);
+}
+function buildRound3(){
+  const choices = document.getElementById('core3-choices'); choices.innerHTML='';
+  state.top5.forEach(v => {
+    const el = document.createElement('div');
+    el.className = 'core3-card' + (state.core3.includes(v)?' selected':'');
+    el.dataset.value = v;
+    el.innerHTML = '<div class="check">'+(state.core3.includes(v)?'<span style="display:block;text-align:center;font-size:11px;line-height:16px;color:#fff;font-weight:700;">✓</span>':'')+'</div><span>'+v+'</span>';
+    el.addEventListener('click', () => toggleCore3(v)); choices.appendChild(el);
+  });
+  renderMappingCards();
+}
+function toggleCore3(value){
+  const idx = state.core3.indexOf(value);
+  if (idx>-1){ state.core3.splice(idx,1); }
+  else { if (state.core3.length>=3){ showToast('You can only select 3 core values. Deselect one first.'); return; } state.core3.push(value); }
+  buildRound3();
+}
+function renderMappingCards(){
+  const area = document.getElementById('mapping-area'); area.innerHTML='';
+  if (state.core3.length===0){ area.innerHTML='<div style="text-align:center;padding:40px 20px;color:var(--text-muted);font-size:14px;font-style:italic;">Select your 3 core values on the left to reveal your Values Map.</div>'; return; }
+  state.core3.forEach((v,i) => {
+    const card = document.createElement('div'); card.className='mapping-card';
+    card.innerHTML =
+      '<div class="mapping-card-header"><div class="mapping-card-num">'+(i+1)+'</div><div class="mapping-card-title">'+v+'</div></div>'+
+      '<div class="mapping-fields">'+
+        '<div class="mapping-field"><label>This value means…</label><textarea rows="2" placeholder="In my own words…" data-key="'+v+'-means">'+getSaved(v+'-means')+'</textarea></div>'+
+        '<div class="mapping-field"><label>I learned it from…</label><textarea rows="2" placeholder="A person, experience, or moment…" data-key="'+v+'-learned">'+getSaved(v+'-learned')+'</textarea></div>'+
+        '<div class="mapping-field"><label>I live it by…</label><textarea rows="2" placeholder="Specific actions, habits, or choices…" data-key="'+v+'-live">'+getSaved(v+'-live')+'</textarea></div>'+
+        '<div class="mapping-field"><label>It guides me when…</label><textarea rows="2" placeholder="Situations where this value is my compass…" data-key="'+v+'-guides">'+getSaved(v+'-guides')+'</textarea></div>'+
+      '</div>';
+    card.querySelectorAll('textarea').forEach(ta => { ta.addEventListener('input', () => localStorage.setItem('vcs_'+ta.dataset.key, ta.value)); });
+    area.appendChild(card);
+  });
+}
+function getSaved(key){ return localStorage.getItem('vcs_'+key) || ''; }
+function goToRound(n){
+  [1,2,3].forEach(r => { document.getElementById('round-'+r).classList.remove('active'); document.getElementById('tab-'+r).classList.remove('active'); });
+  document.getElementById('round-'+n).classList.add('active');
+  document.getElementById('tab-'+n).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function saveProgress(){
+  try {
+    localStorage.setItem('vcs_state', JSON.stringify(state));
+    const nm = document.getElementById('studentName'); if (nm) localStorage.setItem('vcs_name', nm.value);
+    document.querySelectorAll('.rq textarea').forEach((ta,i) => { if (ta.value) localStorage.setItem('vcs_rq_'+i, ta.value); });
+    showToast('✓ Your work has been saved!');
+  } catch(e){ showToast('Could not save — please copy your responses manually.'); }
+}
+function loadProgress(){
+  try {
+    const nm = localStorage.getItem('vcs_name'); if (nm) document.getElementById('studentName').value = nm;
+    const saved = localStorage.getItem('vcs_state');
+    if (saved){
+      Object.assign(state, JSON.parse(saved));
+      refreshBuckets(); buildPool(); updateProgress();
+      if (Object.keys(state.placements).length===ALL_VALUES.length) document.getElementById('tab-1').className='round-tab completed';
+      if (state.top5.length===5) document.getElementById('tab-2').className='round-tab completed';
+    }
+    document.querySelectorAll('.rq textarea').forEach((ta,i) => { const val = localStorage.getItem('vcs_rq_'+i); if (val) ta.value = val; });
+  } catch(e){}
+}
+function showToast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+
+buildPool();
+loadProgress();
+</script>
+</body>
+</html>
