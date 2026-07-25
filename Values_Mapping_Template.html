@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Values Mapping Template — Module 2 · Lesson 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --teal:#1a6b7c; --teal-dark:#0d4a57; --teal-light:#2a8fa3; --teal-pale:#e6f2f5; --teal-pale2:#cce5eb;
+  --orange:#e8920a; --orange-light:#f5a832; --orange-pale:#fdf3e0; --gold:#c97d0c;
+  --white:#fff; --off-white:#f7f5f2; --text:#1c2a2f; --text-muted:#5a737a; --border:#c5dce1;
+  --shadow:0 4px 24px rgba(13,74,87,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+/* HEADER */
+.page-header{background:var(--teal-dark);color:white;padding:36px 44px 30px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-70px;right:-70px;width:260px;height:260px;border-radius:50%;background:rgba(232,146,10,.14)}
+.page-header::after{content:'';position:absolute;bottom:-50px;left:38%;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.05)}
+.header-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:white;font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,40px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.page-header .tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:rgba(255,255,255,.72)}
+.header-meta{margin-top:16px;font-size:12.5px;color:rgba(255,255,255,.48);letter-spacing:.4px}
+
+/* LAYOUT */
+.main{max-width:1040px;margin:0 auto;padding:32px 20px 64px}
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin:30px 0 14px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* INSTRUCTION CARD */
+.instruction-card{background:white;border-left:5px solid var(--orange);border-radius:10px;padding:20px 26px;margin-bottom:24px;box-shadow:var(--shadow)}
+.instruction-card p{color:var(--text-muted);font-size:14.5px;line-height:1.7}
+.instruction-card strong{color:var(--teal-dark)}
+
+/* NAME BAND */
+.name-band{background:white;border-radius:12px;padding:18px 28px;margin-bottom:8px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);flex-wrap:wrap}
+.name-band label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange);white-space:nowrap}
+.name-input-wrap{flex:1;min-width:200px;display:flex;align-items:center;border-bottom:2px solid var(--teal);padding-bottom:4px}
+#studentName{flex:1;border:none;outline:none;font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--teal-dark);background:transparent}
+#studentName::placeholder{color:#b0c8ce}
+.name-star{color:var(--orange);font-size:14px}
+
+/* VALUE CARD */
+.value-map{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:22px}
+.value-map-head{background:var(--teal-dark);padding:16px 24px;display:flex;align-items:center;gap:14px}
+.vm-num{background:var(--orange);color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:17px;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vm-name-wrap{flex:1;display:flex;flex-direction:column;gap:2px}
+.vm-name-label{font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.vm-name{width:100%;background:transparent;border:none;border-bottom:1.5px solid rgba(255,255,255,.35);color:white;font-family:'Playfair Display',serif;font-size:22px;font-weight:700;outline:none;padding:2px 0}
+.vm-name::placeholder{color:rgba(255,255,255,.4);font-style:italic;font-weight:400}
+.vm-body{padding:20px 24px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.vm-field{display:flex;flex-direction:column;gap:6px}
+.vm-field.full{grid-column:1/-1}
+.vm-field label{font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal)}
+.vm-field .hint{font-size:12px;color:var(--text-muted);font-style:italic;font-weight:400;text-transform:none;letter-spacing:0}
+.vm-field textarea{width:100%;min-height:74px;border:1.5px solid var(--border);border-radius:8px;padding:10px 13px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.vm-field textarea:focus{outline:none;border-color:var(--teal);background:white}
+.vm-field textarea::placeholder{color:#a8bec5;font-style:italic}
+
+/* HIERARCHY */
+.hierarchy{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.hierarchy-head{background:linear-gradient(130deg,var(--teal-dark),var(--teal-light));color:white;padding:18px 26px}
+.hierarchy-head h3{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:4px}
+.hierarchy-head p{font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.5}
+.hierarchy-body{padding:22px 26px}
+.rank-row{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.rank-badge{width:34px;height:34px;border-radius:50%;background:var(--orange);color:white;font-family:'Playfair Display',serif;font-weight:700;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.rank-row:nth-child(2) .rank-badge{background:var(--teal)}
+.rank-row:nth-child(3) .rank-badge{background:var(--teal-light)}
+.rank-input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Source Sans 3',sans-serif;font-size:15px;color:var(--teal-dark);font-weight:600;background:var(--off-white);outline:none}
+.rank-input:focus{border-color:var(--teal);background:white}
+.rank-note{font-size:12.5px;color:var(--text-muted);font-style:italic;margin:2px 0 16px 48px}
+.tiebreaker label{display:block;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.tiebreaker textarea{width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.tiebreaker textarea:focus{outline:none;border-color:var(--teal);background:white}
+.tiebreaker textarea::placeholder{color:#a8bec5;font-style:italic}
+
+/* REFLECTION */
+.reflection-wrap{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
+.reflection-head{background:var(--teal-dark);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px}
+.reflection-head .ri{font-size:24px}
+.reflection-head h3{font-family:'Playfair Display',serif;font-size:19px}
+.reflection-head .teal-pill{margin-left:auto;background:var(--teal);color:white;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px}
+.rq-list{padding:24px 28px}
+.rq{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed var(--border)}
+.rq:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.rq-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.rq-num{min-width:28px;height:28px;background:var(--orange);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;margin-top:1px;flex-shrink:0}
+.rq-question{font-size:15px;font-weight:600;color:var(--teal-dark);line-height:1.4}
+.rq textarea{width:100%;min-height:88px;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.rq textarea:focus{outline:none;border-color:var(--teal);background:white}
+.rq textarea::placeholder{color:#a8bec5;font-style:italic}
+
+/* YLOS */
+.ylos-box{background:linear-gradient(130deg,var(--teal-dark) 0%,var(--teal-light) 100%);color:white;border-radius:14px;padding:26px 32px;display:flex;gap:18px;align-items:flex-start;margin-top:24px;box-shadow:0 6px 30px rgba(13,74,87,.25)}
+.ylos-icon{font-size:38px;line-height:1;flex-shrink:0}
+.ylos-content h4{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:6px}
+.ylos-content p{font-size:14px;color:rgba(255,255,255,.85);line-height:1.65}
+.ylos-content strong{color:var(--orange-light)}
+
+/* SAVE FOOTER */
+.save-footer{background:white;border-radius:12px;border-top:4px solid var(--orange);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);margin-top:24px}
+.save-footer-text{font-size:14px;color:var(--text-muted)}
+.save-footer-text strong{color:var(--teal-dark)}
+.save-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-outline{background:white;color:var(--teal);border:1.5px solid var(--teal)}
+.btn-outline:hover{background:var(--teal-pale)}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+
+/* TOAST */
+#toast{position:fixed;bottom:28px;right:24px;background:var(--teal-dark);color:white;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(70px);opacity:0;transition:all .38s cubic-bezier(.34,1.56,.64,1);z-index:9999}
+#toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:720px){ .vm-body{grid-template-columns:1fr} }
+@media print{
+  body{background:white;font-size:12px}
+  .save-footer,#toast,.instruction-card{display:none!important}
+  .page-header,.ylos-box,.reflection-head,.value-map-head,.hierarchy-head,.vm-num,.rank-badge{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .value-map,.hierarchy,.reflection-wrap{page-break-inside:avoid}
+  textarea{background:#fafafa;border:1px solid #ccc}
+  @page{margin:.6in}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 2 · Lesson 2 · Activity</div>
+  <h1>Values Mapping Template</h1>
+  <p class="tagline">Take your core values deeper — from named to lived.</p>
+  <p class="header-meta">Becoming the Leader Only You Can Be &nbsp;|&nbsp; Rooted Leaders RISE &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies &nbsp;|&nbsp; Module 2, Lesson 2</p>
+</header>
+
+<div class="main">
+
+  <div class="instruction-card">
+    <p>Bring the <strong>Core 3</strong> you named in the Values Card Sort and go deeper here. For each value, you'll trace where it came from, name the concrete behaviors that prove you live it, and get honest about where it's being tested right now. Then you'll rank your values into a working hierarchy — so when two of them collide, you already know which one leads. <strong>Your answers save automatically</strong> as you type.</p>
+  </div>
+
+  <div class="name-band">
+    <label>Your Name</label>
+    <div class="name-input-wrap">
+      <span class="name-star">✦&nbsp;</span>
+      <input type="text" id="studentName" placeholder="Type your name" autocomplete="off" data-save>
+    </div>
+  </div>
+
+  <div class="section-label">Map Your Core 3</div>
+
+  <!-- VALUE 1 -->
+  <div class="value-map">
+    <div class="value-map-head">
+      <div class="vm-num">1</div>
+      <div class="vm-name-wrap">
+        <span class="vm-name-label">Core Value</span>
+        <input type="text" class="vm-name" id="v1-name" placeholder="Name your first core value…" data-save>
+      </div>
+    </div>
+    <div class="vm-body">
+      <div class="vm-field full"><label>In my own words, this value means… <span class="hint">not the dictionary definition — yours</span></label><textarea id="v1-means" placeholder="To me, this means…" data-save></textarea></div>
+      <div class="vm-field"><label>Where it comes from <span class="hint">person, culture, experience, necessity</span></label><textarea id="v1-origin" placeholder="I learned this from…" data-save></textarea></div>
+      <div class="vm-field"><label>How I live it <span class="hint">three concrete behaviors</span></label><textarea id="v1-live" placeholder="1.&#10;2.&#10;3." data-save></textarea></div>
+      <div class="vm-field"><label>How it holds up under pressure</label><textarea id="v1-pressure" placeholder="When it's hard or costly, this value shows up as…" data-save></textarea></div>
+      <div class="vm-field"><label>Where it's being tested right now <span class="hint">the honest gap</span></label><textarea id="v1-gap" placeholder="Right now, I'm not fully living this when…" data-save></textarea></div>
+      <div class="vm-field full"><label>One action this week to close the gap</label><textarea id="v1-action" placeholder="This week, I will…" data-save></textarea></div>
+    </div>
+  </div>
+
+  <!-- VALUE 2 -->
+  <div class="value-map">
+    <div class="value-map-head">
+      <div class="vm-num">2</div>
+      <div class="vm-name-wrap">
+        <span class="vm-name-label">Core Value</span>
+        <input type="text" class="vm-name" id="v2-name" placeholder="Name your second core value…" data-save>
+      </div>
+    </div>
+    <div class="vm-body">
+      <div class="vm-field full"><label>In my own words, this value means… <span class="hint">not the dictionary definition — yours</span></label><textarea id="v2-means" placeholder="To me, this means…" data-save></textarea></div>
+      <div class="vm-field"><label>Where it comes from <span class="hint">person, culture, experience, necessity</span></label><textarea id="v2-origin" placeholder="I learned this from…" data-save></textarea></div>
+      <div class="vm-field"><label>How I live it <span class="hint">three concrete behaviors</span></label><textarea id="v2-live" placeholder="1.&#10;2.&#10;3." data-save></textarea></div>
+      <div class="vm-field"><label>How it holds up under pressure</label><textarea id="v2-pressure" placeholder="When it's hard or costly, this value shows up as…" data-save></textarea></div>
+      <div class="vm-field"><label>Where it's being tested right now <span class="hint">the honest gap</span></label><textarea id="v2-gap" placeholder="Right now, I'm not fully living this when…" data-save></textarea></div>
+      <div class="vm-field full"><label>One action this week to close the gap</label><textarea id="v2-action" placeholder="This week, I will…" data-save></textarea></div>
+    </div>
+  </div>
+
+  <!-- VALUE 3 -->
+  <div class="value-map">
+    <div class="value-map-head">
+      <div class="vm-num">3</div>
+      <div class="vm-name-wrap">
+        <span class="vm-name-label">Core Value</span>
+        <input type="text" class="vm-name" id="v3-name" placeholder="Name your third core value…" data-save>
+      </div>
+    </div>
+    <div class="vm-body">
+      <div class="vm-field full"><label>In my own words, this value means… <span class="hint">not the dictionary definition — yours</span></label><textarea id="v3-means" placeholder="To me, this means…" data-save></textarea></div>
+      <div class="vm-field"><label>Where it comes from <span class="hint">person, culture, experience, necessity</span></label><textarea id="v3-origin" placeholder="I learned this from…" data-save></textarea></div>
+      <div class="vm-field"><label>How I live it <span class="hint">three concrete behaviors</span></label><textarea id="v3-live" placeholder="1.&#10;2.&#10;3." data-save></textarea></div>
+      <div class="vm-field"><label>How it holds up under pressure</label><textarea id="v3-pressure" placeholder="When it's hard or costly, this value shows up as…" data-save></textarea></div>
+      <div class="vm-field"><label>Where it's being tested right now <span class="hint">the honest gap</span></label><textarea id="v3-gap" placeholder="Right now, I'm not fully living this when…" data-save></textarea></div>
+      <div class="vm-field full"><label>One action this week to close the gap</label><textarea id="v3-action" placeholder="This week, I will…" data-save></textarea></div>
+    </div>
+  </div>
+
+  <div class="section-label">Your Values Hierarchy</div>
+  <div class="hierarchy">
+    <div class="hierarchy-head">
+      <h3>When Values Compete, Which One Leads?</h3>
+      <p>Most hard choices aren't right vs. wrong — they're value vs. value. Rank your core values now, while it's calm, so you're not deciding under pressure later.</p>
+    </div>
+    <div class="hierarchy-body">
+      <div class="rank-row"><div class="rank-badge">1</div><input type="text" class="rank-input" id="rank1" placeholder="Value that leads when everything is on the line" data-save></div>
+      <div class="rank-row"><div class="rank-badge">2</div><input type="text" class="rank-input" id="rank2" placeholder="Second" data-save></div>
+      <div class="rank-row"><div class="rank-badge">3</div><input type="text" class="rank-input" id="rank3" placeholder="Third" data-save></div>
+      <div class="rank-note">There's no "correct" order — only the honest one. Ranking doesn't mean the lower values matter less; it means you know your tiebreaker.</div>
+      <div class="tiebreaker">
+        <label>My tiebreaker — when my #1 and #2 collide, here's how I decide, and why</label>
+        <textarea id="tiebreaker" placeholder="When these two pull against each other, I lead with… because…" data-save></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="reflection-wrap">
+    <div class="reflection-head"><span class="ri">📓</span><h3>Reflect on Your Map</h3><span class="teal-pill">JOURNAL</span></div>
+    <div class="rq-list">
+      <div class="rq"><div class="rq-top"><div class="rq-num">1</div><div class="rq-question">Which value has the biggest gap between what you believe and how you currently act — and what would closing it require?</div></div><textarea placeholder="Be honest. The gap is information, not judgment." data-save-rq></textarea></div>
+      <div class="rq"><div class="rq-top"><div class="rq-num">2</div><div class="rq-question">Which value did the people who raised you or your community pass down to you — and how does naming that change how you carry it?</div></div><textarea placeholder="Naming the source of a value often strengthens it." data-save-rq></textarea></div>
+      <div class="rq"><div class="rq-top"><div class="rq-num">3</div><div class="rq-question">The next time your top two values collide, what will you remember from this map?</div></div><textarea placeholder="Write the reminder you'll want in that moment." data-save-rq></textarea></div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-icon">📋</div>
+    <div class="ylos-content">
+      <h4>Add to Your YLOS — My Roots: Core Values Map</h4>
+      <p>Transfer your completed map and <strong>values hierarchy</strong> into the <strong>My Roots</strong> section of your YLOS. Your hierarchy and tiebreaker feed directly into your <strong>Values-Based Decision Framework</strong> — keep them close for the next activity.</p>
+    </div>
+  </div>
+
+  <div class="save-footer">
+    <div class="save-footer-text"><strong>When you're done:</strong> save your work or print this template and add it to the My Roots section of your YLOS.</div>
+    <div class="save-actions">
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn btn-teal" onclick="saveWork()">💾 Save My Work</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div id="toast"></div>
+
+<script>
+const FIELDS = Array.from(document.querySelectorAll('[data-save]'));
+const RQS = Array.from(document.querySelectorAll('[data-save-rq]'));
+
+function keyFor(el, i, prefix){ return 'vmt_' + (prefix || el.id || ('rq'+i)); }
+
+function autosave(){
+  FIELDS.forEach(el => { if (el.id) localStorage.setItem('vmt_'+el.id, el.value); });
+  RQS.forEach((el,i) => localStorage.setItem('vmt_rq_'+i, el.value));
+}
+function loadWork(){
+  try{
+    FIELDS.forEach(el => { if (el.id){ const v = localStorage.getItem('vmt_'+el.id); if (v!==null) el.value = v; } });
+    RQS.forEach((el,i) => { const v = localStorage.getItem('vmt_rq_'+i); if (v!==null) el.value = v; });
+  }catch(e){}
+}
+function saveWork(){
+  try{ autosave(); toast('✓ Your work has been saved!'); }
+  catch(e){ toast('⚠ Could not save — check browser settings.'); }
+}
+FIELDS.concat(RQS).forEach(el => el.addEventListener('input', autosave));
+
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2800); }
+
+loadWork();
+</script>
+</body>
+</html>
