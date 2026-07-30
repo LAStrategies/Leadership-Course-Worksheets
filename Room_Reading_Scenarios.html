@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room-Reading Scenarios | BTLOYCB</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+    <style>
+    :root {
+      --navy:      #0D2B6B;
+      --navy-mid:  #1B3A80;
+      --blue:      #1B4FCC;
+      --teal:      #00BFA5;
+      --gold:      #F2B300;
+      --gold-pale: #FFFBEB;
+      --lav:       #C386DE;
+      --purple:    #6A0C91;
+      --cream:     #F6F8FF;
+      --white:     #FFFFFF;
+      --muted:     #7B8BA8;
+      --body:      #2D2D2D;
+      --light:     #EEF3FF;
+      --border:    rgba(13,43,107,0.10);
+      --radius:    12px;
+      --shadow:    0 4px 20px rgba(13,43,107,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      background: var(--cream);
+      color: var(--body);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+
+    /* ── HEADER ── */
+    .header { background: var(--navy); position: relative; overflow: hidden; }
+    .header::before {
+      content: ''; position: absolute; inset: 0;
+      background: repeating-linear-gradient(-45deg,
+        transparent, transparent 40px,
+        rgba(0,191,165,0.04) 40px, rgba(0,191,165,0.04) 80px);
+    }
+    .header-inner {
+      position: relative; z-index: 1;
+      max-width: 800px; margin: 0 auto;
+      padding: 36px 32px 32px;
+    }
+    .course-label {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .course-label::before {
+      content: ''; display: inline-block;
+      width: 24px; height: 1px; background: var(--teal);
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 900; font-size: clamp(22px, 4vw, 34px);
+      color: var(--white); line-height: 1.15; margin-bottom: 6px;
+    }
+    .header h1 span { color: var(--teal); }
+    .header-sub {
+      font-size: 13px; color: rgba(255,255,255,0.45);
+      font-style: italic; margin-bottom: 22px;
+    }
+    .header-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      border-radius: 100px; padding: 5px 12px;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .badge-gold { background: rgba(242,179,0,0.18); border: 1px solid rgba(242,179,0,0.38); color: var(--gold); }
+    .badge-teal { background: rgba(0,191,165,0.15); border: 1px solid rgba(0,191,165,0.35); color: var(--teal); }
+    .badge-blue { background: rgba(27,79,204,0.18); border: 1px solid rgba(27,79,204,0.38); color: #7BA3FF; }
+
+    /* ── PROGRESS ── */
+    .progress-wrap { max-width: 800px; margin: 0 auto; padding: 20px 32px 0; }
+    .progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+    .progress-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .progress-pct { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+    .progress-track { height: 6px; background: #D0DAF0; border-radius: 100px; overflow: hidden; margin-bottom: 20px; }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--teal), #33CCBA);
+      border-radius: 100px; width: 0%;
+      transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* ── MAIN ── */
+    .main { max-width: 800px; margin: 0 auto; padding: 28px 32px 0; }
+
+    /* ── INTRO BOX ── */
+    .intro-box {
+      background: var(--white);
+      border-left: 4px solid var(--teal);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 14px 18px; margin-bottom: 24px;
+      font-size: 13.5px; color: var(--muted); line-height: 1.65;
+      box-shadow: var(--shadow);
+    }
+    .intro-box strong { color: var(--navy); font-weight: 700; }
+
+    /* ── SCENARIO CARD ── */
+    .scenario-card {
+      background: var(--navy); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 28px;
+      box-shadow: 0 6px 28px rgba(13,43,107,0.22);
+    }
+    .scenario-header {
+      background: linear-gradient(135deg, var(--blue) 0%, #0D2B6B 100%);
+      padding: 18px 24px; display: flex; align-items: center; gap: 14px;
+    }
+    .scenario-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      background: rgba(255,255,255,0.13); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center; font-size: 20px;
+    }
+    .scenario-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.50); margin-bottom: 3px;
+    }
+    .scenario-title { font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 700; color: var(--white); }
+    .scenario-body { padding: 22px 24px 20px; }
+    .scenario-situation { font-family: 'Lato', sans-serif; font-size: 15px; color: rgba(255,255,255,0.82); line-height: 1.75; }
+    .scenario-situation strong { color: var(--teal); font-weight: 700; }
+
+    /* ── APPLY BANNER ── */
+    .apply-banner {
+      display: flex; align-items: center; gap: 12px;
+      background: rgba(0,191,165,0.12);
+      border: 1px solid rgba(0,191,165,0.30);
+      border-radius: 8px; padding: 12px 16px; margin-top: 18px;
+    }
+    .apply-tag {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); white-space: nowrap;
+    }
+    .apply-label { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 700; color: var(--teal); }
+
+    /* ── STEP SECTION LABEL ── */
+    .step-group { margin-bottom: 10px; }
+    .step-group-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 9px; font-weight: 700;
+      letter-spacing: 0.20em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 10px; padding-left: 4px;
+    }
+
+    /* ── Q CARDS ── */
+    .q-card {
+      background: var(--white); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 14px;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      transition: box-shadow 0.2s;
+    }
+    .q-card:focus-within { box-shadow: 0 4px 24px rgba(0,191,165,0.15); border-color: rgba(0,191,165,0.35); }
+    .q-header { display: flex; align-items: flex-start; }
+    .q-num {
+      width: 52px; min-width: 52px; padding: 18px 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--white); flex-shrink: 0;
+    }
+    .q-step-tag {
+      display: block; font-size: 7px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.60); margin-bottom: 3px;
+    }
+    .q-arrow { font-size: 13px; margin-right: 5px; opacity: 0.65; }
+    .q-prompt-wrap { flex: 1; padding: 14px 16px 14px 14px; border-left: 1px solid rgba(0,0,0,0.05); }
+    .q-prompt { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.45; }
+    .q-hint { font-size: 12px; color: var(--muted); margin-top: 5px; font-style: italic; line-height: 1.55; }
+    .q-response-wrap { padding: 0 16px 14px 52px; }
+    textarea.q-response {
+      width: 100%; font-family: 'Lato', sans-serif;
+      font-size: 13.5px; color: var(--body);
+      background: var(--light); border: 1px solid #C8D4EE;
+      border-radius: 8px; padding: 10px 12px;
+      resize: vertical; min-height: 72px; line-height: 1.6; outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    textarea.q-response:focus { border-color: var(--teal); background: #FAFCFF; }
+    textarea.q-response::placeholder { color: #A0AABF; font-style: italic; }
+    .char-count { font-size: 10.5px; color: var(--muted); text-align: right; margin-top: 4px; }
+
+    /* ── Q NUM COLORS per step ── */
+    .q1 .q-num { background: var(--blue); }
+    .q2 .q-num { background: var(--teal); }
+    .q3 .q-num { background: var(--lav); }
+    .q4 .q-num { background: var(--gold); }
+    .q5 .q-num { background: var(--blue); }
+    .q6 .q-num { background: var(--teal); }
+
+    /* ── CHIPS ── */
+    .chips-wrap { padding: 0 16px 12px 52px; }
+    .chips-label { font-size: 11px; color: var(--muted); margin-bottom: 8px; font-style: italic; }
+    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 10px; }
+    .chip {
+      padding: 5px 12px; border-radius: 100px;
+      border: 1.5px solid #C8D4EE;
+      font-size: 12px; font-weight: 700; color: var(--navy);
+      cursor: pointer; transition: all 0.15s;
+      background: var(--white); user-select: none;
+    }
+    .chip:hover { border-color: var(--teal); color: var(--teal); }
+    .chip.selected { background: var(--teal); border-color: var(--teal); color: var(--white); }
+    /* gold-tone chip group for peer moves */
+    #moveChips .chip:hover { border-color: var(--gold); color: var(--gold); }
+    #moveChips .chip.selected { background: var(--gold); border-color: var(--gold); color: var(--navy); }
+
+    /* ── SBI TABLE (Step 2) ── */
+    .options-wrap { padding: 0 16px 14px 52px; }
+    .options-table { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .option-col { display: flex; flex-direction: column; gap: 6px; }
+    .option-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 2px;
+    }
+    .option-sub { font-size: 10.5px; color: var(--muted); font-style: italic; margin: -4px 0 2px; line-height: 1.4; }
+    textarea.option-ta {
+      width: 100%; font-family: 'Lato', sans-serif;
+      font-size: 12.5px; color: var(--body);
+      background: var(--light); border: 1px solid #C8D4EE;
+      border-radius: 8px; padding: 8px 10px;
+      resize: vertical; min-height: 92px; line-height: 1.55; outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea.option-ta:focus { border-color: var(--teal); background: #FAFCFF; }
+    textarea.option-ta::placeholder { color: #A0AABF; font-style: italic; font-size: 11.5px; }
+
+    /* ── MY DECISION BOX ── */
+    .decision-section {
+      background: var(--navy); border-radius: var(--radius);
+      overflow: hidden; margin-bottom: 20px;
+      box-shadow: 0 6px 28px rgba(13,43,107,0.20);
+    }
+    .decision-header { background: var(--teal); padding: 16px 22px; display: flex; align-items: center; gap: 12px; }
+    .decision-header-icon {
+      width: 36px; height: 36px; background: rgba(255,255,255,0.20);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .decision-title { font-family: 'Poppins', sans-serif; font-size: 15px; font-weight: 700; color: var(--white); }
+    .decision-sub { font-size: 11.5px; color: rgba(255,255,255,0.65); margin-top: 2px; }
+    .decision-body { padding: 20px 22px; }
+    .decision-prompt { font-size: 13px; color: rgba(255,255,255,0.55); font-style: italic; margin-bottom: 12px; line-height: 1.65; }
+    textarea.decision-response {
+      width: 100%; font-family: 'Lato', sans-serif;
+      font-size: 14px; color: var(--white);
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px; padding: 12px 14px;
+      resize: vertical; min-height: 100px; line-height: 1.65; outline: none;
+      transition: border-color 0.2s;
+    }
+    textarea.decision-response:focus { border-color: var(--teal); }
+    textarea.decision-response::placeholder { color: rgba(255,255,255,0.28); font-style: italic; }
+
+    /* ── YLOS BOX ── */
+    .ylos-box { max-width: 800px; margin: 0 auto 20px; padding: 0 32px; }
+    .ylos-inner {
+      background: var(--white); border: 1px solid var(--teal);
+      border-radius: var(--radius); padding: 14px 18px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .ylos-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      background: var(--teal); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: 15px;
+    }
+    .ylos-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+    .ylos-text strong { color: var(--navy); }
+
+    /* ── BUTTONS ── */
+    .btn-row { max-width: 800px; margin: 0 auto; padding: 0 32px; display: flex; gap: 10px; flex-wrap: wrap; }
+    button {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      font-weight: 700; padding: 10px 18px;
+      border-radius: 8px; cursor: pointer;
+      border: 1px solid rgba(13,43,107,0.2);
+      background: var(--white); color: var(--navy);
+      transition: all 0.2s; letter-spacing: 0.02em;
+    }
+    button:hover { background: var(--light); border-color: #A0B4E0; }
+    .btn-primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+    .btn-primary:hover { background: var(--navy-mid); }
+    .btn-teal { background: var(--teal); color: var(--white); border-color: var(--teal); }
+    .btn-teal:hover { background: #00A890; }
+
+    .save-msg {
+      max-width: 800px; margin: 10px auto 0; padding: 0 32px;
+      font-size: 12px; color: var(--teal); font-style: italic;
+      min-height: 18px; opacity: 0; transition: opacity 0.3s;
+    }
+    .save-msg.show { opacity: 1; }
+
+    /* ── FOOTER ── */
+    .page-footer {
+      max-width: 800px; margin: 32px auto 0; padding: 0 32px;
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+    }
+    .footer-brand { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--muted); }
+    .footer-brand strong { color: var(--navy); }
+    .footer-note { font-size: 11px; color: var(--muted); font-style: italic; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .header-inner, .main, .progress-wrap,
+      .ylos-box, .btn-row, .page-footer { padding-left: 16px; padding-right: 16px; }
+      .q-response-wrap, .chips-wrap, .options-wrap { padding-left: 16px; }
+      .options-table { grid-template-columns: 1fr; }
+    }
+
+    @media print {
+      body { background: white; }
+      .btn-row, .progress-wrap, .save-msg { display: none; }
+      .scenario-card, .q-card, .decision-section { box-shadow: none; }
+      textarea { background: #F5F8FF !important; color: #0D2B6B !important; border: 1px solid #ccc !important; }
+      .chips { display: none; }
+    }
+  </style>
+
+  
+<style>
+  /* four-mode chips (single-select per group) */
+  .mode-chip.selected.m-direct   { background: var(--teal);  border-color: var(--teal);  color: #fff; }
+  .mode-chip.selected.m-coach    { background: #1B4FCC;      border-color: #1B4FCC;      color: #fff; }
+  .mode-chip.selected.m-support  { background: var(--gold);  border-color: var(--gold);  color: var(--navy); }
+  .mode-chip.selected.m-delegate { background: var(--lav);   border-color: var(--lav);   color: #fff; }
+
+  /* compact reference strip */
+  .ref-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 24px; }
+  .ref-item { background: var(--white); border: 1px solid var(--border); border-left: 3px solid var(--teal);
+    border-radius: 8px; padding: 10px 13px; box-shadow: var(--shadow); }
+  .ref-item .rt { font-family:'Poppins',sans-serif; font-size:12.5px; font-weight:700; color:var(--navy); }
+  .ref-item .rd { font-size:12px; color:var(--muted); margin-top:2px; line-height:1.45; }
+  .ref-item.c-teal{border-left-color:var(--teal);} .ref-item.c-blue{border-left-color:#1B4FCC;}
+  .ref-item.c-gold{border-left-color:var(--gold);} .ref-item.c-lav{border-left-color:var(--lav);}
+
+  /* results / auto-reveal panel bars */
+  .result-empty { color: rgba(255,255,255,0.55); font-style: italic; font-size: 13.5px; line-height:1.6; }
+  .result-headline { font-family:'Poppins',sans-serif; font-size:15px; color:#fff; line-height:1.5; margin-bottom:16px; }
+  .result-headline b { color: var(--teal); }
+  .result-headline .edge { color: var(--gold); }
+  .bar-row { display:flex; align-items:center; gap:12px; margin-bottom:9px; }
+  .bar-label { width:96px; font-family:'Poppins',sans-serif; font-size:12px; font-weight:700; letter-spacing:.04em; color:rgba(255,255,255,0.85); }
+  .bar-track { flex:1; height:16px; background:rgba(255,255,255,0.09); border-radius:100px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:100px; width:0; transition:width .5s cubic-bezier(.4,0,.2,1); }
+  .bar-count { width:20px; text-align:right; font-family:'Poppins',sans-serif; font-size:12px; color:rgba(255,255,255,0.7); }
+  @media (max-width:600px){ .ref-strip{grid-template-columns:1fr;} }
+</style>
+
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be &middot; Module 4, Lesson 1</div>
+      <h1>Room-Reading<br><span>Scenarios</span></h1>
+      <p class="header-sub">Read the room &mdash; power, energy, voice &mdash; then choose the mode it needs.</p>
+      <div class="header-badges">
+        <span class="badge badge-gold">&#9999;&#65039; Activity</span>
+        <span class="badge badge-teal">S &mdash; Situational Leadership</span>
+        <span class="badge badge-blue">&#9201; 20 min</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-row"><span class="progress-label">Your Progress</span><span class="progress-pct" id="pct-display">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+
+  <div class="main">
+    <div class="intro-box">
+      <strong>How this works:</strong> For each room, first <strong>read it</strong> &mdash; power, energy, and voice &mdash; then choose the leadership mode it needs and name your first move. There are no wrong answers; the practice is in reading before you react.
+    </div>
+
+    <div class="ref-strip">
+      <div class="ref-item c-teal"><div class="rt">READ &middot; POWER</div><div class="rd">Who holds formal authority &mdash; and who holds informal influence?</div></div>
+      <div class="ref-item c-gold"><div class="rt">READ &middot; ENERGY</div><div class="rd">Skeptical, tense, excited, checked-out? What can the room handle?</div></div>
+      <div class="ref-item c-lav"><div class="rt">READ &middot; VOICE</div><div class="rd">Who&rsquo;s talking, who&rsquo;s quiet, who wasn&rsquo;t invited in?</div></div>
+      <div class="ref-item c-blue"><div class="rt">THEN CHOOSE</div><div class="rd">Direct &middot; Coach &middot; Support &middot; Delegate &mdash; the mode the moment needs.</div></div>
+    </div>
+
+    
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">&#127760;</div>
+        <div>
+          <div class="scenario-label">Scenario 1</div>
+          <div class="scenario-title">The Skeptical Room</div>
+        </div>
+      </div>
+      <div class="scenario-body">
+        <p class="scenario-situation">You walk into a meeting where you&rsquo;re the <strong>youngest person there</strong>, and one of very few people of color. The energy is <strong>skeptical</strong> before you&rsquo;ve said a word &mdash; and you have something worth saying.</p>
+      </div>
+    </div>
+    <div class="q-card q1">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Read</span>1</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Read the room: power, energy, and voice.</div>
+          <div class="q-hint">Who holds power (formal and informal)? What&rsquo;s the energy? Who&rsquo;s speaking, and who&rsquo;s gone quiet?</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="s1read" placeholder="What I notice about the power, the energy, and the voices&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccs1read">0 characters</div>
+      </div>
+      <div class="chips-wrap">
+        <div class="chips-label">The mode this room needs <b style="color:var(--navy)">(pick one)</b>:</div>
+        <div class="chips" id="modeS1"><span class="chip mode-chip m-direct" data-mode="Direct" onclick="selectSingle(this)">Direct</span><span class="chip mode-chip m-coach" data-mode="Coach" onclick="selectSingle(this)">Coach</span><span class="chip mode-chip m-support" data-mode="Support" onclick="selectSingle(this)">Support</span><span class="chip mode-chip m-delegate" data-mode="Delegate" onclick="selectSingle(this)">Delegate</span></div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="s1move" placeholder="My first move, in the first sixty seconds&hellip;" rows="2" oninput="update()"></textarea>
+        <div class="char-count" id="ccs1move">0 characters</div>
+      </div>
+    </div>
+    
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">&#128293;</div>
+        <div>
+          <div class="scenario-label">Scenario 2</div>
+          <div class="scenario-title">High Heart, New Skill</div>
+        </div>
+      </div>
+      <div class="scenario-body">
+        <p class="scenario-situation">Your team is <strong>fired up</strong> about a new project, but no one has done anything like it before. Enthusiasm is high; skill is low. They&rsquo;re looking to you to get started.</p>
+      </div>
+    </div>
+    <div class="q-card q2">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Read</span>2</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Read the room: power, energy, and voice.</div>
+          <div class="q-hint">Who holds power (formal and informal)? What&rsquo;s the energy? Who&rsquo;s speaking, and who&rsquo;s gone quiet?</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="s2read" placeholder="What I notice about the power, the energy, and the voices&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccs2read">0 characters</div>
+      </div>
+      <div class="chips-wrap">
+        <div class="chips-label">The mode this room needs <b style="color:var(--navy)">(pick one)</b>:</div>
+        <div class="chips" id="modeS2"><span class="chip mode-chip m-direct" data-mode="Direct" onclick="selectSingle(this)">Direct</span><span class="chip mode-chip m-coach" data-mode="Coach" onclick="selectSingle(this)">Coach</span><span class="chip mode-chip m-support" data-mode="Support" onclick="selectSingle(this)">Support</span><span class="chip mode-chip m-delegate" data-mode="Delegate" onclick="selectSingle(this)">Delegate</span></div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="s2move" placeholder="My first move, in the first sixty seconds&hellip;" rows="2" oninput="update()"></textarea>
+        <div class="char-count" id="ccs2move">0 characters</div>
+      </div>
+    </div>
+    
+    <div class="scenario-card">
+      <div class="scenario-header">
+        <div class="scenario-icon">&#127905;&#65039;</div>
+        <div>
+          <div class="scenario-label">Scenario 3</div>
+          <div class="scenario-title">The Discussion Going Sideways</div>
+        </div>
+      </div>
+      <div class="scenario-body">
+        <p class="scenario-situation">You&rsquo;re facilitating a discussion that&rsquo;s <strong>veering off the rails</strong> &mdash; people talking over each other, the point slipping away. You have about <strong>sixty seconds</strong> before it&rsquo;s lost.</p>
+      </div>
+    </div>
+    <div class="q-card q3">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Read</span>3</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Read the room: power, energy, and voice.</div>
+          <div class="q-hint">Who holds power (formal and informal)? What&rsquo;s the energy? Who&rsquo;s speaking, and who&rsquo;s gone quiet?</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="s3read" placeholder="What I notice about the power, the energy, and the voices&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccs3read">0 characters</div>
+      </div>
+      <div class="chips-wrap">
+        <div class="chips-label">The mode this room needs <b style="color:var(--navy)">(pick one)</b>:</div>
+        <div class="chips" id="modeS3"><span class="chip mode-chip m-direct" data-mode="Direct" onclick="selectSingle(this)">Direct</span><span class="chip mode-chip m-coach" data-mode="Coach" onclick="selectSingle(this)">Coach</span><span class="chip mode-chip m-support" data-mode="Support" onclick="selectSingle(this)">Support</span><span class="chip mode-chip m-delegate" data-mode="Delegate" onclick="selectSingle(this)">Delegate</span></div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="s3move" placeholder="My first move, in the first sixty seconds&hellip;" rows="2" oninput="update()"></textarea>
+        <div class="char-count" id="ccs3move">0 characters</div>
+      </div>
+    </div>
+
+    <div class="step-group">
+      <div class="step-group-label">Synthesize</div>
+      <div class="q-card q6">
+        <div class="q-header">
+          <div class="q-num"><span class="q-step-tag">Reflect</span>&#9998;</div>
+          <div class="q-prompt-wrap">
+            <div class="q-prompt"><span class="q-arrow">&rarr;</span> Across the three rooms, what did you notice about how you read a space?</div>
+            <div class="q-hint">What&rsquo;s one signal &mdash; power, energy, or voice &mdash; you want to pay more attention to next time?</div>
+          </div>
+        </div>
+        <div class="q-response-wrap">
+          <textarea class="q-response" id="synth" placeholder="What I noticed about my own room-reading&hellip; One thing I&rsquo;ll watch for next time&hellip;" rows="3" oninput="update()"></textarea>
+          <div class="char-count" id="ccsynth">0 characters</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-inner">
+      <div class="ylos-icon">&#128216;</div>
+      <div class="ylos-text">
+        <strong>Add to Your YLOS &mdash; Section 3 (My Power to Shift Spaces):</strong> Turn what you noticed into your <strong>Room-Reading Checklist</strong> &mdash; the specific things you&rsquo;ll pay attention to whenever you walk into a new space.
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="saveWork()">&#128190; Save My Work</button>
+    <button class="btn-teal" onclick="printSheet()">&#128424; Print / Save as PDF</button>
+    <button onclick="resetAll()">&#8635; Reset</button>
+  </div>
+  <div class="save-msg" id="save-msg">&#10003; Responses saved to this browser</div>
+
+  <footer class="page-footer">
+    <div class="footer-brand"><strong>Becoming the Leader Only You Can Be</strong> &middot; Rooted Leaders RISE &middot; Life Aligned Center for Leadership &amp; Justice Studies</div>
+    <div class="footer-note">Module 4, Lesson 1 &middot; Activity</div>
+  </footer>
+
+<script>
+
+function el(id){ return document.getElementById(id); }
+function selectSingle(node){
+  const group = node.parentElement;
+  group.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  node.classList.add('selected');
+  if (typeof afterSelect === 'function') afterSelect();
+  saveWork();
+}
+function getSelected(groupId){
+  const s = document.querySelector('#'+groupId+' .chip.selected');
+  return s ? s.getAttribute('data-mode') : null;
+}
+function restoreSingle(groupId, val){
+  if(!val) return;
+  document.querySelectorAll('#'+groupId+' .chip').forEach(c=>{
+    if(c.getAttribute('data-mode')===val) c.classList.add('selected');
+  });
+}
+function printSheet(){ window.print(); }
+
+const STORAGE_KEY = 'btloycb_m4l1_room_reading';
+const TEXT_FIELDS = ['s1read','s1move','s2read','s2move','s3read','s3move','synth'];
+const GROUPS = ['modeS1','modeS2','modeS3'];
+
+function update(){
+  TEXT_FIELDS.forEach(id=>{ const e=el(id), c=el('cc'+id); if(e&&c) c.textContent=e.value.length+' characters'; });
+  let filled = TEXT_FIELDS.filter(id=>{ const e=el(id); return e && e.value.trim().length>4; }).length;
+  filled += GROUPS.filter(g=>getSelected(g)).length;
+  const total = TEXT_FIELDS.length + GROUPS.length;
+  const pct = Math.round((filled/total)*100);
+  el('prog-fill').style.width = pct+'%';
+  el('pct-display').textContent = pct+'%';
+}
+function afterSelect(){ update(); }
+
+function saveWork(){
+  const data = {};
+  TEXT_FIELDS.forEach(id=>{ const e=el(id); if(e) data[id]=e.value; });
+  GROUPS.forEach(g=>{ data[g]=getSelected(g); });
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    const m=el('save-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),2500);
+  }catch(e){}
+  update();
+}
+function loadWork(){
+  try{
+    const s = localStorage.getItem(STORAGE_KEY); if(!s) return;
+    const data = JSON.parse(s);
+    TEXT_FIELDS.forEach(id=>{ const e=el(id); if(e&&data[id]) e.value=data[id]; });
+    GROUPS.forEach(g=>restoreSingle(g, data[g]));
+    update();
+  }catch(e){}
+}
+function resetAll(){
+  if(!confirm('Clear all responses? This cannot be undone.')) return;
+  TEXT_FIELDS.forEach(id=>{ const e=el(id); if(e) e.value=''; });
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('selected'));
+  try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  update();
+}
+loadWork();
+
+</script>
+</body>
+</html>
