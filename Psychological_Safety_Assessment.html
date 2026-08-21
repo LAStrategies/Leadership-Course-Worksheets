@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Psychological Safety Assessment | BTLOYCB</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy:      #0D2B6B;
+    --navy-mid:  #1B3A80;
+    --blue:      #1B4FCC;
+    --teal:      #00BFA5;
+    --gold:      #F2B300;
+    --gold-pale: #FFFBEB;
+    --lav:       #C386DE;
+    --purple:    #6A0C91;
+    --cream:     #F6F8FF;
+    --white:     #FFFFFF;
+    --muted:     #7B8BA8;
+    --body:      #2D2D2D;
+    --light:     #EEF3FF;
+    --red:       #E0554F;
+    --border:    rgba(13,43,107,0.10);
+    --radius:    12px;
+    --shadow:    0 4px 20px rgba(13,43,107,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--body);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HEADER ── */
+  .header { background: var(--navy); position: relative; overflow: hidden; }
+  .header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg,
+      transparent, transparent 40px,
+      rgba(0,191,165,0.04) 40px, rgba(0,191,165,0.04) 80px);
+  }
+  .header-inner {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+    padding: 36px 32px 32px;
+  }
+  .course-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .course-label::before {
+    content: ''; display: inline-block;
+    width: 24px; height: 1px; background: var(--teal);
+  }
+  .header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900; font-size: clamp(22px, 4vw, 34px);
+    color: var(--white); line-height: 1.15; margin-bottom: 6px;
+  }
+  .header h1 span { color: var(--teal); }
+  .header-sub {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    font-style: italic; margin-bottom: 22px;
+  }
+  .header-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 100px; padding: 5px 12px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .badge-gold { background: rgba(242,179,0,0.18); border: 1px solid rgba(242,179,0,0.38); color: var(--gold); }
+  .badge-teal { background: rgba(0,191,165,0.15); border: 1px solid rgba(0,191,165,0.35); color: var(--teal); }
+  .badge-blue { background: rgba(27,79,204,0.18); border: 1px solid rgba(27,79,204,0.38); color: #7BA3FF; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { max-width: 800px; margin: 0 auto; padding: 20px 32px 0; }
+  .progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .progress-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .progress-pct { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+  .progress-track { height: 6px; background: #D0DAF0; border-radius: 100px; overflow: hidden; margin-bottom: 20px; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), #33CCBA);
+    border-radius: 100px; width: 0%;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── MAIN ── */
+  .main { max-width: 800px; margin: 0 auto; padding: 28px 32px 0; }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    background: var(--white);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px; margin-bottom: 24px;
+    font-size: 13.5px; color: var(--muted); line-height: 1.65;
+    box-shadow: var(--shadow);
+  }
+  .intro-box strong { color: var(--navy); font-weight: 700; }
+
+  /* ── DIMENSION CARDS ── */
+  .dim-card {
+    background: var(--white); border-radius: var(--radius);
+    overflow: hidden; margin-bottom: 12px;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    padding: 16px 18px;
+  }
+  .dim-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .dim-label { font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 600; color: var(--navy); line-height: 1.4; max-width: 480px; }
+  .dim-score-display {
+    font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 15px;
+    color: var(--muted); white-space: nowrap; min-width: 62px; text-align: right;
+  }
+  .dim-score-display.low { color: var(--red); }
+  .dim-score-display.mid { color: var(--gold); }
+  .dim-score-display.high { color: var(--teal); }
+  .scale-row { display: flex; gap: 5px; flex-wrap: wrap; }
+  .scale-chip {
+    width: 32px; height: 32px; border-radius: 8px;
+    border: 1.5px solid #C8D4EE; background: var(--white);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-size: 12.5px; font-weight: 700;
+    color: var(--navy); cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .scale-chip:hover { border-color: var(--teal); color: var(--teal); }
+  .scale-chip.selected { background: var(--navy); border-color: var(--navy); color: var(--white); }
+  .scale-endlabels { display: flex; justify-content: space-between; font-size: 10px; color: var(--muted); font-style: italic; margin-top: 6px; }
+
+  /* ── SUMMARY BAND ── */
+  .summary-card {
+    background: var(--navy); border-radius: var(--radius);
+    padding: 20px 22px; margin: 22px 0; text-align: center;
+    box-shadow: 0 6px 28px rgba(13,43,107,0.22);
+  }
+  .summary-label {
+    font-family: 'Poppins', sans-serif; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+    margin-bottom: 6px;
+  }
+  .summary-score { font-family: 'Poppins', sans-serif; font-size: 42px; font-weight: 900; color: var(--white); line-height: 1; }
+  .summary-score span { font-size: 20px; color: rgba(255,255,255,0.5); font-weight: 700; }
+  .summary-read { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 8px; font-style: italic; }
+
+  /* ── GROWTH AREAS ── */
+  .growth-wrap { margin-bottom: 8px; }
+  .growth-empty { font-size: 13px; color: var(--muted); font-style: italic; padding: 6px 4px 14px; }
+  .growth-card {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--border); border-left: 4px solid var(--gold);
+    box-shadow: var(--shadow); padding: 14px 18px; margin-bottom: 12px;
+  }
+  .growth-title { font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 3px; }
+  .growth-score-tag { color: var(--gold); font-weight: 700; }
+  .growth-hint { font-size: 11.5px; color: var(--muted); font-style: italic; margin-bottom: 8px; }
+  textarea.growth-ta {
+    width: 100%; font-family: 'Lato', sans-serif;
+    font-size: 13px; color: var(--body);
+    background: var(--light); border: 1px solid #C8D4EE;
+    border-radius: 8px; padding: 9px 11px;
+    resize: vertical; min-height: 58px; line-height: 1.55; outline: none;
+  }
+  textarea.growth-ta:focus { border-color: var(--teal); background: #FAFCFF; }
+  textarea.growth-ta::placeholder { color: #A0AABF; font-style: italic; }
+
+  .step-group-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--muted); margin: 22px 0 10px; padding-left: 4px;
+  }
+
+  /* ── YLOS BOX ── */
+  .ylos-box { max-width: 800px; margin: 0 auto 20px; padding: 0 32px; }
+  .ylos-inner {
+    background: var(--white); border: 1px solid var(--teal);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .ylos-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--teal); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .ylos-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .ylos-text strong { color: var(--navy); }
+
+  /* ── BUTTONS ── */
+  .btn-row { max-width: 800px; margin: 0 auto; padding: 0 32px; display: flex; gap: 10px; flex-wrap: wrap; }
+  button {
+    font-family: 'Lato', sans-serif; font-size: 13px;
+    font-weight: 700; padding: 10px 18px;
+    border-radius: 8px; cursor: pointer;
+    border: 1px solid rgba(13,43,107,0.2);
+    background: var(--white); color: var(--navy);
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  button:hover { background: var(--light); border-color: #A0B4E0; }
+  .btn-primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-teal { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .btn-teal:hover { background: #00A890; }
+
+  .save-msg {
+    max-width: 800px; margin: 10px auto 0; padding: 0 32px;
+    font-size: 12px; color: var(--teal); font-style: italic;
+    min-height: 18px; opacity: 0; transition: opacity 0.3s;
+  }
+  .save-msg.show { opacity: 1; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    max-width: 800px; margin: 32px auto 0; padding: 0 32px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-brand { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--muted); }
+  .footer-brand strong { color: var(--navy); }
+  .footer-note { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header-inner, .main, .progress-wrap,
+    .ylos-box, .btn-row, .page-footer { padding-left: 16px; padding-right: 16px; }
+    .scale-chip { width: 28px; height: 28px; font-size: 11px; }
+  }
+
+  @media print {
+    body { background: white; }
+    .btn-row, .progress-wrap, .save-msg { display: none; }
+    .dim-card, .summary-card, .growth-card { box-shadow: none; }
+    textarea { background: #F5F8FF !important; color: #0D2B6B !important; border: 1px solid #ccc !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be &middot; Module 5, Lesson 2</div>
+      <h1>Psychological<br><span>Safety Assessment</span></h1>
+      <p class="header-sub">Rate your team on five dimensions &mdash; and find where to grow first.</p>
+      <div class="header-badges">
+        <span class="badge badge-gold">&#9999;&#65039; Activity</span>
+        <span class="badge badge-teal">E &mdash; Strategic Leadership</span>
+        <span class="badge badge-blue">&#9201; 15 min</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-row"><span class="progress-label">Your Progress</span><span class="progress-pct" id="pct-display">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+
+  <div class="main">
+    <div class="intro-box">
+      <strong>How this works:</strong> Rate your primary team or organization on each dimension below, 1 (not at all) to 10 (completely). Any dimension you score below 7 will show up automatically under Growth Areas &mdash; name one specific thing you as a leader could do to raise it.
+    </div>
+
+    <div class="dim-card" data-dim="1">
+      <div class="dim-top">
+        <div class="dim-label">1. People feel safe to speak up with ideas.</div>
+        <div class="dim-score-display" id="disp1">&mdash; / 10</div>
+      </div>
+      <div class="scale-row" id="scale1"></div>
+      <div class="scale-endlabels"><span>Not at all</span><span>Completely</span></div>
+    </div>
+
+    <div class="dim-card" data-dim="2">
+      <div class="dim-top">
+        <div class="dim-label">2. People feel safe to admit mistakes.</div>
+        <div class="dim-score-display" id="disp2">&mdash; / 10</div>
+      </div>
+      <div class="scale-row" id="scale2"></div>
+      <div class="scale-endlabels"><span>Not at all</span><span>Completely</span></div>
+    </div>
+
+    <div class="dim-card" data-dim="3">
+      <div class="dim-top">
+        <div class="dim-label">3. People feel safe to disagree with leadership.</div>
+        <div class="dim-score-display" id="disp3">&mdash; / 10</div>
+      </div>
+      <div class="scale-row" id="scale3"></div>
+      <div class="scale-endlabels"><span>Not at all</span><span>Completely</span></div>
+    </div>
+
+    <div class="dim-card" data-dim="4">
+      <div class="dim-top">
+        <div class="dim-label">4. People feel safe to ask for help.</div>
+        <div class="dim-score-display" id="disp4">&mdash; / 10</div>
+      </div>
+      <div class="scale-row" id="scale4"></div>
+      <div class="scale-endlabels"><span>Not at all</span><span>Completely</span></div>
+    </div>
+
+    <div class="dim-card" data-dim="5">
+      <div class="dim-top">
+        <div class="dim-label">5. People feel seen and valued for who they are.</div>
+        <div class="dim-score-display" id="disp5">&mdash; / 10</div>
+      </div>
+      <div class="scale-row" id="scale5"></div>
+      <div class="scale-endlabels"><span>Not at all</span><span>Completely</span></div>
+    </div>
+
+    <div class="summary-card">
+      <div class="summary-label">Overall Psychological Safety Score</div>
+      <div class="summary-score" id="summaryScore">&mdash; <span>/ 10</span></div>
+      <div class="summary-read" id="summaryRead">Rate all five dimensions above to see your score.</div>
+    </div>
+
+    <div class="step-group-label">Growth Areas &mdash; Any Dimension Scored Below 7</div>
+    <div class="growth-wrap" id="growthWrap">
+      <div class="growth-empty" id="growthEmpty">No growth areas yet &mdash; rate the dimensions above. Anything scored below 7 will appear here automatically.</div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-inner">
+      <div class="ylos-icon">&#128216;</div>
+      <div class="ylos-text">
+        <strong>Add to Your YLOS &mdash; Section 4 (My Impact on Others):</strong> Your ratings and growth-area actions become your <strong>Psychological Safety Action Plan</strong> &mdash; one specific action for each of the five dimensions.
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="saveWork()">&#128190; Save My Work</button>
+    <button class="btn-teal" onclick="printSheet()">&#128424; Print / Save as PDF</button>
+    <button onclick="resetAll()">&#8635; Reset</button>
+  </div>
+  <div class="save-msg" id="save-msg">&#10003; Responses saved to this browser</div>
+
+  <footer class="page-footer">
+    <div class="footer-brand"><strong>Becoming the Leader Only You Can Be</strong> &middot; Rooted Leaders RISE &middot; Life Aligned Center for Leadership &amp; Justice Studies</div>
+    <div class="footer-note">Module 5, Lesson 2 &middot; Activity</div>
+  </footer>
+
+<script>
+function el(id){ return document.getElementById(id); }
+
+const DIMS = [
+  {id:1, text:"People feel safe to speak up with ideas."},
+  {id:2, text:"People feel safe to admit mistakes."},
+  {id:3, text:"People feel safe to disagree with leadership."},
+  {id:4, text:"People feel safe to ask for help."},
+  {id:5, text:"People feel seen and valued for who they are."}
+];
+
+const scores = {1:null,2:null,3:null,4:null,5:null};
+const growthNotes = {1:"",2:"",3:"",4:"",5:""};
+
+function buildScales(){
+  DIMS.forEach(d=>{
+    const row = el('scale'+d.id);
+    row.innerHTML = '';
+    for(let i=1;i<=10;i++){
+      const chip = document.createElement('div');
+      chip.className='scale-chip';
+      chip.textContent=i;
+      chip.onclick=()=>selectScore(d.id,i);
+      chip.setAttribute('data-v',i);
+      row.appendChild(chip);
+    }
+  });
+}
+
+function selectScore(dimId, val){
+  scores[dimId]=val;
+  const row = el('scale'+dimId);
+  row.querySelectorAll('.scale-chip').forEach(c=>{
+    c.classList.toggle('selected', parseInt(c.getAttribute('data-v'))===val);
+  });
+  const disp = el('disp'+dimId);
+  disp.textContent = val + ' / 10';
+  disp.className = 'dim-score-display ' + (val<7?'low':(val<9?'mid':'high'));
+  renderGrowth();
+  update();
+}
+
+function renderGrowth(){
+  const wrap = el('growthWrap');
+  const low = DIMS.filter(d=>scores[d.id]!==null && scores[d.id]<7);
+  if(low.length===0){
+    wrap.innerHTML = '<div class="growth-empty" id="growthEmpty">No growth areas yet — dimensions scored below 7 will appear here automatically.</div>';
+    return;
+  }
+  wrap.innerHTML='';
+  low.forEach(d=>{
+    const card=document.createElement('div');
+    card.className='growth-card';
+    card.innerHTML = `
+      <div class="growth-title">${d.text} <span class="growth-score-tag">Scored ${scores[d.id]}/10</span></div>
+      <div class="growth-hint">What's one thing you as a leader could do to raise this?</div>
+      <textarea class="growth-ta" id="growthTa${d.id}" placeholder="One thing I could do is…">${growthNotes[d.id]||''}</textarea>
+    `;
+    wrap.appendChild(card);
+  });
+  low.forEach(d=>{
+    const ta = el('growthTa'+d.id);
+    if(ta) ta.oninput = (e)=>{ growthNotes[d.id]=e.target.value; update(); };
+  });
+}
+
+function updateSummary(){
+  const rated = DIMS.filter(d=>scores[d.id]!==null);
+  const scoreEl = el('summaryScore');
+  const readEl = el('summaryRead');
+  if(rated.length===0){
+    scoreEl.innerHTML = '&mdash; <span>/ 10</span>';
+    readEl.textContent = 'Rate all five dimensions above to see your score.';
+    return;
+  }
+  const avg = rated.reduce((s,d)=>s+scores[d.id],0)/rated.length;
+  const avgR = Math.round(avg*10)/10;
+  scoreEl.innerHTML = avgR + ' <span>/ 10</span>';
+  let read;
+  if(rated.length<5){
+    read = `Based on ${rated.length} of 5 dimensions rated so far.`;
+  } else if(avg>=8.5){
+    read = 'A strong foundation of psychological safety — protect it with consistency.';
+  } else if(avg>=7){
+    read = 'A generally safe environment, with room to strengthen specific dimensions.';
+  } else if(avg>=5){
+    read = 'A mixed environment — some real safety, some real gaps worth closing.';
+  } else {
+    read = 'Significant room to build safety — start with your lowest-scoring dimension.';
+  }
+  readEl.textContent = read;
+}
+
+function update(){
+  updateSummary();
+  const ratedCount = DIMS.filter(d=>scores[d.id]!==null).length;
+  const growthFilled = DIMS.filter(d=>scores[d.id]!==null && scores[d.id]<7 && (growthNotes[d.id]||'').trim().length>3).length;
+  const growthNeeded = DIMS.filter(d=>scores[d.id]!==null && scores[d.id]<7).length;
+  const totalSteps = 5 + growthNeeded;
+  const doneSteps = ratedCount + growthFilled;
+  const pct = totalSteps>0 ? Math.round((doneSteps/totalSteps)*100) : 0;
+  el('prog-fill').style.width=pct+'%'; el('pct-display').textContent=pct+'%';
+}
+
+function printSheet(){ window.print(); }
+
+const STORAGE_KEY = 'btloycb_m5l2_psychological_safety';
+function saveWork(){
+  const d={scores:scores, growthNotes:growthNotes};
+  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(d)); const m=el('save-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),2500);}catch(e){}
+  update();
+}
+function loadWork(){
+  try{
+    const s=localStorage.getItem(STORAGE_KEY); if(!s)return;
+    const d=JSON.parse(s);
+    if(d.scores){ Object.keys(d.scores).forEach(k=>{ if(d.scores[k]!==null) { scores[k]=d.scores[k]; } }); }
+    if(d.growthNotes){ Object.keys(d.growthNotes).forEach(k=>{ growthNotes[k]=d.growthNotes[k]; }); }
+    DIMS.forEach(dm=>{
+      if(scores[dm.id]!==null){
+        const row = el('scale'+dm.id);
+        row.querySelectorAll('.scale-chip').forEach(c=>{
+          c.classList.toggle('selected', parseInt(c.getAttribute('data-v'))===scores[dm.id]);
+        });
+        const disp = el('disp'+dm.id);
+        disp.textContent = scores[dm.id] + ' / 10';
+        disp.className = 'dim-score-display ' + (scores[dm.id]<7?'low':(scores[dm.id]<9?'mid':'high'));
+      }
+    });
+    renderGrowth();
+    update();
+  }catch(e){}
+}
+function resetAll(){
+  if(!confirm('Clear all responses? This cannot be undone.'))return;
+  DIMS.forEach(d=>{ scores[d.id]=null; growthNotes[d.id]=''; });
+  buildScales();
+  el('growthWrap').innerHTML = '<div class="growth-empty" id="growthEmpty">No growth areas yet — rate the dimensions above. Anything scored below 7 will appear here automatically.</div>';
+  DIMS.forEach(d=>{ el('disp'+d.id).textContent='— / 10'; el('disp'+d.id).className='dim-score-display'; });
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+  update();
+}
+
+buildScales();
+loadWork();
+</script>
+</body>
+</html>
