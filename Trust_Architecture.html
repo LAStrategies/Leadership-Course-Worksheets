@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trust Architecture | BTLOYCB</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy:      #0D2B6B;
+    --navy-mid:  #1B3A80;
+    --blue:      #1B4FCC;
+    --teal:      #00BFA5;
+    --gold:      #F2B300;
+    --gold-pale: #FFFBEB;
+    --lav:       #C386DE;
+    --purple:    #6A0C91;
+    --cream:     #F6F8FF;
+    --white:     #FFFFFF;
+    --muted:     #7B8BA8;
+    --body:      #2D2D2D;
+    --light:     #EEF3FF;
+    --red:       #E0554F;
+    --border:    rgba(13,43,107,0.10);
+    --radius:    12px;
+    --shadow:    0 4px 20px rgba(13,43,107,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--body);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HEADER ── */
+  .header { background: var(--navy); position: relative; overflow: hidden; }
+  .header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg,
+      transparent, transparent 40px,
+      rgba(0,191,165,0.04) 40px, rgba(0,191,165,0.04) 80px);
+  }
+  .header-inner {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+    padding: 36px 32px 32px;
+  }
+  .course-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .course-label::before {
+    content: ''; display: inline-block;
+    width: 24px; height: 1px; background: var(--teal);
+  }
+  .header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900; font-size: clamp(22px, 4vw, 34px);
+    color: var(--white); line-height: 1.15; margin-bottom: 6px;
+  }
+  .header h1 span { color: var(--teal); }
+  .header-sub {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    font-style: italic; margin-bottom: 22px;
+  }
+  .header-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 100px; padding: 5px 12px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .badge-gold { background: rgba(242,179,0,0.18); border: 1px solid rgba(242,179,0,0.38); color: var(--gold); }
+  .badge-teal { background: rgba(0,191,165,0.15); border: 1px solid rgba(0,191,165,0.35); color: var(--teal); }
+  .badge-blue { background: rgba(27,79,204,0.18); border: 1px solid rgba(27,79,204,0.38); color: #7BA3FF; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { max-width: 800px; margin: 0 auto; padding: 20px 32px 0; }
+  .progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .progress-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .progress-pct { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+  .progress-track { height: 6px; background: #D0DAF0; border-radius: 100px; overflow: hidden; margin-bottom: 20px; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), #33CCBA);
+    border-radius: 100px; width: 0%;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── MAIN ── */
+  .main { max-width: 800px; margin: 0 auto; padding: 28px 32px 0; }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    background: var(--white);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px; margin-bottom: 24px;
+    font-size: 13.5px; color: var(--muted); line-height: 1.65;
+    box-shadow: var(--shadow);
+  }
+  .intro-box strong { color: var(--navy); font-weight: 700; }
+
+  .step-group-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--muted); margin: 22px 0 10px; padding-left: 4px;
+  }
+
+  /* ── Q CARDS ── */
+  .q-card {
+    background: var(--white); border-radius: var(--radius);
+    overflow: hidden; margin-bottom: 14px;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .q-card:focus-within { box-shadow: 0 4px 24px rgba(0,191,165,0.15); border-color: rgba(0,191,165,0.35); }
+  .q-header { display: flex; align-items: flex-start; }
+  .q-num {
+    width: 52px; min-width: 52px; padding: 18px 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 700;
+    color: var(--white); flex-shrink: 0;
+  }
+  .q-step-tag {
+    display: block; font-size: 7px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.60); margin-bottom: 3px;
+  }
+  .q-arrow { font-size: 13px; margin-right: 5px; opacity: 0.65; }
+  .q-prompt-wrap { flex: 1; padding: 14px 16px 14px 14px; border-left: 1px solid rgba(0,0,0,0.05); }
+  .q-prompt { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.45; }
+  .q-hint { font-size: 12px; color: var(--muted); margin-top: 5px; font-style: italic; line-height: 1.55; }
+  .q-response-wrap { padding: 0 16px 14px 52px; }
+  textarea.q-response {
+    width: 100%; font-family: 'Lato', sans-serif;
+    font-size: 13.5px; color: var(--body);
+    background: var(--light); border: 1px solid #C8D4EE;
+    border-radius: 8px; padding: 10px 12px;
+    resize: vertical; min-height: 72px; line-height: 1.6; outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  textarea.q-response:focus { border-color: var(--teal); background: #FAFCFF; }
+  textarea.q-response::placeholder { color: #A0AABF; font-style: italic; }
+  .char-count { font-size: 10.5px; color: var(--muted); text-align: right; margin-top: 4px; }
+
+  .q1 .q-num { background: var(--blue); }
+  .q2 .q-num { background: var(--red); }
+  .q3 .q-num { background: var(--gold); }
+  .q4 .q-num { background: var(--teal); }
+
+  /* ── TRUST EQUATION CALCULATOR ── */
+  .equation-banner {
+    text-align: center; padding: 10px 16px; margin-bottom: 16px;
+    font-family: 'Poppins', sans-serif; font-size: 13px; font-weight: 700; color: var(--navy);
+    background: var(--gold-pale); border: 1px solid rgba(242,179,0,0.35); border-radius: 8px;
+  }
+  .equation-banner .frac { display: inline-block; vertical-align: middle; text-align: center; margin: 0 4px; }
+  .equation-banner .frac .num { border-bottom: 1.5px solid var(--navy); padding: 0 4px 2px; font-size: 11.5px; }
+  .equation-banner .frac .den { padding: 2px 4px 0; font-size: 11.5px; }
+
+  .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .calc-card {
+    background: var(--white); border-radius: var(--radius);
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .calc-head { padding: 14px 16px; display: flex; align-items: center; gap: 10px; }
+  .calc-head.strong { background: linear-gradient(135deg, var(--teal) 0%, #0D2B6B 100%); }
+  .calc-head.weak { background: linear-gradient(135deg, var(--red) 0%, #0D2B6B 100%); }
+  .calc-head-icon { font-size: 17px; }
+  .calc-head-title { font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: var(--white); }
+  .calc-body { padding: 14px 16px 16px; }
+  .calc-row { margin-bottom: 12px; }
+  .calc-row-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .calc-row-label { font-family: 'Poppins', sans-serif; font-size: 11.5px; font-weight: 700; color: var(--navy); }
+  .calc-row-val { font-family: 'Poppins', sans-serif; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+  input[type="range"].calc-slider {
+    width: 100%; height: 5px; -webkit-appearance: none; appearance: none;
+    background: #D0DAF0; border-radius: 100px; outline: none; cursor: pointer;
+  }
+  input[type="range"].calc-slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--navy); cursor: pointer; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  input[type="range"].calc-slider::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--navy); cursor: pointer; border: 2px solid white; box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+  }
+  .calc-row.selforient .calc-row-label { color: var(--red); }
+  .calc-result {
+    margin-top: 14px; padding: 12px; border-radius: 8px;
+    background: var(--light); text-align: center;
+  }
+  .calc-result-label { font-size: 9.5px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .calc-result-score { font-family: 'Poppins', sans-serif; font-size: 26px; font-weight: 900; color: var(--navy); }
+  .calc-result-score span { font-size: 13px; color: var(--muted); font-weight: 700; }
+
+  .relationship-note { padding: 0 16px 14px; }
+  textarea.rel-ta {
+    width: 100%; font-family: 'Lato', sans-serif;
+    font-size: 12.5px; color: var(--body);
+    background: var(--light); border: 1px solid #C8D4EE;
+    border-radius: 8px; padding: 8px 10px;
+    resize: vertical; min-height: 60px; line-height: 1.5; outline: none;
+  }
+  textarea.rel-ta:focus { border-color: var(--teal); background: #FAFCFF; }
+  textarea.rel-ta::placeholder { color: #A0AABF; font-style: italic; font-size: 11.5px; }
+
+  /* ── YLOS BOX ── */
+  .ylos-box { max-width: 800px; margin: 0 auto 20px; padding: 0 32px; }
+  .ylos-inner {
+    background: var(--white); border: 1px solid var(--teal);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .ylos-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--teal); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .ylos-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .ylos-text strong { color: var(--navy); }
+
+  /* ── BUTTONS ── */
+  .btn-row { max-width: 800px; margin: 0 auto; padding: 0 32px; display: flex; gap: 10px; flex-wrap: wrap; }
+  button {
+    font-family: 'Lato', sans-serif; font-size: 13px;
+    font-weight: 700; padding: 10px 18px;
+    border-radius: 8px; cursor: pointer;
+    border: 1px solid rgba(13,43,107,0.2);
+    background: var(--white); color: var(--navy);
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  button:hover { background: var(--light); border-color: #A0B4E0; }
+  .btn-primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-teal { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .btn-teal:hover { background: #00A890; }
+
+  .save-msg {
+    max-width: 800px; margin: 10px auto 0; padding: 0 32px;
+    font-size: 12px; color: var(--teal); font-style: italic;
+    min-height: 18px; opacity: 0; transition: opacity 0.3s;
+  }
+  .save-msg.show { opacity: 1; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    max-width: 800px; margin: 32px auto 0; padding: 0 32px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-brand { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--muted); }
+  .footer-brand strong { color: var(--navy); }
+  .footer-note { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .header-inner, .main, .progress-wrap,
+    .ylos-box, .btn-row, .page-footer { padding-left: 16px; padding-right: 16px; }
+    .q-response-wrap { padding-left: 16px; }
+    .calc-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; }
+    .btn-row, .progress-wrap, .save-msg { display: none; }
+    .q-card, .calc-card { box-shadow: none; }
+    textarea { background: #F5F8FF !important; color: #0D2B6B !important; border: 1px solid #ccc !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be &middot; Module 5, Lesson 2</div>
+      <h1>Trust<br><span>Architecture</span></h1>
+      <p class="header-sub">Map what built trust, what broke it &mdash; then run the numbers.</p>
+      <div class="header-badges">
+        <span class="badge badge-gold">&#9999;&#65039; Activity</span>
+        <span class="badge badge-teal">E &mdash; Strategic Leadership</span>
+        <span class="badge badge-blue">&#9201; 20 min</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-row"><span class="progress-label">Your Progress</span><span class="progress-pct" id="pct-display">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+
+  <div class="main">
+    <div class="intro-box">
+      <strong>How this works:</strong> Think of one relationship where trust is strong, and one where it's weak or broken. Describe each, then run both through the trust equation using the sliders below. See where you're strongest and where you need to grow, then write one trust-building commitment for this month.
+    </div>
+
+    <div class="q-card q1">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Step</span>1</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Think of a relationship where trust is strong. What built it?</div>
+          <div class="q-hint">Name the relationship and what specifically created that trust.</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="strongWhat" placeholder="This relationship is with&hellip; and what built the trust was&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccstrongWhat">0 characters</div>
+      </div>
+    </div>
+
+    <div class="q-card q2">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Step</span>2</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Think of a relationship where trust is weak or broken. What happened?</div>
+          <div class="q-hint">Be honest about what damaged or never established the trust.</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="weakWhat" placeholder="This relationship is with&hellip; and what happened was&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccweakWhat">0 characters</div>
+      </div>
+    </div>
+
+    <div class="step-group-label">Step 3 &mdash; Run Both Through the Trust Equation</div>
+    <div class="equation-banner">
+      Trust &nbsp;=&nbsp;
+      <span class="frac"><span class="num">Credibility + Reliability + Intimacy</span><span class="den">Self-Orientation</span></span>
+    </div>
+
+    <div class="calc-grid">
+      <div class="calc-card">
+        <div class="calc-head strong"><span class="calc-head-icon">&#129309;</span><span class="calc-head-title">Strong Relationship</span></div>
+        <div class="calc-body">
+          <div class="calc-row"><div class="calc-row-top"><span class="calc-row-label">Credibility</span><span class="calc-row-val" id="sCredVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="sCred" oninput="calcUpdate()"></div>
+          <div class="calc-row"><div class="calc-row-top"><span class="calc-row-label">Reliability</span><span class="calc-row-val" id="sRelVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="sRel" oninput="calcUpdate()"></div>
+          <div class="calc-row"><div class="calc-row-top"><span class="calc-row-label">Intimacy</span><span class="calc-row-val" id="sIntVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="sInt" oninput="calcUpdate()"></div>
+          <div class="calc-row selforient"><div class="calc-row-top"><span class="calc-row-label">Self-Orientation</span><span class="calc-row-val" id="sSelfVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="sSelf" oninput="calcUpdate()"></div>
+          <div class="calc-result">
+            <div class="calc-result-label">Trust Score</div>
+            <div class="calc-result-score" id="sScore">3.0<span> / 10</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="calc-card">
+        <div class="calc-head weak"><span class="calc-head-icon">&#128148;</span><span class="calc-head-title">Weak / Broken Relationship</span></div>
+        <div class="calc-body">
+          <div class="calc-row"><div class="calc-row-top"><span class="calc-row-label">Credibility</span><span class="calc-row-val" id="wCredVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="wCred" oninput="calcUpdate()"></div>
+          <div class="calc-row"><div class="calc-row-top"><span class="calc-row-label">Reliability</span><span class="calc-row-val" id="wRelVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="wRel" oninput="calcUpdate()"></div>
+          <div class="calc-row"><div class="calc-row-top"><span class="calc-row-label">Intimacy</span><span class="calc-row-val" id="wIntVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="wInt" oninput="calcUpdate()"></div>
+          <div class="calc-row selforient"><div class="calc-row-top"><span class="calc-row-label">Self-Orientation</span><span class="calc-row-val" id="wSelfVal">5</span></div>
+            <input type="range" min="1" max="10" value="5" class="calc-slider" id="wSelf" oninput="calcUpdate()"></div>
+          <div class="calc-result">
+            <div class="calc-result-label">Trust Score</div>
+            <div class="calc-result-score" id="wScore">3.0<span> / 10</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-card q3">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Step</span>4</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Where are you strongest? Where do you need to grow?</div>
+          <div class="q-hint">Look at your two scores and the four components. What pattern do you see?</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="pattern" placeholder="I'm strongest in&hellip; and I need to grow in&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccpattern">0 characters</div>
+      </div>
+    </div>
+
+    <div class="q-card q4">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Step</span>5</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Write one trust-building commitment for this month.</div>
+          <div class="q-hint">Make it specific and behavioral — something you can actually do and check on.</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="commitment" placeholder="This month, I will&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="cccommitment">0 characters</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-inner">
+      <div class="ylos-icon">&#128216;</div>
+      <div class="ylos-text">
+        <strong>Add to Your YLOS &mdash; Section 4 (My Impact on Others):</strong> This becomes your <strong>Trust-Building Commitments</strong>, and if the weak relationship needs it, the start of your <strong>Trust Repair Plan</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="saveWork()">&#128190; Save My Work</button>
+    <button class="btn-teal" onclick="printSheet()">&#128424; Print / Save as PDF</button>
+    <button onclick="resetAll()">&#8635; Reset</button>
+  </div>
+  <div class="save-msg" id="save-msg">&#10003; Responses saved to this browser</div>
+
+  <footer class="page-footer">
+    <div class="footer-brand"><strong>Becoming the Leader Only You Can Be</strong> &middot; Rooted Leaders RISE &middot; Life Aligned Center for Leadership &amp; Justice Studies</div>
+    <div class="footer-note">Module 5, Lesson 2 &middot; Activity</div>
+  </footer>
+
+<script>
+function el(id){ return document.getElementById(id); }
+function printSheet(){ window.print(); }
+
+const TEXT_FIELDS = ['strongWhat','weakWhat','pattern','commitment'];
+const SLIDER_IDS = ['sCred','sRel','sInt','sSelf','wCred','wRel','wInt','wSelf'];
+
+function calcTrust(cred,rel,intm,self){
+  const raw = (cred+rel+intm)/self;
+  // scale raw (roughly 0.3 to 9) into a readable 0-10 band
+  let scaled = raw * (10/9);
+  if(scaled>10) scaled=10;
+  if(scaled<0) scaled=0;
+  return Math.round(scaled*10)/10;
+}
+
+function calcUpdate(){
+  const sCred=+el('sCred').value, sRel=+el('sRel').value, sInt=+el('sInt').value, sSelf=+el('sSelf').value;
+  const wCred=+el('wCred').value, wRel=+el('wRel').value, wInt=+el('wInt').value, wSelf=+el('wSelf').value;
+  el('sCredVal').textContent=sCred; el('sRelVal').textContent=sRel; el('sIntVal').textContent=sInt; el('sSelfVal').textContent=sSelf;
+  el('wCredVal').textContent=wCred; el('wRelVal').textContent=wRel; el('wIntVal').textContent=wInt; el('wSelfVal').textContent=wSelf;
+  const sScore = calcTrust(sCred,sRel,sInt,sSelf);
+  const wScore = calcTrust(wCred,wRel,wInt,wSelf);
+  el('sScore').innerHTML = sScore.toFixed(1) + '<span> / 10</span>';
+  el('wScore').innerHTML = wScore.toFixed(1) + '<span> / 10</span>';
+  update();
+}
+
+function update(){
+  TEXT_FIELDS.forEach(id=>{ const e=el(id),c=el('cc'+id); if(e&&c)c.textContent=e.value.length+' characters'; });
+  const textFilled = TEXT_FIELDS.filter(id=>{ const e=el(id); return e && e.value.trim().length>4; }).length;
+  const pct = Math.round((textFilled/TEXT_FIELDS.length)*100);
+  el('prog-fill').style.width=pct+'%'; el('pct-display').textContent=pct+'%';
+}
+
+const STORAGE_KEY = 'btloycb_m5l2_trust_architecture';
+function saveWork(){
+  const d={};
+  TEXT_FIELDS.forEach(id=>{ const e=el(id); if(e)d[id]=e.value; });
+  SLIDER_IDS.forEach(id=>{ const e=el(id); if(e)d[id]=e.value; });
+  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(d)); const m=el('save-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),2500);}catch(e){}
+  update();
+}
+function loadWork(){
+  try{
+    const s=localStorage.getItem(STORAGE_KEY); if(!s)return;
+    const d=JSON.parse(s);
+    TEXT_FIELDS.forEach(id=>{ const e=el(id); if(e&&d[id])e.value=d[id]; });
+    SLIDER_IDS.forEach(id=>{ const e=el(id); if(e&&d[id])e.value=d[id]; });
+    calcUpdate();
+  }catch(e){}
+}
+function resetAll(){
+  if(!confirm('Clear all responses? This cannot be undone.'))return;
+  TEXT_FIELDS.forEach(id=>{ const e=el(id); if(e)e.value=''; });
+  SLIDER_IDS.forEach(id=>{ const e=el(id); if(e)e.value=5; });
+  try{localStorage.removeItem(STORAGE_KEY);}catch(e){}
+  calcUpdate();
+}
+
+calcUpdate();
+loadWork();
+</script>
+</body>
+</html>
