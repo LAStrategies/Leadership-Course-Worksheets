@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Support System Mapping | BTLOYCB</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy:      #0D2B6B;
+    --navy-mid:  #1B3A80;
+    --blue:      #1B4FCC;
+    --teal:      #00BFA5;
+    --gold:      #F2B300;
+    --gold-pale: #FFFBEB;
+    --lav:       #C386DE;
+    --purple:    #6A0C91;
+    --cream:     #F6F8FF;
+    --white:     #FFFFFF;
+    --muted:     #7B8BA8;
+    --body:      #2D2D2D;
+    --light:     #EEF3FF;
+    --border:    rgba(13,43,107,0.10);
+    --radius:    12px;
+    --shadow:    0 4px 20px rgba(13,43,107,0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--body);
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  /* ── HEADER ── */
+  .header { background: var(--navy); position: relative; overflow: hidden; }
+  .header::before {
+    content: ''; position: absolute; inset: 0;
+    background: repeating-linear-gradient(-45deg,
+      transparent, transparent 40px,
+      rgba(0,191,165,0.04) 40px, rgba(0,191,165,0.04) 80px);
+  }
+  .header-inner {
+    position: relative; z-index: 1;
+    max-width: 800px; margin: 0 auto;
+    padding: 36px 32px 32px;
+  }
+  .course-label {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal); margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .course-label::before {
+    content: ''; display: inline-block;
+    width: 24px; height: 1px; background: var(--teal);
+  }
+  .header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900; font-size: clamp(22px, 4vw, 34px);
+    color: var(--white); line-height: 1.15; margin-bottom: 6px;
+  }
+  .header h1 span { color: var(--teal); }
+  .header-sub {
+    font-size: 13px; color: rgba(255,255,255,0.45);
+    font-style: italic; margin-bottom: 22px;
+  }
+  .header-badges { display: flex; gap: 10px; flex-wrap: wrap; }
+  .badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    border-radius: 100px; padding: 5px 12px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .badge-gold { background: rgba(242,179,0,0.18); border: 1px solid rgba(242,179,0,0.38); color: var(--gold); }
+  .badge-teal { background: rgba(0,191,165,0.15); border: 1px solid rgba(0,191,165,0.35); color: var(--teal); }
+  .badge-blue { background: rgba(27,79,204,0.18); border: 1px solid rgba(27,79,204,0.38); color: #7BA3FF; }
+
+  /* ── PROGRESS ── */
+  .progress-wrap { max-width: 800px; margin: 0 auto; padding: 20px 32px 0; }
+  .progress-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .progress-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+  .progress-pct { font-family: 'Poppins', sans-serif; font-size: 18px; font-weight: 700; color: var(--navy); }
+  .progress-track { height: 6px; background: #D0DAF0; border-radius: 100px; overflow: hidden; margin-bottom: 20px; }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal), #33CCBA);
+    border-radius: 100px; width: 0%;
+    transition: width 0.5s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  /* ── MAIN ── */
+  .main { max-width: 800px; margin: 0 auto; padding: 28px 32px 0; }
+
+  /* ── INTRO BOX ── */
+  .intro-box {
+    background: var(--white);
+    border-left: 4px solid var(--teal);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 14px 18px; margin-bottom: 24px;
+    font-size: 13.5px; color: var(--muted); line-height: 1.65;
+    box-shadow: var(--shadow);
+  }
+  .intro-box strong { color: var(--navy); font-weight: 700; }
+
+  .step-group-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 9px; font-weight: 700;
+    letter-spacing: 0.20em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px; padding-left: 4px;
+  }
+
+  /* ── ROLE CARDS (2x2 map) ── */
+  .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 8px; }
+  .role-card {
+    background: var(--white); border-radius: var(--radius);
+    overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow);
+  }
+  .role-head { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .role-head.mentor { background: linear-gradient(135deg, var(--blue) 0%, #0D2B6B 100%); }
+  .role-head.peer { background: linear-gradient(135deg, var(--teal) 0%, #0D2B6B 100%); }
+  .role-head.sponsor { background: linear-gradient(135deg, var(--gold) 0%, #0D2B6B 100%); }
+  .role-head.community { background: linear-gradient(135deg, var(--lav) 0%, #0D2B6B 100%); }
+  .role-icon { font-size: 18px; }
+  .role-title { font-family: 'Poppins', sans-serif; font-size: 13.5px; font-weight: 700; color: var(--white); }
+  .role-sub { font-size: 10.5px; color: rgba(255,255,255,0.75); font-style: italic; margin-top: 1px; }
+  .role-body { padding: 12px 14px 14px; }
+  .role-field-label { font-size: 10.5px; font-weight: 700; color: var(--navy); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  input.role-name-input {
+    width: 100%; font-family: 'Lato', sans-serif; font-size: 13px; color: var(--body);
+    background: var(--light); border: 1px solid #C8D4EE; border-radius: 8px;
+    padding: 8px 10px; outline: none; margin-bottom: 10px;
+  }
+  input.role-name-input:focus { border-color: var(--teal); background: #FAFCFF; }
+  input.role-name-input::placeholder { color: #A0AABF; font-style: italic; }
+  textarea.role-ta {
+    width: 100%; font-family: 'Lato', sans-serif; font-size: 12.5px; color: var(--body);
+    background: var(--light); border: 1px solid #C8D4EE; border-radius: 8px;
+    padding: 8px 10px; resize: vertical; min-height: 54px; line-height: 1.5; outline: none;
+  }
+  textarea.role-ta:focus { border-color: var(--teal); background: #FAFCFF; }
+  textarea.role-ta::placeholder { color: #A0AABF; font-style: italic; }
+
+  /* ── Q CARDS ── */
+  .q-card {
+    background: var(--white); border-radius: var(--radius);
+    overflow: hidden; margin-bottom: 14px;
+    border: 1px solid var(--border); box-shadow: var(--shadow);
+    transition: box-shadow 0.2s;
+  }
+  .q-card:focus-within { box-shadow: 0 4px 24px rgba(0,191,165,0.15); border-color: rgba(0,191,165,0.35); }
+  .q-header { display: flex; align-items: flex-start; }
+  .q-num {
+    width: 52px; min-width: 52px; padding: 18px 0;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Poppins', sans-serif; font-size: 17px; font-weight: 700;
+    color: var(--white); flex-shrink: 0;
+  }
+  .q-step-tag {
+    display: block; font-size: 7px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(255,255,255,0.60); margin-bottom: 3px;
+  }
+  .q-arrow { font-size: 13px; margin-right: 5px; opacity: 0.65; }
+  .q-prompt-wrap { flex: 1; padding: 14px 16px 14px 14px; border-left: 1px solid rgba(0,0,0,0.05); }
+  .q-prompt { font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 600; color: var(--navy); line-height: 1.45; }
+  .q-hint { font-size: 12px; color: var(--muted); margin-top: 5px; font-style: italic; line-height: 1.55; }
+  .q-response-wrap { padding: 0 16px 14px 52px; }
+  textarea.q-response {
+    width: 100%; font-family: 'Lato', sans-serif;
+    font-size: 13.5px; color: var(--body);
+    background: var(--light); border: 1px solid #C8D4EE;
+    border-radius: 8px; padding: 10px 12px;
+    resize: vertical; min-height: 72px; line-height: 1.6; outline: none;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  textarea.q-response:focus { border-color: var(--teal); background: #FAFCFF; }
+  textarea.q-response::placeholder { color: #A0AABF; font-style: italic; }
+  .char-count { font-size: 10.5px; color: var(--muted); text-align: right; margin-top: 4px; }
+  .q1 .q-num { background: var(--gold); }
+  .q2 .q-num { background: var(--blue); }
+
+  /* ── YLOS BOX ── */
+  .ylos-box { max-width: 800px; margin: 0 auto 20px; padding: 0 32px; }
+  .ylos-inner {
+    background: var(--white); border: 1px solid var(--teal);
+    border-radius: var(--radius); padding: 14px 18px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .ylos-icon {
+    width: 32px; height: 32px; flex-shrink: 0;
+    background: var(--teal); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center; font-size: 15px;
+  }
+  .ylos-text { font-size: 13px; color: var(--muted); line-height: 1.6; }
+  .ylos-text strong { color: var(--navy); }
+
+  /* ── BUTTONS ── */
+  .btn-row { max-width: 800px; margin: 0 auto; padding: 0 32px; display: flex; gap: 10px; flex-wrap: wrap; }
+  button {
+    font-family: 'Lato', sans-serif; font-size: 13px;
+    font-weight: 700; padding: 10px 18px;
+    border-radius: 8px; cursor: pointer;
+    border: 1px solid rgba(13,43,107,0.2);
+    background: var(--white); color: var(--navy);
+    transition: all 0.2s; letter-spacing: 0.02em;
+  }
+  button:hover { background: var(--light); border-color: #A0B4E0; }
+  .btn-primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .btn-primary:hover { background: var(--navy-mid); }
+  .btn-teal { background: var(--teal); color: var(--white); border-color: var(--teal); }
+  .btn-teal:hover { background: #00A890; }
+
+  .save-msg {
+    max-width: 800px; margin: 10px auto 0; padding: 0 32px;
+    font-size: 12px; color: var(--teal); font-style: italic;
+    min-height: 18px; opacity: 0; transition: opacity 0.3s;
+  }
+  .save-msg.show { opacity: 1; }
+
+  /* ── FOOTER ── */
+  .page-footer {
+    max-width: 800px; margin: 32px auto 0; padding: 0 32px;
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+  }
+  .footer-brand { font-family: 'Poppins', sans-serif; font-size: 12px; color: var(--muted); }
+  .footer-brand strong { color: var(--navy); }
+  .footer-note { font-size: 11px; color: var(--muted); font-style: italic; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .header-inner, .main, .progress-wrap,
+    .ylos-box, .btn-row, .page-footer { padding-left: 16px; padding-right: 16px; }
+    .q-response-wrap { padding-left: 16px; }
+    .role-grid { grid-template-columns: 1fr; }
+  }
+
+  @media print {
+    body { background: white; }
+    .btn-row, .progress-wrap, .save-msg { display: none; }
+    .role-card, .q-card { box-shadow: none; }
+    textarea, input { background: #F5F8FF !important; color: #0D2B6B !important; border: 1px solid #ccc !important; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <div class="course-label">Becoming the Leader Only You Can Be &middot; Module 5, Lesson 3</div>
+      <h1>Support System<br><span>Mapping</span></h1>
+      <p class="header-sub">Four roles every leader needs &mdash; who fills them for you, and who's missing.</p>
+      <div class="header-badges">
+        <span class="badge badge-gold">&#9999;&#65039; Activity</span>
+        <span class="badge badge-teal">E &mdash; Strategic Leadership</span>
+        <span class="badge badge-blue">&#9201; 20 min</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-row"><span class="progress-label">Your Progress</span><span class="progress-pct" id="pct-display">0%</span></div>
+    <div class="progress-track"><div class="progress-fill" id="prog-fill"></div></div>
+  </div>
+
+  <div class="main">
+    <div class="intro-box">
+      <strong>How this works:</strong> Map your leadership support network across four roles. For each, name who fills it right now (or leave it blank if no one does), and note anything you want to remember about that relationship. Then step back and name who's missing and one relationship you need to build.
+    </div>
+
+    <div class="step-group-label">Step 1 &mdash; Map Each Role</div>
+    <div class="role-grid">
+      <div class="role-card">
+        <div class="role-head mentor">
+          <span class="role-icon">&#129504;</span>
+          <div>
+            <div class="role-title">Mentor</div>
+            <div class="role-sub">someone ahead of you who guides</div>
+          </div>
+        </div>
+        <div class="role-body">
+          <div class="role-field-label">Who fills this role?</div>
+          <input class="role-name-input" id="mentorName" placeholder="Name (or leave blank if no one yet)" oninput="update()" />
+          <div class="role-field-label">Notes</div>
+          <textarea class="role-ta" id="mentorNotes" placeholder="What they've given you, or what you need from this role…" oninput="update()"></textarea>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head peer">
+          <span class="role-icon">&#129309;</span>
+          <div>
+            <div class="role-title">Peer Leader</div>
+            <div class="role-sub">someone at your level who keeps you honest</div>
+          </div>
+        </div>
+        <div class="role-body">
+          <div class="role-field-label">Who fills this role?</div>
+          <input class="role-name-input" id="peerName" placeholder="Name (or leave blank if no one yet)" oninput="update()" />
+          <div class="role-field-label">Notes</div>
+          <textarea class="role-ta" id="peerNotes" placeholder="What they've given you, or what you need from this role…" oninput="update()"></textarea>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head sponsor">
+          <span class="role-icon">&#128227;</span>
+          <div>
+            <div class="role-title">Sponsor</div>
+            <div class="role-sub">advocates for you in rooms you're not in</div>
+          </div>
+        </div>
+        <div class="role-body">
+          <div class="role-field-label">Who fills this role?</div>
+          <input class="role-name-input" id="sponsorName" placeholder="Name (or leave blank if no one yet)" oninput="update()" />
+          <div class="role-field-label">Notes</div>
+          <textarea class="role-ta" id="sponsorNotes" placeholder="What they've given you, or what you need from this role…" oninput="update()"></textarea>
+        </div>
+      </div>
+
+      <div class="role-card">
+        <div class="role-head community">
+          <span class="role-icon">&#127968;</span>
+          <div>
+            <div class="role-title">Community</div>
+            <div class="role-sub">where you recharge and remember who you are</div>
+          </div>
+        </div>
+        <div class="role-body">
+          <div class="role-field-label">Who or what fills this role?</div>
+          <input class="role-name-input" id="communityName" placeholder="Name, group, or place (or leave blank)" oninput="update()" />
+          <div class="role-field-label">Notes</div>
+          <textarea class="role-ta" id="communityNotes" placeholder="What they've given you, or what you need from this role…" oninput="update()"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="step-group-label" style="margin-top:22px;">Step 2 &mdash; Name the Gap</div>
+    <div class="q-card q1">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Step</span>2</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> Who is missing?</div>
+          <div class="q-hint">Looking at your map, which role is thinnest or empty right now?</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="missing" placeholder="The role that's thinnest for me right now is&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccmissing">0 characters</div>
+      </div>
+    </div>
+
+    <div class="q-card q2">
+      <div class="q-header">
+        <div class="q-num"><span class="q-step-tag">Step</span>3</div>
+        <div class="q-prompt-wrap">
+          <div class="q-prompt"><span class="q-arrow">&rarr;</span> What's one relationship you need to build?</div>
+          <div class="q-hint">Be specific — a real person if you can, and one small first step.</div>
+        </div>
+      </div>
+      <div class="q-response-wrap">
+        <textarea class="q-response" id="buildRel" placeholder="The relationship I need to build is&hellip; My first step is&hellip;" rows="3" oninput="update()"></textarea>
+        <div class="char-count" id="ccbuildRel">0 characters</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-inner">
+      <div class="ylos-icon">&#128216;</div>
+      <div class="ylos-text">
+        <strong>Add to Your YLOS &mdash; Section 4 (My Impact on Others):</strong> This becomes your <strong>Support System Map</strong> &mdash; mentor, peer leader, sponsor, community.
+      </div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn-primary" onclick="saveWork()">&#128190; Save My Work</button>
+    <button class="btn-teal" onclick="printSheet()">&#128424; Print / Save as PDF</button>
+    <button onclick="resetAll()">&#8635; Reset</button>
+  </div>
+  <div class="save-msg" id="save-msg">&#10003; Responses saved to this browser</div>
+
+  <footer class="page-footer">
+    <div class="footer-brand"><strong>Becoming the Leader Only You Can Be</strong> &middot; Rooted Leaders RISE &middot; Life Aligned Center for Leadership &amp; Justice Studies</div>
+    <div class="footer-note">Module 5, Lesson 3 &middot; Activity</div>
+  </footer>
+
+<script>
+function el(id){ return document.getElementById(id); }
+function printSheet(){ window.print(); }
+
+const INPUT_FIELDS = ['mentorName','mentorNotes','peerName','peerNotes','sponsorName','sponsorNotes','communityName','communityNotes'];
+const TEXT_FIELDS = ['missing','buildRel'];
+const ALL_FIELDS = INPUT_FIELDS.concat(TEXT_FIELDS);
+
+function update(){
+  TEXT_FIELDS.forEach(id=>{ const e=el(id),c=el('cc'+id); if(e&&c)c.textContent=e.value.length+' characters'; });
+  const filled = ALL_FIELDS.filter(id=>{ const e=el(id); return e && e.value.trim().length>1; }).length;
+  const pct = Math.round((filled/ALL_FIELDS.length)*100);
+  el('prog-fill').style.width=pct+'%'; el('pct-display').textContent=pct+'%';
+}
+
+const STORAGE_KEY = 'btloycb_m5l3_support_system_mapping';
+function saveWork(){
+  const d={}; ALL_FIELDS.forEach(id=>{ const e=el(id); if(e)d[id]=e.value; });
+  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(d)); const m=el('save-msg'); m.classList.add('show'); setTimeout(()=>m.classList.remove('show'),2500);}catch(e){}
+  update();
+}
+function loadWork(){ try{ const s=localStorage.getItem(STORAGE_KEY); if(!s)return; const d=JSON.parse(s); ALL_FIELDS.forEach(id=>{ const e=el(id); if(e&&d[id])e.value=d[id]; }); update(); }catch(e){} }
+function resetAll(){ if(!confirm('Clear all responses? This cannot be undone.'))return; ALL_FIELDS.forEach(id=>{ const e=el(id); if(e)e.value=''; }); try{localStorage.removeItem(STORAGE_KEY);}catch(e){} update(); }
+loadWork();
+</script>
+</body>
+</html>
