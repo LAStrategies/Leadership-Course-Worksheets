@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>STAR Interview Story Builder — Module 6, Lesson 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0D2B6B; --navy-dark:#091F52; --navy-light:#1B4FCC;
+  --teal:#00BFA5; --teal-dark:#00967F; --teal-pale:#E3F7F4;
+  --lavender:#C386DE; --lavender-dark:#9B4FC2; --lavender-pale:#F3E8FA;
+  --orange:#F2B300; --orange-dark:#C97D0C; --orange-pale:#FDF3D9;
+  --purple:#6A0C91; --purple-pale:#EFE0F5;
+  --charcoal:#2D2D2D; --text:#1c2530; --text-muted:#5c6c85; --border:#c9d3ea;
+  --off-white:#F3F6FC; --white:#fff;
+  --shadow:0 4px 24px rgba(13,43,107,.13);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Source Sans 3',sans-serif;background:var(--off-white);color:var(--text);min-height:100vh;font-size:15px;line-height:1.6}
+
+.page-header{background:var(--navy);color:white;padding:36px 44px 30px;position:relative;overflow:hidden}
+.page-header::before{content:'';position:absolute;top:-70px;right:-70px;width:260px;height:260px;border-radius:50%;background:rgba(195,134,222,.16)}
+.page-header::after{content:'';position:absolute;bottom:-50px;left:38%;width:140px;height:140px;border-radius:50%;background:rgba(242,179,0,.10)}
+.header-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--orange);color:var(--navy-dark);font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;padding:4px 14px;border-radius:20px;margin-bottom:14px}
+.page-header h1{font-family:'Playfair Display',serif;font-size:clamp(24px,4.5vw,40px);font-weight:700;line-height:1.1;margin-bottom:8px}
+.page-header .tagline{font-family:'Playfair Display',serif;font-style:italic;font-size:16px;color:var(--lavender)}
+.header-meta{margin-top:16px;font-size:12.5px;color:rgba(255,255,255,.48);letter-spacing:.4px}
+
+.main{max-width:1040px;margin:0 auto;padding:32px 20px 64px}
+.section-label{display:flex;align-items:center;gap:10px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--navy-light);margin:30px 0 14px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.instruction-card{background:white;border-left:5px solid var(--orange);border-radius:10px;padding:20px 26px;margin-bottom:24px;box-shadow:var(--shadow)}
+.instruction-card p{color:var(--text-muted);font-size:14.5px;line-height:1.7}
+.instruction-card strong{color:var(--navy)}
+
+.name-band{background:white;border-radius:12px;padding:18px 28px;margin-bottom:24px;display:flex;align-items:center;gap:18px;box-shadow:var(--shadow);flex-wrap:wrap}
+.name-band label{font-size:12px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--orange-dark);white-space:nowrap}
+.name-input-wrap{flex:1;min-width:200px;display:flex;align-items:center;border-bottom:2px solid var(--teal);padding-bottom:4px}
+#studentName{flex:1;border:none;outline:none;font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--navy);background:transparent}
+#studentName::placeholder{color:#b3bfdb}
+.name-star{color:var(--orange-dark);font-size:14px}
+
+/* STORY CARDS */
+.story-card{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:20px}
+.story-head{background:var(--navy);padding:16px 26px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.story-badge{width:38px;height:38px;border-radius:50%;color:white;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:18px;font-weight:700;flex-shrink:0}
+.story-badge.R{background:var(--teal)}
+.story-badge.I{background:var(--lavender)}
+.story-badge.S{background:var(--orange);color:var(--navy-dark)}
+.story-badge.E{background:var(--purple)}
+.story-title{font-family:'Playfair Display',serif;font-size:19px;color:white}
+.story-sub{font-size:12.5px;color:rgba(255,255,255,.6);margin-top:2px}
+.story-timer{margin-left:auto;text-align:right}
+.timer-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:20px;font-size:12.5px;font-weight:700;background:rgba(255,255,255,.12);color:white}
+.timer-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--teal)}
+.timer-badge.warn .dot{background:var(--orange)}
+.timer-badge.over .dot{background:var(--lavender)}
+
+.story-body{padding:22px 26px}
+.star-field{margin-bottom:16px}
+.star-field:last-child{margin-bottom:0}
+.star-label{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.star-letter{width:24px;height:24px;border-radius:6px;background:var(--off-white);border:1.5px solid var(--border);color:var(--navy);font-family:'Playfair Display',serif;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.star-name{font-size:13.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.6px}
+.star-hint{font-size:12px;color:var(--text-muted);font-style:italic;margin:2px 0 8px 34px}
+.story-body textarea{width:100%;min-height:64px;border:1.5px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.story-body textarea:focus{outline:none;border-color:var(--teal);background:white}
+.story-body textarea::placeholder{color:#a3b0cc;font-style:italic}
+
+.story-footer{background:var(--off-white);padding:12px 26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-top:1px solid var(--border)}
+.word-count{font-size:12.5px;color:var(--text-muted)}
+.word-count strong{color:var(--navy)}
+.speak-est{font-size:12.5px;font-weight:700}
+.speak-est.ok{color:var(--teal-dark)}
+.speak-est.warn{color:var(--orange-dark)}
+.speak-est.over{color:var(--purple)}
+
+/* SUMMARY BAND */
+.summary-band{background:linear-gradient(130deg,var(--navy) 0%,var(--navy-light) 100%);border-radius:14px;padding:22px 28px;display:flex;gap:0;align-items:center;box-shadow:0 6px 30px rgba(13,43,107,.28);margin-bottom:8px;flex-wrap:wrap}
+.summary-item{flex:1;min-width:130px;text-align:center;padding:6px 10px;border-right:1px solid rgba(255,255,255,.18)}
+.summary-item:last-child{border-right:none}
+.summary-num{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:white;line-height:1}
+.summary-num.delta{color:var(--orange)}
+.summary-lbl{font-size:10.5px;letter-spacing:1.2px;text-transform:uppercase;color:rgba(255,255,255,.65);margin-top:6px}
+
+/* REFLECTION / YLOS / SAVE */
+.reflection-wrap{background:white;border-radius:14px;box-shadow:var(--shadow);overflow:hidden;margin-top:12px}
+.reflection-head{background:var(--navy);color:white;padding:18px 28px;display:flex;align-items:center;gap:14px}
+.reflection-head .ri{font-size:24px}
+.reflection-head h3{font-family:'Playfair Display',serif;font-size:19px}
+.reflection-head .teal-pill{margin-left:auto;background:var(--lavender);color:var(--navy-dark);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px}
+.rq-list{padding:24px 28px}
+.rq{margin-bottom:0}
+.rq-top{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.rq-num{min-width:28px;height:28px;background:var(--orange);color:var(--navy-dark);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;margin-top:1px;flex-shrink:0}
+.rq-question{font-size:15px;font-weight:600;color:var(--navy);line-height:1.4}
+.rq textarea{width:100%;min-height:70px;border:1.5px solid var(--border);border-radius:8px;padding:12px 14px;font-family:'Source Sans 3',sans-serif;font-size:14px;color:var(--text);background:var(--off-white);resize:vertical;line-height:1.6}
+.rq textarea:focus{outline:none;border-color:var(--teal);background:white}
+.rq textarea::placeholder{color:#a3b0cc;font-style:italic}
+
+.ylos-box{background:linear-gradient(130deg,var(--navy) 0%,var(--lavender-dark) 100%);color:white;border-radius:14px;padding:26px 32px;display:flex;gap:18px;align-items:flex-start;margin-top:24px;box-shadow:0 6px 30px rgba(13,43,107,.3)}
+.ylos-icon{font-size:38px;line-height:1;flex-shrink:0}
+.ylos-content h4{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:6px}
+.ylos-content p{font-size:14px;color:rgba(255,255,255,.88);line-height:1.65}
+.ylos-content strong{color:var(--orange)}
+
+.save-footer{background:white;border-radius:12px;border-top:4px solid var(--orange);padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);margin-top:24px}
+.save-footer-text{font-size:14px;color:var(--text-muted)}
+.save-footer-text strong{color:var(--navy)}
+.save-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:8px;border:none;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap}
+.btn-outline{background:white;color:var(--navy);border:1.5px solid var(--navy)}
+.btn-outline:hover{background:var(--off-white)}
+.btn-teal{background:var(--teal);color:white}
+.btn-teal:hover{background:var(--teal-dark);transform:translateY(-1px)}
+
+#toast{position:fixed;bottom:28px;right:24px;background:var(--navy);color:white;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,.2);transform:translateY(70px);opacity:0;transition:all .38s cubic-bezier(.34,1.56,.64,1);z-index:9999}
+#toast.show{transform:translateY(0);opacity:1}
+
+@media(max-width:720px){ .summary-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.18)} .summary-item:last-child{border-bottom:none} .story-timer{margin-left:0} }
+@media print{
+  body{background:white;font-size:12px}
+  .save-footer,#toast,.instruction-card{display:none!important}
+  .page-header,.ylos-box,.reflection-head,.story-head,.summary-band{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .story-card,.rq,.reflection-wrap{page-break-inside:avoid}
+  textarea{background:#fafafa;border:1px solid #ccc}
+  @page{margin:.6in}
+}
+</style>
+</head>
+<body>
+
+<header class="page-header">
+  <div class="header-eyebrow">✦ Module 6 · Lesson 2 · Activity</div>
+  <h1>STAR Interview Story Builder</h1>
+  <p class="tagline">You don't need a title to own who you are as a leader.</p>
+  <p class="header-meta">Becoming the Leader Only You Can Be &nbsp;|&nbsp; Rooted Leaders RISE &nbsp;|&nbsp; Life Aligned Center for Leadership &amp; Justice Studies &nbsp;|&nbsp; Module 6, Lesson 2</p>
+</header>
+
+<div class="main">
+
+  <div class="instruction-card">
+    <p>Write one STAR story — <strong>Situation, Task, Action, Result</strong> — for each RISE pillar. Then practice saying each one out loud in under two minutes. <strong>Your answers save automatically</strong> as you type, and each story tracks an estimated speaking time as you write. ⏱ 20 min</p>
+  </div>
+
+  <div class="name-band">
+    <label>Your Name</label>
+    <div class="name-input-wrap">
+      <span class="name-star">✦&nbsp;</span>
+      <input type="text" id="studentName" placeholder="Type your name" autocomplete="off" data-save>
+    </div>
+  </div>
+
+  <div class="summary-band">
+    <div class="summary-item">
+      <div class="summary-num" id="sumStories">0<span style="font-size:16px;">/4</span></div>
+      <div class="summary-lbl">Stories Started</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num" id="sumWords">0</div>
+      <div class="summary-lbl">Total Words</div>
+    </div>
+    <div class="summary-item">
+      <div class="summary-num delta" id="sumReady">0<span style="font-size:16px;">/4</span></div>
+      <div class="summary-lbl">Interview-Ready (\u2264 2 min)</div>
+    </div>
+  </div>
+
+  <div class="section-label">Build Each Story</div>
+
+  <div id="storyWrap"></div>
+
+  <div class="reflection-wrap">
+    <div class="reflection-head"><span class="ri">📓</span><h3>Reflect</h3><span class="teal-pill">JOURNAL</span></div>
+    <div class="rq-list">
+      <div class="rq"><div class="rq-top"><div class="rq-num">1</div><div class="rq-question">Which of your four stories feels the strongest right now — and which one needs the most practice?</div></div><textarea placeholder="My strongest story is… the one I need to practice most is…" data-save-rq id="rq1"></textarea></div>
+    </div>
+  </div>
+
+  <div class="ylos-box">
+    <div class="ylos-icon">📋</div>
+    <div class="ylos-content">
+      <h4>Add to Your YLOS — My Leadership in Action</h4>
+      <p>Add all <strong>four STAR stories</strong> to the STAR Interview Stories section of your YLOS. These become your go-to answers for interviews, applications, and networking conversations.</p>
+    </div>
+  </div>
+
+  <div class="save-footer">
+    <div class="save-footer-text"><strong>When you're done:</strong> save your work or print your stories and add them to your YLOS.</div>
+    <div class="save-actions">
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn btn-teal" onclick="saveWork()">💾 Save My Work</button>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<div id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'btloycb_m6l2_star_story_builder';
+const WPM = 130; // average spoken words per minute, used for the speaking-time estimate
+
+const STORIES = [
+  { key:'R', name:'Root Yourself', sub:'A moment you led from your values and identity', color:'R' },
+  { key:'I', name:'Influence With Purpose', sub:'A moment you communicated with purpose and influenced others', color:'I' },
+  { key:'S', name:'Shift the Room', sub:'A moment you read a situation and adapted your approach', color:'S' },
+  { key:'E', name:'Elevate Others', sub:'A moment you elevated someone else\u2019s leadership', color:'E' }
+];
+
+const STAR_PARTS = [
+  { id:'sit', letter:'S', name:'Situation', hint:'What was the context? Set the scene briefly.' },
+  { id:'task', letter:'T', name:'Task', hint:'What were you responsible for, or what needed to happen?' },
+  { id:'act', letter:'A', name:'Action', hint:'What did you specifically do? Use \u201CI,\u201D not \u201Cwe.\u201D' },
+  { id:'res', letter:'R', name:'Result', hint:'What happened? Use a number or concrete outcome if you can.' }
+];
+
+const wrap = document.getElementById('storyWrap');
+
+STORIES.forEach(s => {
+  const card = document.createElement('div');
+  card.className = 'story-card';
+  let fieldsHtml = '';
+  STAR_PARTS.forEach(p => {
+    fieldsHtml += `
+      <div class="star-field">
+        <div class="star-label"><div class="star-letter">${p.letter}</div><div class="star-name">${p.name}</div></div>
+        <div class="star-hint">${p.hint}</div>
+        <textarea id="${s.key}-${p.id}" placeholder="Write your ${p.name.toLowerCase()} here…" data-save data-story="${s.key}"></textarea>
+      </div>`;
+  });
+  card.innerHTML = `
+    <div class="story-head">
+      <div class="story-badge ${s.color}">${s.key}</div>
+      <div>
+        <div class="story-title">${s.name} Story</div>
+        <div class="story-sub">${s.sub}</div>
+      </div>
+      <div class="story-timer">
+        <span class="timer-badge" id="${s.key}-timer"><span class="dot"></span><span id="${s.key}-timerText">0:00</span></span>
+      </div>
+    </div>
+    <div class="story-body">${fieldsHtml}</div>
+    <div class="story-footer">
+      <div class="word-count"><strong id="${s.key}-wordNum">0</strong> words</div>
+      <div class="speak-est ok" id="${s.key}-speakEst">Start writing to estimate speaking time</div>
+    </div>
+  `;
+  wrap.appendChild(card);
+});
+
+function countWords(text){
+  const t = text.trim();
+  if (!t) return 0;
+  return t.split(/\s+/).length;
+}
+
+function updateStory(key){
+  let words = 0;
+  STAR_PARTS.forEach(p => {
+    words += countWords(document.getElementById(key+'-'+p.id).value);
+  });
+  document.getElementById(key+'-wordNum').textContent = words;
+
+  const minutes = words / WPM;
+  const timerEl = document.getElementById(key+'-timer');
+  const timerText = document.getElementById(key+'-timerText');
+  const speakEst = document.getElementById(key+'-speakEst');
+
+  const mm = Math.floor(minutes);
+  const ss = Math.round((minutes - mm) * 60);
+  timerText.textContent = mm + ':' + String(ss).padStart(2,'0');
+
+  if (words === 0){
+    timerEl.className = 'timer-badge';
+    speakEst.className = 'speak-est ok';
+    speakEst.textContent = 'Start writing to estimate speaking time';
+  } else if (minutes <= 1.75){
+    timerEl.className = 'timer-badge';
+    speakEst.className = 'speak-est ok';
+    speakEst.textContent = '\u2713 Interview-ready length (under 2 minutes)';
+  } else if (minutes <= 2.25){
+    timerEl.className = 'timer-badge warn';
+    speakEst.className = 'speak-est warn';
+    speakEst.textContent = '\u26A0 Right around 2 minutes \u2014 tighten if you can';
+  } else {
+    timerEl.className = 'timer-badge over';
+    speakEst.className = 'speak-est over';
+    speakEst.textContent = '\u25B2 Running long \u2014 cut detail, keep the outcome';
+  }
+  updateSummary();
+}
+
+function updateSummary(){
+  let started = 0, totalWords = 0, ready = 0;
+  STORIES.forEach(s => {
+    let words = 0;
+    STAR_PARTS.forEach(p => { words += countWords(document.getElementById(s.key+'-'+p.id).value); });
+    totalWords += words;
+    if (words > 0) started++;
+    const minutes = words / WPM;
+    if (words > 0 && minutes <= 2.0) ready++;
+  });
+  document.getElementById('sumStories').innerHTML = started + '<span style="font-size:16px;">/4</span>';
+  document.getElementById('sumWords').textContent = totalWords;
+  document.getElementById('sumReady').innerHTML = ready + '<span style="font-size:16px;">/4</span>';
+}
+
+STORIES.forEach(s => {
+  STAR_PARTS.forEach(p => {
+    document.getElementById(s.key+'-'+p.id).addEventListener('input', () => updateStory(s.key));
+  });
+  updateStory(s.key);
+});
+
+const RQS = Array.from(document.querySelectorAll('[data-save-rq]'));
+
+function autosave(){
+  const data = {};
+  document.querySelectorAll('[data-save]').forEach(el => { if (el.id) data[el.id] = el.value; });
+  RQS.forEach(el => { if (el.id) data[el.id] = el.value; });
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch(e) {}
+}
+
+function loadWork(){
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return;
+    const data = JSON.parse(saved);
+    document.querySelectorAll('[data-save]').forEach(el => { if (el.id && data[el.id] !== undefined) el.value = data[el.id]; });
+    RQS.forEach(el => { if (el.id && data[el.id] !== undefined) el.value = data[el.id]; });
+    STORIES.forEach(s => updateStory(s.key));
+  } catch(e) {}
+}
+
+function saveWork(){
+  try { autosave(); toast('✓ Your work has been saved!'); }
+  catch(e) { toast('⚠ Could not save — check browser settings.'); }
+}
+
+document.querySelectorAll('[data-save]').forEach(el => el.addEventListener('input', autosave));
+RQS.forEach(el => el.addEventListener('input', autosave));
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+loadWork();
+</script>
+</body>
+</html>
